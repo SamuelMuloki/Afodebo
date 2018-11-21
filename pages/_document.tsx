@@ -40,8 +40,7 @@ class MyDocument extends Document<IProps> {
   }
 
   render() {
-    const { pageContext, pageProps } = this.props
-    const page = pageProps.page.selectedPage
+    const { pageContext } = this.props
 
     return (
       <html lang="ja">
@@ -58,7 +57,7 @@ class MyDocument extends Document<IProps> {
             name="theme-color"
             content={pageContext.theme.palette.primary[500]}
           />
-          <meta name="description" content={page.metaDescription} />
+          <meta name="description" content={"Online shop for shoes"} />
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"

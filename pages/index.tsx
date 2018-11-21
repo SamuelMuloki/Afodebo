@@ -1,11 +1,6 @@
 import { Paper, Typography } from "@material-ui/core"
-import {
-  createStyles,
-  Theme,
-  withStyles,
-  WithStyles,
-} from "@material-ui/core/styles"
-import { HeaderArticleContainer } from "../components/organisms"
+import { createStyles, Theme } from "@material-ui/core/styles"
+import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles"
 import { Layout } from "../components/templates"
 
 const styles = (theme: Theme) =>
@@ -23,11 +18,9 @@ const Index = (props: IProps) => {
   const { classes } = props
   return (
     <Layout>
-      <HeaderArticleContainer>
-        <Paper className={classes.mainContainer}>
-          <Typography variant="h5">Hello Next.js 👋</Typography>
-        </Paper>
-      </HeaderArticleContainer>
+      <Paper className={classes.mainContainer}>
+        <Typography variant="h5">Hello Next.js 👋</Typography>
+      </Paper>
     </Layout>
   )
 }

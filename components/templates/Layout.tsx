@@ -6,10 +6,6 @@ import {
 } from "@material-ui/core/styles"
 import Head from "next/head"
 import * as React from "react"
-import { connect } from "react-redux"
-import { Page } from "../../constants"
-import { IInitialState } from "../../store/states"
-import { ResponsiveDrawer } from "../organisms"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -20,28 +16,18 @@ const styles = (theme: Theme) =>
 
 interface IProps extends WithStyles<typeof styles> {
   children: React.ReactNode
-  selectedPage: Page
 }
 
 const LayoutComponent = (props: IProps) => {
-  const { classes, children, selectedPage } = props
+  const { classes, children } = props
   return (
     <section className={classes.root}>
       <Head>
-        <title>{selectedPage.title}</title>
+        <title>{"Afodebo"}</title>
       </Head>
-      <ResponsiveDrawer>
-        <article>{children}</article>
-      </ResponsiveDrawer>
+      <article>{children}</article>
     </section>
   )
 }
 
-const mapStateToProps = (state: IInitialState) => ({
-  selectedPage: state.page.selectedPage,
-})
-
-export const Layout = connect(
-  mapStateToProps,
-  undefined
-)(withStyles(styles)(LayoutComponent as any))
+export const Layout = withStyles(styles)(LayoutComponent)
