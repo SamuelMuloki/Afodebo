@@ -3,12 +3,9 @@ import {
   createMuiTheme,
 } from "@material-ui/core/styles"
 import { SheetsRegistry } from "jss"
-import { palette } from "./MuiColorPalette"
+// import { palette } from "./MuiColorPalette"
 
-// @see https://github.com/mui-org/material-ui/blob/master/examples/nextjs/src/getPageContext.js
-
-// A theme with custom primary and secondary color.
-const theme = createMuiTheme({ palette: palette })
+const theme = createMuiTheme({})
 
 const createPageContext = () => {
   return {
