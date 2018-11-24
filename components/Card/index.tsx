@@ -9,6 +9,7 @@ import {
 import { createStyles, Theme } from "@material-ui/core/styles"
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles"
 import gql from "graphql-tag"
+import Link from "next/link"
 import React from "react"
 import { graphql } from "react-apollo"
 import { compose } from "recompose"
@@ -59,34 +60,38 @@ const MediaCard = ({ classes, data }: CardProps, req) => {
       <div className={classes.cardSpacing}>
         <Grid container spacing={8}>
           {data.products.map(images => (
-            <Grid item sm={3} key={images._id}>
-              <Card>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    image={`http://localhost:1337${images.image[0].url}`}
-                    title={images.name}
-                  />
-                  <CardContent>
-                    <Typography component="p">
-                      {images.brand && images.brand.name}
-                    </Typography>
-                    <Typography
-                      gutterBottom
-                      className={classes.cardDescription}
-                      variant="subtitle2"
-                      component="h2"
-                    >
-                      {images.slug && images.slug.length > 50
-                        ? images.slug.slice(0, 50).concat("...")
-                        : images.slug}
-                    </Typography>
-                    <Typography component="p" color="error">{`UGX ${
-                      images.saleprice
-                    }`}</Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+            <Grid item sm={3} key={images._id} zeroMinWidth>
+              <Link
+                as={`/products/${images._id}`}
+                href={`/products?id=${images._id}`}
+              >
+                <Card>
+                  <CardActionArea>
+                    <CardMedia
+                      component="img"
+                      image={`http://localhost:1337${images.image[0].url}`}
+                      title={images.name}
+                    />
+                    <CardContent>
+                      <Typography component="p">
+                        {images.brand && images.brand.name}
+                      </Typography>
+                      <Typography
+                        gutterBottom
+                        className={classes.cardDescription}
+                        variant="subtitle2"
+                        component="h2"
+                        noWrap
+                      >
+                        {images.slug}
+                      </Typography>
+                      <Typography component="p" color="error">{`UGX ${
+                        images.saleprice
+                      }`}</Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Link>
             </Grid>
           ))}
         </Grid>

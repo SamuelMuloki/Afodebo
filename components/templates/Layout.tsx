@@ -1,5 +1,4 @@
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles"
-import { Container } from "next/app"
 import Head from "next/head"
 // import Link from "next/link"
 import * as React from "react"
@@ -42,10 +41,11 @@ class LayoutComponent extends React.Component<IProps> {
         <Head>
           <title>{"Afodebo"}</title>
         </Head>
-        <header>
-          <AppBar isAuthenticated loggedUser={this.props.loggedUser} />
-        </header>
-        <Container>{children}</Container>
+        <AppBar
+          isAuthenticated
+          loggedUser={this.props.loggedUser}
+          children={children}
+        />
       </div>
     )
   }

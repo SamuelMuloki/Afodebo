@@ -2,7 +2,6 @@ import { createStyles, Theme } from "@material-ui/core/styles"
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles"
 import classNames from "classnames"
 import { SFC } from "react"
-import Card from "../../components/Card"
 import { drawerWidth } from "../Drawer"
 
 const styles = (theme: Theme) =>
@@ -43,9 +42,10 @@ const styles = (theme: Theme) =>
 
 interface WrapperProps extends WithStyles<typeof styles> {
   drawerOpen: boolean
+  children: React.ReactNode
 }
 
-const Index: SFC<WrapperProps> = ({ classes, drawerOpen }) => {
+const Index: SFC<WrapperProps> = ({ classes, drawerOpen, children }) => {
   return (
     <main
       className={classNames(
@@ -55,7 +55,7 @@ const Index: SFC<WrapperProps> = ({ classes, drawerOpen }) => {
       )}
     >
       <div className={classes.toolbar} />
-      <Card />
+      {children}
     </main>
   )
 }

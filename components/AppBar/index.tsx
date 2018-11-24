@@ -18,6 +18,7 @@ import {
   Search as SearchIcon,
   ShoppingCart,
 } from "@material-ui/icons"
+import { Container } from "next/app"
 import Router from "next/router"
 import * as React from "react"
 import NavigationDrawer from "../Drawer"
@@ -105,6 +106,7 @@ const styles = (theme: Theme) =>
 export interface PrimaryAppBarProps extends WithStyles<typeof styles> {
   isAuthenticated: boolean
   loggedUser: string
+  children: React.ReactNode
 }
 
 export interface PrimaryAppBarState {
@@ -144,7 +146,7 @@ class PrimaryAppBar extends React.Component<
   handleDrawerClose = () => this.setState({ drawerOpen: false })
 
   render() {
-    const { classes, isAuthenticated, loggedUser } = this.props
+    const { classes, isAuthenticated, loggedUser, children } = this.props
     const { anchorEl, mobileMoreAnchorEl } = this.state
     const isMenuOpen = Boolean(anchorEl)
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -199,71 +201,75 @@ class PrimaryAppBar extends React.Component<
     )
     return (
       <React.Fragment>
-        <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerOpen}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              className={classes.title}
-              variant="h6"
-              color="inherit"
-              noWrap
-            >
-              afodebo
-            </Typography>
-            <div className={classes.grow} />
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
+        <header>
+          <AppBar position="fixed" className={classes.appBar}>
+            <Toolbar>
+              <IconButton
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="Open drawer"
+                onClick={this.handleDrawerOpen}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography
+                className={classes.title}
+                variant="h6"
+                color="inherit"
+                noWrap
+              >
+                afodebo
+              </Typography>
+              <div className={classes.grow} />
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Try sneakers..."
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                />
               </div>
-              <InputBase
-                placeholder="Try sneakers..."
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-              />
-            </div>
-            <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-              <IconButton color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <ShoppingCart />
-                </Badge>
-              </IconButton>
-              <IconButton
-                aria-owns={isMenuOpen ? "material-appbar" : undefined}
-                aria-haspopup="true"
-                onClick={this.handleProfileMenuOpen}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-            </div>
-            <div className={classes.sectionMobile}>
-              <IconButton
-                aria-haspopup="true"
-                onClick={this.handleMobileMenuOpen}
-                color="inherit"
-              >
-                <MoreIcon />
-              </IconButton>
-            </div>
-          </Toolbar>
-        </AppBar>
-        {renderMenu}
-        {renderMobleMenu}
-        <NavigationDrawer
-          drawerOpen={this.state.drawerOpen}
-          onClose={this.handleDrawerClose}
-        />
-        <Wrapper drawerOpen={this.state.drawerOpen} />
+              <div className={classes.grow} />
+              <div className={classes.sectionDesktop}>
+                <IconButton color="inherit">
+                  <Badge badgeContent={4} color="secondary">
+                    <ShoppingCart />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  aria-owns={isMenuOpen ? "material-appbar" : undefined}
+                  aria-haspopup="true"
+                  onClick={this.handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </div>
+              <div className={classes.sectionMobile}>
+                <IconButton
+                  aria-haspopup="true"
+                  onClick={this.handleMobileMenuOpen}
+                  color="inherit"
+                >
+                  <MoreIcon />
+                </IconButton>
+              </div>
+            </Toolbar>
+          </AppBar>
+          {renderMenu}
+          {renderMobleMenu}
+          <NavigationDrawer
+            drawerOpen={this.state.drawerOpen}
+            onClose={this.handleDrawerClose}
+          />
+        </header>
+        <Container>
+          <Wrapper drawerOpen={this.state.drawerOpen} children={children} />
+        </Container>
       </React.Fragment>
     )
   }
