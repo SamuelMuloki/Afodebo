@@ -83,7 +83,6 @@ class SignIn extends React.Component<SignInProps, SignInState> {
                       style={{ height: 50, fontSize: "1.2em" }}
                     />
                   </FormGroup>
-
                   <FormGroup>
                     <span>
                       <a href="">

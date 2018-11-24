@@ -1,33 +1,17 @@
-import { Button, Paper, Typography } from "@material-ui/core"
-import {
-  createStyles,
-  Theme,
-  withStyles,
-  WithStyles,
-} from "@material-ui/core/styles"
+import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles"
 import { Container } from "next/app"
 import Head from "next/head"
-import Link from "next/link"
+// import Link from "next/link"
 import * as React from "react"
 import { compose } from "recompose"
+import AppBar from "../AppBar"
 import defaultPage from "../hocs/defaultPage"
-import { unsetToken } from "../libs/auth"
+// import { unsetToken } from "../libs/auth"
 
-const styles = (theme: Theme) =>
+const styles = () =>
   createStyles({
     root: {
       height: "100%",
-    },
-    button: {
-      margin: theme.spacing.unit,
-      marginRight: 0,
-    },
-    mainContainer: {
-      display: "flex",
-      padding: theme.spacing.unit * 2,
-    },
-    navLink: {
-      textDecoration: "none",
     },
   })
 
@@ -52,14 +36,14 @@ class LayoutComponent extends React.Component<IProps> {
   }
 
   render() {
-    const { classes, children, loggedUser, isAuthenticated } = this.props
+    const { classes, children } = this.props
     return (
       <div className={classes.root}>
         <Head>
           <title>{"Afodebo"}</title>
         </Head>
         <header>
-          <Paper className={classes.mainContainer}>
+          {/* <Paper className={classes.mainContainer}>
             <Typography variant="h5">Hello Next.js 👋</Typography>
             {isAuthenticated && loggedUser ? (
               <>
@@ -88,7 +72,8 @@ class LayoutComponent extends React.Component<IProps> {
                 </Button>
               </>
             )}
-          </Paper>
+          </Paper> */}
+          <AppBar isAuthenticated loggedUser={this.props.loggedUser} />
         </header>
         <Container>{children}</Container>
       </div>

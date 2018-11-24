@@ -5,7 +5,9 @@ import App from "next/app"
 import React from "react"
 import JssProvider from "react-jss/lib/JssProvider"
 import { Provider } from "react-redux"
+import { compose } from "recompose"
 import getPageContext from "../components/getPageContext"
+import withData from "../components/libs/apollo"
 import Layout from "../components/templates/Layout"
 import { configureStore } from "../store/configureStore"
 import "../styles/main.css"
@@ -75,4 +77,7 @@ class MyApp extends App<IProps> {
   }
 }
 
-export default withRedux(configureStore())(MyApp)
+export default compose(
+  withData,
+  withRedux(configureStore())
+)(MyApp)

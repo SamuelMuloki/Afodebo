@@ -3,9 +3,12 @@ import {
   createMuiTheme,
 } from "@material-ui/core/styles"
 import { SheetsRegistry } from "jss"
-// import { palette } from "./MuiColorPalette"
 
-const theme = createMuiTheme({})
+const theme = createMuiTheme({
+  typography: {
+    useNextVariants: true,
+  },
+})
 
 const createPageContext = () => {
   return {

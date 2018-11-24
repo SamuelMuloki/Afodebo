@@ -1,14 +1,17 @@
-export interface ICounterState {
-  count: number
-}
-export const CounterInitialState: ICounterState = {
-  count: 1,
+export interface StoreState {
+  anchorEl: any
+  mobileMoreAnchorEl: any
 }
 
 export interface IInitialState {
-  counter: ICounterState
+  AppBar: StoreState
+}
+
+const INITIALSTATE: StoreState = {
+  anchorEl: null,
+  mobileMoreAnchorEl: null,
 }
 
 export const InitialState: IInitialState = {
-  counter: CounterInitialState,
+  AppBar: INITIALSTATE,
 }

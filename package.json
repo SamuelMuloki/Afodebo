@@ -38,9 +38,7 @@
     "reactstrap": "^6.5.0",
     "recompose": "^0.30.0",
     "redux": "^4.0.0",
-    "strapi-sdk-javascript": "^0.3.1",
-    "typescript-fsa": "^3.0.0-beta-2",
-    "typescript-fsa-reducers": "^0.4.5"
+    "strapi-sdk-javascript": "^0.3.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.1.2",
