@@ -22,6 +22,7 @@ import Router from "next/router"
 import * as React from "react"
 import NavigationDrawer from "../Drawer"
 import { unsetToken } from "../libs/auth"
+import Wrapper from "../Wrapper"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -262,6 +263,7 @@ class PrimaryAppBar extends React.Component<
           drawerOpen={this.state.drawerOpen}
           onClose={this.handleDrawerClose}
         />
+        <Wrapper drawerOpen={this.state.drawerOpen} />
       </React.Fragment>
     )
   }

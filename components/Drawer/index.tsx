@@ -13,7 +13,7 @@ import classNames from "classnames"
 import * as React from "react"
 import Menu from "../Menu"
 
-const drawerWidth = 240
+export const drawerWidth = 240
 
 const styles = (theme: Theme) =>
   createStyles({

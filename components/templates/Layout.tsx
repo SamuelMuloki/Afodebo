@@ -43,36 +43,6 @@ class LayoutComponent extends React.Component<IProps> {
           <title>{"Afodebo"}</title>
         </Head>
         <header>
-          {/* <Paper className={classes.mainContainer}>
-            <Typography variant="h5">Hello Next.js 👋</Typography>
-            {isAuthenticated && loggedUser ? (
-              <>
-                <span style={{ color: "black", marginRight: 30 }}>
-                  {loggedUser}
-                </span>
-                <Button variant="contained" className={classes.button}>
-                  <Link href="/">
-                    <a className={classes.navLink} onClick={unsetToken}>
-                      Logout
-                    </a>
-                  </Link>
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button variant="contained" className={classes.button}>
-                  <Link href="/signin">
-                    <a className={classes.navLink}>Sign In</a>
-                  </Link>
-                </Button>
-                <Button variant="contained" className={classes.button}>
-                  <Link href="/signup">
-                    <a className={classes.navLink}>Sign Up</a>
-                  </Link>
-                </Button>
-              </>
-            )}
-          </Paper> */}
           <AppBar isAuthenticated loggedUser={this.props.loggedUser} />
         </header>
         <Container>{children}</Container>
