@@ -11,13 +11,11 @@ import {
 import { createStyles, Theme } from "@material-ui/core/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles"
-import {
-  AccountCircle,
-  Menu as MenuIcon,
-  MoreVert as MoreIcon,
-  Search as SearchIcon,
-  ShoppingCart,
-} from "@material-ui/icons"
+import AccountCircle from "@material-ui/icons/AccountCircle"
+import MenuIcon from "@material-ui/icons/Menu"
+import MoreIcon from "@material-ui/icons/MoreVert"
+import SearchIcon from "@material-ui/icons/Search"
+import ShoppingCart from "@material-ui/icons/ShoppingCart"
 import { Container } from "next/app"
 import Router from "next/router"
 import * as React from "react"

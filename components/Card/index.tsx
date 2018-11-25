@@ -43,6 +43,7 @@ export interface ProductDetails {
   image: [{ url: string }]
   brand: { name: string }
   category: { name: string }
+  images: Array<{ _id: string; image: [{ url: string }] }>
 }
 
 export interface CardProps extends WithStyles<typeof styles> {
@@ -53,7 +54,7 @@ export interface CardProps extends WithStyles<typeof styles> {
   }
 }
 
-const MediaCard = ({ classes, data }: CardProps, req) => {
+const MediaCard = ({ classes, data }: CardProps) => {
   if (data.error) return "Error loading products"
   if (data.products && data.products.length) {
     return (

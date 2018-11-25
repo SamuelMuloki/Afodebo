@@ -1,6 +1,7 @@
 import { createStyles } from "@material-ui/core/styles"
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles"
 import { SFC } from "react"
+import "react-image-gallery/styles/css/image-gallery.css"
 import { compose } from "recompose"
 import Card from "../components/Card"
 import defaultPage from "../components/hocs/defaultPage"
@@ -15,7 +16,7 @@ interface IProps extends WithStyles<typeof styles> {
   loggedUser: string
 }
 
-const Index: SFC<IProps> = ({ loggedUser }) => {
+const Index: SFC<IProps> = () => {
   return <Card />
 }
 

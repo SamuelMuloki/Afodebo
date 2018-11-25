@@ -6,17 +6,15 @@ import {
   ListItemText,
   Tooltip,
 } from "@material-ui/core"
-import {
-  CreditCard,
-  Home,
-  ImportExport,
-  LocalShipping,
-  Settings,
-  Shop,
-  Timer,
-  Toys,
-} from "@material-ui/icons"
+import CreditCard from "@material-ui/icons/CreditCard"
+import Home from "@material-ui/icons/Home"
+import ImportExport from "@material-ui/icons/ImportExport"
+import LocalShipping from "@material-ui/icons/LocalShipping"
 import SendIcon from "@material-ui/icons/Send"
+import Settings from "@material-ui/icons/Settings"
+import Shop from "@material-ui/icons/Shop"
+import Timer from "@material-ui/icons/Timer"
+import Toys from "@material-ui/icons/Toys"
 import * as React from "react"
 
 const Menu = () => {

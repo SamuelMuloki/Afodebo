@@ -1,4 +1,4 @@
-import { Grid, Paper } from "@material-ui/core"
+import { CircularProgress, Grid, Paper } from "@material-ui/core"
 import gql from "graphql-tag"
 import { withRouter } from "next/router"
 import React from "react"
@@ -12,25 +12,25 @@ export interface ProductsProps {
   data: {
     loading: any
     error: string
-    products: Array<ProductDetails>
+    product: ProductDetails
   }
 }
 
 class Products extends React.Component<ProductsProps> {
   render() {
     const {
-      data: { loading, error, products },
+      data: { loading, error, product },
       // router,
       // isAuthenticated,
     } = this.props
     if (error) return "Error loading Products"
 
-    if (products) {
-      const items = products.map(pdt => pdt.image).reduce(img => img)
+    if (product) {
+      const items = product.images.map(pdt => pdt.image).reduce(img => img)
       const images: Array<ReactImageGalleryItem> = items.map(itm => {
         return {
-          original: itm.url,
-          thumbnail: itm.url,
+          original: `http://localhost:1337${itm.url}`,
+          thumbnail: `http://localhost:1337${itm.url}`,
         }
       })
       return (
@@ -44,6 +44,8 @@ class Products extends React.Component<ProductsProps> {
           </Grid>
         </React.Fragment>
       )
+    } else if (loading) {
+      return <CircularProgress />
     }
     return <h1>Loading</h1>
   }
@@ -54,8 +56,12 @@ const GET_IMAGE_GALLERY = gql`
     product(id: $id) {
       _id
       name
-      image {
-        url
+      images {
+        _id
+        name
+        image {
+          url
+        }
       }
     }
   }

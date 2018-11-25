@@ -1,8 +1,8 @@
 import Document, { Head, Main, NextScript } from "next/document"
 import React from "react"
 import JssProvider from "react-jss/lib/JssProvider"
+import flush from "styled-jsx/server"
 import getPageContext from "../components/getPageContext"
-
 interface IProps {
   pageContext: any
   pageProps: any
@@ -29,12 +29,15 @@ class MyDocument extends Document<IProps> {
       pageContext,
       pageProps,
       styles: (
-        <style
-          id="jss-server-side"
-          dangerouslySetInnerHTML={{
-            __html: pageContext.sheetsRegistry.toString(),
-          }}
-        />
+        <React.Fragment>
+          <style
+            id="jss-server-side"
+            dangerouslySetInnerHTML={{
+              __html: pageContext.sheetsRegistry.toString(),
+            }}
+          />
+          {flush() || null}
+        </React.Fragment>
       ),
     }
   }
