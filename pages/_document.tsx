@@ -1,8 +1,8 @@
 import Document, { Head, Main, NextScript } from "next/document"
 import React from "react"
-import JssProvider from "react-jss/lib/JssProvider"
+// import JssProvider from "react-jss/lib/JssProvider"
 import flush from "styled-jsx/server"
-import getPageContext from "../components/getPageContext"
+// import getPageContext from "../components/getPageContext"
 interface IProps {
   pageContext: any
   pageProps: any
@@ -13,15 +13,15 @@ interface IProps {
  */
 class MyDocument extends Document<IProps> {
   static getInitialProps = ctx => {
-    const pageContext = getPageContext()
-    const page = ctx.renderPage(Component => props => (
-      <JssProvider
-        registry={pageContext.sheetsRegistry}
-        generateClassName={pageContext.generateClassName}
-      >
-        <Component pageProps={pageContext} {...props} />
-      </JssProvider>
-    ))
+    let pageContext
+    const page = ctx.renderPage(Component => {
+      const WrappedComponent = props => {
+        pageContext = props.pageContext
+        return <Component {...props} />
+      }
+
+      return WrappedComponent
+    })
 
     const pageProps = ctx.store.getState()
     return {
@@ -70,6 +70,16 @@ class MyDocument extends Document<IProps> {
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+          />
+          <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+          />
+          <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
           />
         </Head>
         <body>
