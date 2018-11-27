@@ -1,8 +1,11 @@
 import {
+  Button,
   Card,
   CardActionArea,
+  CardActions,
   CardContent,
   CardMedia,
+  CircularProgress,
   Grid,
   Typography,
 } from "@material-ui/core"
@@ -16,11 +19,8 @@ import { compose } from "recompose"
 
 const styles = (theme: Theme) =>
   createStyles({
-    cardSpacing: {
-      margin: "14px",
-    },
-    cardDescription: {
-      height: theme.spacing.unit * 9,
+    card: {
+      boxShadow: "none",
     },
     button: {
       margin: theme.spacing.unit,
@@ -28,8 +28,8 @@ const styles = (theme: Theme) =>
     cardButton: {
       justifyContent: "center",
     },
-    extendedIcon: {
-      marginRight: theme.spacing.unit,
+    originalPrice: {
+      textDecoration: "line-through",
     },
   })
 
@@ -38,11 +38,13 @@ export interface ProductDetails {
   name: string
   description: string
   sku: string
-  saleprice: string
+  saleprice: number
+  originalprice: number
   slug: string
   image: [{ url: string }]
   brand: { name: string }
   category: { name: string }
+  sellers: { name: string }
   images: Array<{ _id: string; image: [{ url: string }] }>
 }
 
@@ -58,46 +60,49 @@ const MediaCard = ({ classes, data }: CardProps) => {
   if (data.error) return "Error loading products"
   if (data.products && data.products.length) {
     return (
-      <div className={classes.cardSpacing}>
-        <Grid container spacing={8}>
-          {data.products.map(images => (
-            <Grid item sm={3} key={images._id} zeroMinWidth>
+      <Grid container spacing={8}>
+        {data.products.map(images => (
+          <Grid item sm={3} key={images._id} zeroMinWidth>
+            <Card className={classes.card}>
               <Link
                 as={`/products/${images._id}`}
                 href={`/products?id=${images._id}`}
               >
-                <Card>
-                  <CardActionArea>
-                    <CardMedia
-                      component="img"
-                      image={`http://localhost:1337${images.image[0].url}`}
-                      title={images.name}
-                    />
-                    <CardContent>
-                      <Typography component="p">
-                        {images.brand && images.brand.name}
-                      </Typography>
-                      <Typography
-                        gutterBottom
-                        className={classes.cardDescription}
-                        variant="subtitle2"
-                        component="h2"
-                        noWrap
-                      >
-                        {images.slug}
-                      </Typography>
-                      <Typography component="p" color="error">{`UGX ${
-                        images.saleprice
-                      }`}</Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
+                <CardActionArea>
+                  <CardMedia
+                    component="img"
+                    image={`http://localhost:1337${images.image[0].url}`}
+                    title={images.name}
+                  />
+                  <CardContent>
+                    <Typography variant="subtitle1">{`UGX ${
+                      images.saleprice
+                    }`}</Typography>
+                    <Typography
+                      variant="subtitle2"
+                      color="textSecondary"
+                      noWrap
+                    >
+                      {images.slug}
+                    </Typography>
+                    <Typography variant="subtitle2" color="textSecondary">
+                      {`Sold by ${images.sellers.name}`}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
               </Link>
-            </Grid>
-          ))}
-        </Grid>
-      </div>
+              <CardActions>
+                <Button fullWidth size="large" color="primary">
+                  Add To Cart
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
     )
+  } else if (data.loading) {
+    return <CircularProgress />
   }
   return <h1>Loading</h1>
 }
@@ -115,8 +120,13 @@ const query = gql`
       brand {
         name
       }
+      sellers {
+        _id
+        name
+      }
       slug
       saleprice
+      originalprice
       image {
         url
       }
