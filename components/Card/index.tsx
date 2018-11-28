@@ -16,6 +16,8 @@ import Link from "next/link"
 import React from "react"
 import { graphql } from "react-apollo"
 import { compose } from "recompose"
+import { Container } from "../Utils/namespace"
+type ProductDetails = Container.ProductDetails
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -32,21 +34,6 @@ const styles = (theme: Theme) =>
       textDecoration: "line-through",
     },
   })
-
-export interface ProductDetails {
-  _id: string
-  name: string
-  description: string
-  sku: string
-  saleprice: number
-  originalprice: number
-  slug: string
-  image: [{ url: string }]
-  brand: { name: string }
-  category: { name: string }
-  sellers: { name: string }
-  images: Array<{ _id: string; image: [{ url: string }] }>
-}
 
 export interface CardProps extends WithStyles<typeof styles> {
   data: {

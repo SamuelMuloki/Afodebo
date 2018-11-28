@@ -1,5 +1,6 @@
+// import Link from "next/link"
 import gql from "graphql-tag"
-import * as React from "react"
+import React from "react"
 import { graphql } from "react-apollo"
 import { default as Slider } from "react-slick"
 import { compose } from "recompose"
@@ -8,63 +9,65 @@ import { Container } from "../Utils/namespace"
 
 type ProductDetails = Container.ProductDetails
 
-export interface ImageSliderProps {
+export interface BrandProps {
   data: {
     loading: any
     error: string
-    promotions: Array<ProductDetails>
+    brands: Partial<Array<ProductDetails>>
   }
 }
 
-const ImageSlider = ({ data }: ImageSliderProps) => {
-  if (data.promotions) {
+const Brand = ({ data }: BrandProps) => {
+  if (data.error) return "Error loading brands"
+  if (data.brands && data.brands.length) {
     return (
       <React.Fragment>
-        <div className="promo-slider">
-          <Slider {...settings}>
-            {data.promotions[0].image.map((promo, index) => {
-              return (
-                <img
-                  height={300}
-                  width={1500}
-                  key={index}
-                  alt={data.promotions[0].name}
-                  src={`http://localhost:1337${promo.url}`}
-                />
-              )
-            })}
+        <div className="brand-slider">
+          <Slider {...settings} slidesToShow={4} slidesToScroll={4}>
+            {data.brands.map((brand, index) => (
+              <img
+                key={index}
+                alt={brand.name}
+                src={`http://localhost:1337${brand.image.url}`}
+              />
+            ))}
           </Slider>
         </div>
         <style jsx>
           {`
-            .promo-slider {
+            .brand-slider {
               margin-bottom: 30px;
               margin-left: 30px;
               margin-right: 30px;
-            }
-            .image-slider {
-              margin: 10px;
+              margin-top: 30px;
             }
           `}
         </style>
       </React.Fragment>
     )
+  } else if (data.loading) {
+    // return <CircularProgress />
   }
-  return <div />
+  return <div>{}</div>
 }
 
 const query = gql`
   {
-    promotions {
+    brands {
       _id
       name
+      description
+      products {
+        _id
+        name
+      }
       image {
         url
       }
     }
   }
 `
-ImageSlider.getInitialProps = async ({ req }) => {
+Brand.getInitialProps = async ({ req }) => {
   const res = await fetch("https://api.github.com/repos/zeit/next.js")
   const json = await res.json()
   return { stars: json.stargazers_count, req }
@@ -76,4 +79,4 @@ export default compose(
       data,
     }),
   })
-)(ImageSlider as any)
+)(Brand as any)
