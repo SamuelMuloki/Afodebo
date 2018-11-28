@@ -16,6 +16,7 @@ import Link from "next/link"
 import React from "react"
 import { graphql } from "react-apollo"
 import { compose } from "recompose"
+import { discount } from "../Utils/data"
 import { Container } from "../Utils/namespace"
 type ProductDetails = Container.ProductDetails
 
@@ -82,10 +83,9 @@ const MediaCard = ({ classes, data }: CardProps) => {
                       <Grid item xs={4}>
                         <Typography variant="caption" color="secondary">
                           {images.originalprice
-                            ? `(${Math.round(
-                                100 -
-                                  (images.saleprice / images.originalprice) *
-                                    100
+                            ? `(${discount(
+                                images.saleprice,
+                                images.originalprice
                               )}% off)`
                             : ""}
                         </Typography>

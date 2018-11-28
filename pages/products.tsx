@@ -19,8 +19,10 @@ import React from "react"
 import { graphql } from "react-apollo"
 import ImageGallery, { ReactImageGalleryItem } from "react-image-gallery"
 import { compose } from "recompose"
-import { ProductDetails } from "../components/Card"
 import defaultPage from "../components/hocs/defaultPage"
+import { Container } from "../components/Utils/namespace"
+
+type ProductDetails = Container.ProductDetails
 
 const styles = (theme: Theme) =>
   createStyles({
