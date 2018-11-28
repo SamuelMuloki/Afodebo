@@ -75,9 +75,35 @@ const MediaCard = ({ classes, data }: CardProps) => {
                     title={images.name}
                   />
                   <CardContent>
-                    <Typography variant="subtitle1">{`UGX ${
-                      images.saleprice
-                    }`}</Typography>
+                    <Grid container spacing={8}>
+                      <Grid item xs={4}>
+                        <Typography variant="caption">
+                          {`UGX ${images.saleprice}`}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Typography
+                          variant="caption"
+                          color="textSecondary"
+                          className={classes.originalPrice}
+                        >
+                          {images.originalprice
+                            ? `UGX ${images.originalprice}`
+                            : ""}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Typography variant="caption" color="secondary">
+                          {images.originalprice
+                            ? `(${Math.round(
+                                100 -
+                                  (images.saleprice / images.originalprice) *
+                                    100
+                              )}% off)`
+                            : ""}
+                        </Typography>
+                      </Grid>
+                    </Grid>
                     <Typography
                       variant="subtitle2"
                       color="textSecondary"
