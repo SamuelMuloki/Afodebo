@@ -1,38 +1,19 @@
-import {
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  CircularProgress,
-  Grid,
-  Typography,
-} from "@material-ui/core"
+import { CircularProgress, Grid, Hidden } from "@material-ui/core"
 import { createStyles, Theme } from "@material-ui/core/styles"
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles"
 import gql from "graphql-tag"
-import Link from "next/link"
 import React from "react"
 import { graphql } from "react-apollo"
 import { compose } from "recompose"
-import { discount } from "../Utils/data"
+// import { discount } from "../Utils/data"
 import { Container } from "../Utils/namespace"
+import ProductCard from "./ProductCard"
 type ProductDetails = Container.ProductDetails
 
 const styles = (theme: Theme) =>
   createStyles({
-    card: {
-      boxShadow: "none",
-    },
     button: {
       margin: theme.spacing.unit,
-    },
-    cardButton: {
-      justifyContent: "center",
-    },
-    originalPrice: {
-      textDecoration: "line-through",
     },
   })
 
@@ -44,78 +25,42 @@ export interface CardProps extends WithStyles<typeof styles> {
   }
 }
 
-const MediaCard = ({ classes, data }: CardProps) => {
+const MediaCard = ({ data }: CardProps) => {
   if (data.error) return "Error loading products"
   if (data.products && data.products.length) {
     return (
-      <Grid container spacing={8}>
-        {data.products.map(images => (
-          <Grid item sm={3} key={images._id} zeroMinWidth>
-            <Card className={classes.card}>
-              <Link
-                as={`/products/${images._id}`}
-                href={`/products?id=${images._id}`}
-              >
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    image={`http://localhost:1337${images.image[0].url}`}
-                    title={images.name}
-                  />
-                  <CardContent>
-                    <Grid container spacing={8}>
-                      <Grid item xs={4}>
-                        <Typography variant="caption">
-                          {`UGX ${images.saleprice}`}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <Typography
-                          variant="caption"
-                          color="textSecondary"
-                          className={classes.originalPrice}
-                        >
-                          {images.originalprice
-                            ? `UGX ${images.originalprice}`
-                            : ""}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <Typography variant="caption" color="secondary">
-                          {images.originalprice
-                            ? `(${discount(
-                                images.saleprice,
-                                images.originalprice
-                              )}% off)`
-                            : ""}
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                    <Typography
-                      variant="subtitle2"
-                      color="textSecondary"
-                      noWrap
-                    >
-                      {images.slug}
-                    </Typography>
-                    <Typography variant="subtitle2" color="textSecondary">
-                      {`Sold by ${images.sellers.name}`}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Link>
-              <CardActions>
-                <Button fullWidth size="large" color="primary">
-                  Add To Cart
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+      <React.Fragment>
+        {/* TODO: Display Products on sale by category */}
+        <Grid container spacing={8} direction="row" justify="space-evenly">
+          {data.products.map(images => {
+            return <ProductCard key={images._id} images={images} />
+          })}
+        </Grid>
+      </React.Fragment>
     )
   } else if (data.loading) {
-    return <CircularProgress />
+    return (
+      <>
+        <Hidden smDown implementation="css">
+          <div className="animated-background" />
+          <div className="animated-background">
+            <div className="card-gif-1" />
+            <div className="card-gif-2" />
+            <div className="card-gif-3" />
+            <div className="card-gif-4" />
+          </div>
+          <div className="animated-background">
+            <div className="card-gif-1" />
+            <div className="card-gif-2" />
+            <div className="card-gif-3" />
+            <div className="card-gif-4" />
+          </div>
+        </Hidden>
+        <Hidden mdUp>
+          <CircularProgress />
+        </Hidden>
+      </>
+    )
   }
   return <h1>Loading</h1>
 }
@@ -126,7 +71,6 @@ const query = gql`
       _id
       name
       description
-      sku
       category {
         name
       }
@@ -134,7 +78,6 @@ const query = gql`
         name
       }
       sellers {
-        _id
         name
       }
       slug

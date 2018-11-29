@@ -36,10 +36,10 @@ const Brand = ({ data }: BrandProps) => {
         <style jsx>
           {`
             .brand-slider {
-              margin-bottom: 30px;
+              margin-bottom: 40px;
               margin-left: 30px;
               margin-right: 30px;
-              margin-top: 30px;
+              margin-top: 40px;
             }
           `}
         </style>

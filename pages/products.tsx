@@ -70,30 +70,38 @@ class Products extends React.Component<ProductsProps> {
       return (
         <React.Fragment>
           <Grid container spacing={24}>
-            <Grid item sm={6}>
+            <Grid item xs={12} sm={6} lg={5}>
               <Typography variant="h5" className={classes.cartProduct} noWrap>
                 {product.name}
               </Typography>
               <ImageGallery items={images} />
             </Grid>
-            <Grid item sm={6} zeroMinWidth>
+            <Grid item xs={12} sm={6} lg={4} zeroMinWidth>
               <Paper>
                 <div className={classes.cartItems}>
                   <Typography variant="h6" gutterBottom noWrap>
                     {`UGX ${product.saleprice}`}
                   </Typography>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.cartButtons}
-                  >
-                    ADD TO CART
-                  </Button>
-                  <Button variant="contained" color="primary">
-                    BUY NOW
-                  </Button>
                 </div>
               </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={2} zeroMinWidth>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.cartButtons}
+              >
+                ADD TO CART
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.cartButtons}
+              >
+                BUY NOW
+              </Button>
             </Grid>
           </Grid>
           <div className={classes.cartItems}>

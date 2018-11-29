@@ -49,6 +49,74 @@ const ImageSlider = ({ data }: ImageSliderProps) => {
         </style>
       </React.Fragment>
     )
+  } else if (data.loading) {
+    return (
+      <>
+        {/* <div className="animated-background" /> */}
+        <style>
+          {`
+            @keyframes placeHolderShimmer {
+              0% {
+                background-position: -468px 0;
+              }
+              100% {
+                background-position: 468px 0;
+              }
+            }
+            .animated-background {
+              animation-duration: 1s;
+              animation-fill-mode: forwards;
+              animation-iteration-count: infinite;
+              animation-name: placeHolderShimmer;
+              animation-timing-function: linear;
+              background: #f6f7f8;
+              margin: 20px;
+              background: linear-gradient(
+                to right,
+                #eeeeee 8%,
+                #dddddd 18%,
+                #eeeeee 33%
+              );
+              background-size: 1000px 104px;
+              height: 180px;
+              position: relative;
+            }
+            .card-gif-1 {
+              background: #FFF;
+              width: 20px;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              left: 20%;
+            }
+            .card-gif-2 {
+              background: #FFF;
+              width: 20px;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              left: 40%;
+            }
+            .card-gif-3 {
+              background: #FFF;
+              width: 20px;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              left: 60%;
+            }
+            .card-gif-4 {
+              background: #FFF;
+              width: 20px;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              left: 80%;
+            }
+          `}
+        </style>
+      </>
+    )
   }
   return <div />
 }
