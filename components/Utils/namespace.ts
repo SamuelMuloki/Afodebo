@@ -11,6 +11,8 @@ export namespace Container {
     brand: { name: string }
     category: { name: string }
     sellers: { name: string }
+    sale: boolean
+    active: boolean
     images: Array<{ _id: string; image: [{ url: string }] }>
   }
 }

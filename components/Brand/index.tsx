@@ -1,10 +1,10 @@
-// import Link from "next/link"
+import { Typography } from "@material-ui/core"
 import gql from "graphql-tag"
 import React from "react"
 import { graphql } from "react-apollo"
 import { default as Slider } from "react-slick"
 import { compose } from "recompose"
-import { settings } from "../Utils"
+import { cardResponsive, settings } from "../Utils"
 import { Container } from "../Utils/namespace"
 
 type ProductDetails = Container.ProductDetails
@@ -22,8 +22,18 @@ const Brand = ({ data }: BrandProps) => {
   if (data.brands && data.brands.length) {
     return (
       <React.Fragment>
+        <div className="brand-description">
+          <Typography variant="h5" gutterBottom>
+            {"Shop By Brand"}
+          </Typography>
+        </div>
         <div className="brand-slider">
-          <Slider {...settings} slidesToShow={4} slidesToScroll={4}>
+          <Slider
+            {...settings}
+            slidesToShow={4}
+            slidesToScroll={4}
+            responsive={cardResponsive}
+          >
             {data.brands.map((brand, index) => (
               <img
                 key={index}
@@ -35,18 +45,27 @@ const Brand = ({ data }: BrandProps) => {
         </div>
         <style jsx>
           {`
+            .brand-description {
+              margin: 20px;
+            }
             .brand-slider {
-              margin-bottom: 40px;
-              margin-left: 30px;
-              margin-right: 30px;
-              margin-top: 40px;
+              margin-bottom: 20px;
+              margin-left: 20px;
+              margin-right: 20px;
             }
           `}
         </style>
       </React.Fragment>
     )
   } else if (data.loading) {
-    // return <CircularProgress />
+    return (
+      <div className="animated-background">
+        <div className="card-gif-1" />
+        <div className="card-gif-2" />
+        <div className="card-gif-3" />
+        <div className="card-gif-4" />
+      </div>
+    )
   }
   return <div>{}</div>
 }

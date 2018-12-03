@@ -17,33 +17,38 @@ export interface ImageSliderProps {
 }
 
 const ImageSlider = ({ data }: ImageSliderProps) => {
-  if (data.promotions) {
+  if (data.promotions && data.promotions.length) {
     return (
       <React.Fragment>
         <div className="promo-slider">
           <Slider {...settings}>
-            {data.promotions[0].image.map((promo, index) => {
-              return (
-                <img
-                  height={300}
-                  width={1500}
-                  key={index}
-                  alt={data.promotions[0].name}
-                  src={`http://localhost:1337${promo.url}`}
-                />
-              )
-            })}
+            {data.promotions
+              .reduce<any[]>((imageArray, promo, currentIndex) => {
+                if (promo.active) {
+                  const promoImages = promo.image.map((promo, index) => {
+                    return (
+                      <img
+                        height={300}
+                        width={1500}
+                        key={index}
+                        alt={data.promotions[currentIndex].name}
+                        src={`http://localhost:1337${promo.url}`}
+                      />
+                    )
+                  })
+                  imageArray.push(promoImages)
+                }
+                return imageArray
+              }, [])
+              .map(img => img)}
           </Slider>
         </div>
         <style jsx>
           {`
             .promo-slider {
-              margin-bottom: 30px;
-              margin-left: 30px;
-              margin-right: 30px;
-            }
-            .image-slider {
-              margin: 10px;
+              margin-bottom: 20px;
+              margin-left: 20px;
+              margin-right: 20px;
             }
           `}
         </style>
@@ -52,7 +57,7 @@ const ImageSlider = ({ data }: ImageSliderProps) => {
   } else if (data.loading) {
     return (
       <>
-        {/* <div className="animated-background" /> */}
+        <div className="animated-background" />
         <style>
           {`
             @keyframes placeHolderShimmer {
@@ -126,6 +131,7 @@ const query = gql`
     promotions {
       _id
       name
+      active
       image {
         url
       }
