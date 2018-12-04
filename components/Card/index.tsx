@@ -54,7 +54,8 @@ const MediaCard = ({ data }: CardProps) => {
         <style jsx>
           {`
             .card-description {
-              margin: 20px;
+              margin-top: 40px;
+              margin-bottom: 40px;
             }
             .card-slider {
               margin-bottom: 20px;

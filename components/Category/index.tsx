@@ -27,14 +27,9 @@ const styles = () =>
 
 const GET_BRANDS = gql`
   {
-    brands {
+    categories {
       _id
       name
-      description
-      products {
-        _id
-        name
-      }
       image {
         url
       }
@@ -42,46 +37,48 @@ const GET_BRANDS = gql`
   }
 `
 
-export interface BrandProps extends WithStyles<typeof styles> {}
+export interface CategoryProps extends WithStyles<typeof styles> {}
 
 export interface QueryProps {
   data: {
-    brands: Partial<Array<ProductDetails>>
+    categories: Partial<Array<ProductDetails>>
   }
   loading: any
   error?: ApolloError
 }
 
-const Brand = ({ classes }: BrandProps) => (
+const Category = ({ classes }: CategoryProps) => (
   <Query query={GET_BRANDS}>
     {({ loading, error, data }: QueryProps) => {
       if (error) return "Error loading brands"
-      if (data.brands && data.brands.length) {
+      if (data.categories && data.categories.length) {
         return (
           <React.Fragment>
-            <div className="brand-description">
+            <div className="category-description">
               <Typography variant="h5" gutterBottom>
-                {"Shop By Brand"}
+                {"Shop By Category"}
               </Typography>
             </div>
-            <div className="brand-slider">
+            <div className="category-slider">
               <Slider
                 {...settings}
                 slidesToShow={4}
                 slidesToScroll={4}
                 responsive={cardResponsive}
               >
-                {data.brands.map((brand, index) => (
+                {data.categories.map((category, index) => (
                   <Card className={classes.card} key={index}>
                     <Link
-                      as={`/search/${brand._id}`}
-                      href={`/search?id=${brand._id}`}
+                      as={`/search/${category._id}`}
+                      href={`/search?id=${category._id}`}
                     >
                       <CardActionArea>
                         <CardMedia
                           component="img"
-                          image={`http://localhost:1337${brand.image.url}`}
-                          title={brand.name}
+                          image={`http://localhost:1337${
+                            category.image[0].url
+                          }`}
+                          title={category.name}
                         />
                       </CardActionArea>
                     </Link>
@@ -91,11 +88,11 @@ const Brand = ({ classes }: BrandProps) => (
             </div>
             <style jsx>
               {`
-                .brand-description {
+                .category-description {
                   margin-top: 40px;
                   margin-bottom: 40px;
                 }
-                .brand-slider {
+                .category-slider {
                   margin-bottom: 20px;
                   margin-left: 20px;
                   margin-right: 20px;
@@ -119,10 +116,10 @@ const Brand = ({ classes }: BrandProps) => (
   </Query>
 )
 
-Brand.getInitialProps = async ({ req }) => {
+Category.getInitialProps = async ({ req }) => {
   const res = await fetch("https://api.github.com/repos/zeit/next.js")
   const json = await res.json()
   return { stars: json.stargazers_count, req }
 }
 
-export default withStyles(styles)(Brand)
+export default withStyles(styles)(Category)

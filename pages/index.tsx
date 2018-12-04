@@ -5,6 +5,7 @@ import "react-image-gallery/styles/css/image-gallery.css"
 import { compose } from "recompose"
 import Brand from "../components/Brand"
 import Card from "../components/Card"
+import Category from "../components/Category"
 import defaultPage from "../components/hocs/defaultPage"
 import ImageSlider from "../components/Slider"
 
@@ -25,6 +26,7 @@ class Index extends Component<IProps> {
         <ImageSlider />
         <Card />
         <Brand />
+        <Category />
       </Fragment>
     )
   }
