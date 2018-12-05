@@ -69,7 +69,7 @@ const Category = ({ classes }: CategoryProps) => (
                 {data.categories.map((category, index) => (
                   <Card className={classes.card} key={index}>
                     <Link
-                      as={`/${category.name}/${category._id}`}
+                      as={`/search/${category.name}/${category._id}`}
                       href={`/search?id=${category._id}`}
                     >
                       <CardActionArea>

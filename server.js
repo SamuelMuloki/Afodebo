@@ -28,7 +28,7 @@ app
       app.render(req, res, actualPage, queryParams);
     });
 
-    server.get('/:name/:id/', (req, res) => {
+    server.get('/search/:name/:id/', (req, res) => {
       const actualPage = '/search';
       const queryParams = {
         id: req.params.id,

@@ -1,28 +1,51 @@
-import { createStyles, Theme, WithStyles, withStyles } from "@material-ui/core"
+import { createStyles, WithStyles, withStyles } from "@material-ui/core"
 import { ApolloError } from "apollo-client"
 import gql from "graphql-tag"
 import { withRouter } from "next/router"
 import React from "react"
 import { Query } from "react-apollo"
 import { compose } from "recompose"
+import ProductCard from "../components/Card/ProductCard"
 import defaultPage from "../components/hocs/defaultPage"
 import { Container } from "../components/Utils/namespace"
 type ProductDetails = Container.ProductDetails
 
-const GET_SEARCH_QUERY = gql`
-  query($id: ID!) {
-    brand(id: $id) {
-      _id
+export const searchQuery = `
+  _id
+  name
+  products {
+    _id
+    name
+    saleprice
+    description
+    image {
+      url
+    }
+    sellers {
       name
     }
-    category(id: $id) {
+    images {
       _id
       name
+      image {
+        url
+      }
     }
   }
 `
 
-const styles = (theme: Theme) => createStyles({})
+const GET_SEARCH_QUERY = gql`
+  query($id: ID!) {
+    brand(id: $id) {
+      ${searchQuery}
+    }
+    category(id: $id) {
+      ${searchQuery}
+    }
+  }
+`
+
+const styles = () => createStyles({})
 
 export interface QueryProps<T> {
   data: { brand: T; category: T }
@@ -47,7 +70,7 @@ const Search = ({
 
       if (data) {
         return Object.keys(data)
-          .reduce<ProductDetails[]>((_searchArray, value) => {
+          .reduce<any[]>((_searchArray, value) => {
             if (data[value]) {
               const searchData = data[value]
               _searchArray.push(searchData)
@@ -56,7 +79,7 @@ const Search = ({
           }, [])
           .map(value => {
             if (value) {
-              return <div>{value.name}</div>
+              return <ProductCard key={value._id} images={value} />
             }
           })
       } else if (loading) {

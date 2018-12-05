@@ -75,7 +75,7 @@ const Brand = ({ classes }: BrandProps) => (
                 {data.brands.map((brand, index) => (
                   <Card className={classes.card} key={index}>
                     <Link
-                      as={`/${removeSpaces(brand.name)}/${brand._id}`}
+                      as={`/search/${removeSpaces(brand.name)}/${brand._id}`}
                       href={`/search?id=${brand._id}`}
                     >
                       <CardActionArea>
