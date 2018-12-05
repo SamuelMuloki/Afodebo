@@ -7,6 +7,7 @@ import { Query } from "react-apollo"
 import { compose } from "recompose"
 import defaultPage from "../components/hocs/defaultPage"
 import { Container } from "../components/Utils/namespace"
+type ProductDetails = Container.ProductDetails
 
 const GET_SEARCH_QUERY = gql`
   query($id: ID!) {
@@ -21,38 +22,43 @@ const GET_SEARCH_QUERY = gql`
   }
 `
 
-type ProductDetails = Container.ProductDetails
-
 const styles = (theme: Theme) => createStyles({})
 
-export interface QueryProps {
-  data: {
-    brand: ProductDetails
-    category: ProductDetails
-  }
+export interface QueryProps<T> {
+  data: { brand: T; category: T }
   loading: boolean
   error?: ApolloError
 }
 
 export interface SearchProps extends WithStyles<typeof styles> {
   router: {
-    query: { id: string }
+    query: { id: string; name: string }
   }
 }
 
 const Search = ({
   router: {
-    query: { id },
+    query: { id, name },
   },
 }: SearchProps) => (
-  <Query query={GET_SEARCH_QUERY} variables={{ id }}>
-    {({ loading, error, data }: QueryProps) => {
+  <Query query={GET_SEARCH_QUERY} variables={{ id, name }}>
+    {({ loading, error, data }: QueryProps<ProductDetails>) => {
       if (error) return "Error loading searched Products"
 
-      if (data.brand) {
-        return <div>{data.brand.name}</div>
-      } else if (data.category) {
-        return <div>{data.category.name}</div>
+      if (data) {
+        return Object.keys(data)
+          .reduce<ProductDetails[]>((_searchArray, value) => {
+            if (data[value]) {
+              const searchData = data[value]
+              _searchArray.push(searchData)
+            }
+            return _searchArray
+          }, [])
+          .map(value => {
+            if (value) {
+              return <div>{value.name}</div>
+            }
+          })
       } else if (loading) {
         return <div />
       }

@@ -55,7 +55,7 @@ const Category = ({ classes }: CategoryProps) => (
         return (
           <React.Fragment>
             <div className="category-description">
-              <Typography variant="h5" gutterBottom>
+              <Typography variant="h6" gutterBottom>
                 {"Shop By Category"}
               </Typography>
             </div>
@@ -69,7 +69,7 @@ const Category = ({ classes }: CategoryProps) => (
                 {data.categories.map((category, index) => (
                   <Card className={classes.card} key={index}>
                     <Link
-                      as={`/search/${category._id}`}
+                      as={`/${category.name}/${category._id}`}
                       href={`/search?id=${category._id}`}
                     >
                       <CardActionArea>

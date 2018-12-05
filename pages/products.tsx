@@ -150,10 +150,11 @@ export default compose(
   withStyles(styles),
   defaultPage,
   graphql(GET_IMAGE_GALLERY, {
-    options: (props: { router: { query: { id: string } } }) => {
+    options: (props: { router: { query: { id: string; name: string } } }) => {
       return {
         variables: {
           id: props.router.query.id,
+          name: props.router.query.name,
         },
       }
     },

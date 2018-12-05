@@ -19,12 +19,21 @@ app
       return app.render(req, res, "/artwork", req.params)
     })
 
-    server.get('/products/:id', (req, res) => {
+    server.get('/:name/:id/', (req, res) => {
       const actualPage = '/products';
       const queryParams = {
-        id: req.params.id
+        id: req.params.id,
+        name: req.params.name
       };
-      console.dir('req.params.id = ' + JSON.stringify(req.params.id));
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get('/:name/:id/', (req, res) => {
+      const actualPage = '/search';
+      const queryParams = {
+        id: req.params.id,
+        name: req.params.name
+      };
       app.render(req, res, actualPage, queryParams);
     });
 

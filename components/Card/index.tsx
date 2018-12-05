@@ -33,7 +33,7 @@ const MediaCard = ({ data }: CardProps) => {
     return (
       <React.Fragment>
         <div className="card-description">
-          <Typography variant="h5" gutterBottom>
+          <Typography variant="h6" gutterBottom>
             {"On Sale"}
           </Typography>
         </div>

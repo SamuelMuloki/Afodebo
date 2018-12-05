@@ -12,6 +12,7 @@ import {
 import Typography from "@material-ui/core/Typography"
 import Link from "next/link"
 import React from "react"
+import { removeSpaces } from "../Utils/data"
 import { Container } from "../Utils/namespace"
 type ProductDetails = Container.ProductDetails
 
@@ -36,7 +37,10 @@ interface ProductCardProps extends WithStyles<typeof styles> {
 const SingleCard = ({ classes, images }: ProductCardProps) => {
   return (
     <Card className={classes.card}>
-      <Link as={`/products/${images._id}`} href={`/products?id=${images._id}`}>
+      <Link
+        as={`/${removeSpaces(images.name)}/${images._id}`}
+        href={`/products?id=${images._id}`}
+      >
         <CardActionArea>
           <CardMedia
             component="img"

@@ -14,6 +14,7 @@ import React from "react"
 import { Query } from "react-apollo"
 import { default as Slider } from "react-slick"
 import { cardResponsive, settings } from "../Utils"
+import { removeSpaces } from "../Utils/data"
 import { Container } from "../Utils/namespace"
 
 type ProductDetails = Container.ProductDetails
@@ -60,8 +61,8 @@ const Brand = ({ classes }: BrandProps) => (
         return (
           <React.Fragment>
             <div className="brand-description">
-              <Typography variant="h5" gutterBottom>
-                {"Shop By Brand"}
+              <Typography variant="h6" gutterBottom>
+                {"Trending Brands"}
               </Typography>
             </div>
             <div className="brand-slider">
@@ -74,7 +75,7 @@ const Brand = ({ classes }: BrandProps) => (
                 {data.brands.map((brand, index) => (
                   <Card className={classes.card} key={index}>
                     <Link
-                      as={`/search/${brand._id}`}
+                      as={`/${removeSpaces(brand.name)}/${brand._id}`}
                       href={`/search?id=${brand._id}`}
                     >
                       <CardActionArea>
