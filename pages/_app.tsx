@@ -5,11 +5,10 @@ import App from "next/app"
 import React from "react"
 import JssProvider from "react-jss/lib/JssProvider"
 import { Provider } from "react-redux"
-import { compose } from "recompose"
 import getPageContext from "../components/getPageContext"
-import withData from "../components/libs/apollo"
+import apolloData from "../components/libs/apollo"
 import Layout from "../components/templates/Layout"
-import { configureStore } from "../store/configureStore"
+import configureStore from "../store/configureStore"
 import "../styles/main.css"
 
 interface IProps {
@@ -41,7 +40,6 @@ class MyApp extends App<IProps> {
   }
 
   componentDidMount() {
-    // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side")
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles)
@@ -67,7 +65,7 @@ class MyApp extends App<IProps> {
             <CssBaseline />
             {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-            <Layout isAuthenticated {...pageProps}>
+            <Layout {...pageProps}>
               <Component pageContext={this.pageContext} {...pageProps} />
             </Layout>
           </MuiThemeProvider>
@@ -77,7 +75,4 @@ class MyApp extends App<IProps> {
   }
 }
 
-export default compose(
-  withData,
-  withRedux(configureStore())
-)(MyApp)
+export default withRedux(configureStore())(apolloData(MyApp))
