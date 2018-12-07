@@ -1,4 +1,2 @@
-export const MOBILE_ANCHOR = "MOBILE_ANCHOR"
-export const ANCHOR = "ANCHOR"
-export type MOBILE_ANCHOR = typeof MOBILE_ANCHOR
-export type ANCHOR = typeof ANCHOR
+export const MOBILE_DRAWER = "MOBILE_DRAWER"
+export type MOBILE_DRAWER = typeof MOBILE_DRAWER

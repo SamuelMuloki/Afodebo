@@ -1,6 +1,5 @@
 export interface StoreState {
-  anchorEl: any
-  mobileMoreAnchorEl: any
+  renderMobileDrawer: boolean
 }
 
 export interface IInitialState {
@@ -8,8 +7,7 @@ export interface IInitialState {
 }
 
 const INITIALSTATE: StoreState = {
-  anchorEl: null,
-  mobileMoreAnchorEl: null,
+  renderMobileDrawer: false,
 }
 
 export const InitialState: IInitialState = {

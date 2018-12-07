@@ -1,10 +1,9 @@
-import { actions } from "../actions/actions"
-import { ANCHOR, MOBILE_ANCHOR } from "../actions/constants"
+import { actions } from "../actions"
+import { MOBILE_DRAWER } from "../actions/constants"
 import { StoreState } from "../states"
 
 const INITIALSTATE: StoreState = {
-  anchorEl: null,
-  mobileMoreAnchorEl: null,
+  renderMobileDrawer: false,
 }
 
 export const AppBarReducer = (
@@ -12,15 +11,10 @@ export const AppBarReducer = (
   action: actions
 ): StoreState => {
   switch (action.type) {
-    case ANCHOR:
+    case MOBILE_DRAWER:
       return {
         ...state,
-        anchorEl: action.event ? action.event.currentTarget : null,
-      }
-    case MOBILE_ANCHOR:
-      return {
-        ...state,
-        mobileMoreAnchorEl: action.event ? action.event.currentTarget : null,
+        renderMobileDrawer: !state.renderMobileDrawer,
       }
     default:
       return state
