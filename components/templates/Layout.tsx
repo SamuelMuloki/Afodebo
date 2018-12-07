@@ -35,14 +35,14 @@ class LayoutComponent extends React.Component<IProps> {
   }
 
   render() {
-    const { classes, children } = this.props
+    const { classes, children, isAuthenticated } = this.props
     return (
       <div className={classes.root}>
         <Head>
           <title>{"Afodebo"}</title>
         </Head>
         <AppBar
-          isAuthenticated
+          isAuthenticated={isAuthenticated}
           loggedUser={this.props.loggedUser}
           children={children}
         />

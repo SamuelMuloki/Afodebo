@@ -67,22 +67,24 @@ const Category = ({ classes }: CategoryProps) => (
                 responsive={cardResponsive}
               >
                 {data.categories.map((category, index) => (
-                  <Card className={classes.card} key={index}>
-                    <Link
-                      as={`/search/${category.name}/${category._id}`}
-                      href={`/search?id=${category._id}`}
-                    >
-                      <CardActionArea>
-                        <CardMedia
-                          component="img"
-                          image={`http://localhost:1337${
-                            category.image[0].url
-                          }`}
-                          title={category.name}
-                        />
-                      </CardActionArea>
-                    </Link>
-                  </Card>
+                  <div key={index} className="category-card-slide">
+                    <Card className={classes.card}>
+                      <Link
+                        as={`/search/${category.name}/${category._id}`}
+                        href={`/search?id=${category._id}`}
+                      >
+                        <CardActionArea>
+                          <CardMedia
+                            component="img"
+                            image={`http://localhost:1337${
+                              category.image[0].url
+                            }`}
+                            title={category.name}
+                          />
+                        </CardActionArea>
+                      </Link>
+                    </Card>
+                  </div>
                 ))}
               </Slider>
             </div>
@@ -91,6 +93,10 @@ const Category = ({ classes }: CategoryProps) => (
                 .category-description {
                   margin-top: 40px;
                   margin-bottom: 40px;
+                }
+                .category-card-slide {
+                  margin: 10px;
+                  width: auto !important;
                 }
                 .category-slider {
                   margin-bottom: 20px;

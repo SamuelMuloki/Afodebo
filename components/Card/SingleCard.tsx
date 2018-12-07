@@ -61,7 +61,7 @@ const SingleCard = ({ classes, images }: ProductCardProps) => {
         </CardActionArea>
       </Link>
       <CardActions>
-        <Button fullWidth size="large" color="primary">
+        <Button fullWidth size="large" variant="text" color="primary">
           Add To Cart
         </Button>
       </CardActions>
