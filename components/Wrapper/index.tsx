@@ -1,3 +1,4 @@
+import { Hidden } from "@material-ui/core"
 import { createStyles, Theme } from "@material-ui/core/styles"
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles"
 import classNames from "classnames"
@@ -47,16 +48,26 @@ interface WrapperProps extends WithStyles<typeof styles> {
 
 const Index: SFC<WrapperProps> = ({ classes, drawerOpen, children }) => {
   return (
-    <main
-      className={classNames(
-        classes.content,
-        drawerOpen && classes.ShiftContent,
-        !drawerOpen && classes.drawerPaperClosed
-      )}
-    >
-      <div className={classes.toolbar} />
-      {children}
-    </main>
+    <>
+      <Hidden smDown implementation="css">
+        <main
+          className={classNames(
+            classes.content,
+            drawerOpen && classes.ShiftContent,
+            !drawerOpen && classes.drawerPaperClosed
+          )}
+        >
+          <div className={classes.toolbar} />
+          {children}
+        </main>
+      </Hidden>
+      <Hidden mdUp>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          {children}
+        </main>
+      </Hidden>
+    </>
   )
 }
 
