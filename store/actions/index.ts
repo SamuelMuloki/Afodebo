@@ -2,10 +2,10 @@ import * as constants from "./constants"
 
 export interface MobileDrawer {
   type: constants.MOBILE_DRAWER
+  page: string
 }
 
-export type actions = MobileDrawer
-
-export const MobileDrawer = (): MobileDrawer => ({
+export const MobileDrawer = (page: string): MobileDrawer => ({
   type: constants.MOBILE_DRAWER,
+  page,
 })

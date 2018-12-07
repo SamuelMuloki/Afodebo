@@ -1,20 +1,21 @@
-import { actions } from "../actions"
+import { MobileDrawer } from "../actions"
 import { MOBILE_DRAWER } from "../actions/constants"
 import { StoreState } from "../states"
 
 const INITIALSTATE: StoreState = {
   renderMobileDrawer: false,
+  page: "",
 }
 
 export const AppBarReducer = (
   state: StoreState = INITIALSTATE,
-  action: actions
+  action: MobileDrawer
 ): StoreState => {
   switch (action.type) {
     case MOBILE_DRAWER:
       return {
         ...state,
-        renderMobileDrawer: !state.renderMobileDrawer,
+        renderMobileDrawer: action.page ? true : false,
       }
     default:
       return state

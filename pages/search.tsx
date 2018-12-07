@@ -4,10 +4,13 @@ import gql from "graphql-tag"
 import { withRouter } from "next/router"
 import React from "react"
 import { Query } from "react-apollo"
+import { connect } from "react-redux"
 import { compose } from "recompose"
+import { Dispatch } from "redux"
 import ProductCard from "../components/Card/ProductCard"
 import defaultPage from "../components/hocs/defaultPage"
 import { Container } from "../components/Utils/namespace"
+import { MobileDrawer } from "../store/actions"
 type ProductDetails = Container.ProductDetails
 
 export const searchQuery = `
@@ -17,7 +20,7 @@ export const searchQuery = `
     _id
     name
     saleprice
-    description
+    slug
     image {
       url
     }
@@ -57,41 +60,61 @@ export interface SearchProps extends WithStyles<typeof styles> {
   router: {
     query: { id: string; name: string }
   }
+  renderCategoryDrawer: (page?: string) => void
 }
 
-const Search = ({
-  router: {
-    query: { id, name },
-  },
-}: SearchProps) => (
-  <Query query={GET_SEARCH_QUERY} variables={{ id, name }}>
-    {({ loading, error, data }: QueryProps<ProductDetails>) => {
-      if (error) return "Error loading searched Products"
+class Search extends React.Component<SearchProps> {
+  render() {
+    const {
+      router: {
+        query: { id, name },
+      },
+    } = this.props
+    return (
+      <Query query={GET_SEARCH_QUERY} variables={{ id, name }}>
+        {({ loading, error, data }: QueryProps<ProductDetails>) => {
+          if (error) return "Error loading searched Products"
 
-      if (data) {
-        return Object.keys(data)
-          .reduce<any[]>((_searchArray, value) => {
-            if (data[value]) {
-              const searchData = data[value]
-              _searchArray.push(searchData)
-            }
-            return _searchArray
-          }, [])
-          .map(value => {
-            if (value) {
-              return <ProductCard key={value._id} images={value} />
-            }
-          })
-      } else if (loading) {
-        return <div />
-      }
-      return <div />
-    }}
-  </Query>
-)
+          if (data) {
+            return Object.keys(data)
+              .reduce<any[]>((_searchArray, value) => {
+                if (data[value]) {
+                  const searchData = data[value]
+                  _searchArray.push(searchData)
+                }
+                return _searchArray
+              }, [])
+              .map(value => {
+                if (value) {
+                  return <ProductCard key={value._id} images={value} />
+                }
+              })
+          } else if (loading) {
+            return <div />
+          }
+          return <div />
+        }}
+      </Query>
+    )
+  }
 
-export default compose(
+  componentDidMount() {
+    this.props.renderCategoryDrawer("search")
+  }
+}
+
+export const mapDispatchToProps = (dispatch: Dispatch<MobileDrawer>) => ({
+  renderCategoryDrawer: (page: string) => dispatch(MobileDrawer(page)),
+})
+
+const enhancer = compose(
+  connect(
+    undefined,
+    mapDispatchToProps
+  ),
   withRouter,
   withStyles(styles),
   defaultPage
-)(Search as any)
+)
+
+export default enhancer(Search)

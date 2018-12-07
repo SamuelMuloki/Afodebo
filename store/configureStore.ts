@@ -7,6 +7,8 @@ const configureStoreComponent = (() => {
   return require("./configureStore.development")
 })()
 
-export const configureStore = (initialState = InitialState) => (
+const configureStore = (initialState = InitialState) => (
   state = initialState
 ) => configureStoreComponent.configureStore(state)
+
+export default configureStore

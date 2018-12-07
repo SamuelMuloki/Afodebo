@@ -1,5 +1,6 @@
 export interface StoreState {
   renderMobileDrawer: boolean
+  page: string
 }
 
 export interface IInitialState {
@@ -8,6 +9,7 @@ export interface IInitialState {
 
 const INITIALSTATE: StoreState = {
   renderMobileDrawer: false,
+  page: "",
 }
 
 export const InitialState: IInitialState = {

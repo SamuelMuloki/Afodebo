@@ -18,9 +18,12 @@ import { withRouter } from "next/router"
 import React from "react"
 import { graphql } from "react-apollo"
 import ImageGallery, { ReactImageGalleryItem } from "react-image-gallery"
+import { connect } from "react-redux"
 import { compose } from "recompose"
+import { Dispatch } from "redux"
 import defaultPage from "../components/hocs/defaultPage"
 import { Container } from "../components/Utils/namespace"
+import { MobileDrawer } from "../store/actions"
 
 type ProductDetails = Container.ProductDetails
 
@@ -47,6 +50,7 @@ export interface ProductsProps extends WithStyles<typeof styles> {
     error: string
     product: ProductDetails
   }
+  renderCategoryDrawer: (page?: string) => void
 }
 
 class Products extends React.Component<ProductsProps> {
@@ -125,6 +129,10 @@ class Products extends React.Component<ProductsProps> {
     }
     return <h1>Loading</h1>
   }
+
+  componentDidMount() {
+    this.props.renderCategoryDrawer()
+  }
 }
 
 const GET_IMAGE_GALLERY = gql`
@@ -145,7 +153,15 @@ const GET_IMAGE_GALLERY = gql`
   }
 `
 
-export default compose(
+export const mapDispatchToProps = (dispatch: Dispatch<MobileDrawer>) => ({
+  renderCategoryDrawer: (page: string) => dispatch(MobileDrawer(page)),
+})
+
+const enhancer = compose(
+  connect(
+    undefined,
+    mapDispatchToProps
+  ),
   withRouter,
   withStyles(styles),
   defaultPage,
@@ -160,4 +176,6 @@ export default compose(
     },
     props: ({ data }) => ({ data }),
   })
-)(Products)
+)
+
+export default enhancer(Products)
