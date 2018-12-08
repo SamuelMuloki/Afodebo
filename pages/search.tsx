@@ -24,6 +24,9 @@ export const searchQuery = `
     image {
       url
     }
+    brand {
+      name
+    }
     sellers {
       name
     }
