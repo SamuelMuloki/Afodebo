@@ -1,6 +1,5 @@
 import {
   Button,
-  CircularProgress,
   createStyles,
   ExpansionPanel,
   ExpansionPanelDetails,
@@ -125,7 +124,79 @@ class Products extends React.Component<ProductsProps> {
         </React.Fragment>
       )
     } else if (loading) {
-      return <CircularProgress />
+      return (
+        <>
+          <div className="animated-background">
+            <div className="card-gif-1" />
+            <div className="card-gif-2" />
+          </div>
+          <div className="animated-background-desc" />
+          <style>
+            {`
+              @keyframes placeHolderShimmer {
+              0% {
+                background-position: -468px 0;
+              }
+              100% {
+                background-position: 468px 0;
+              }
+            }
+            .animated-background {
+              animation-duration: 1s;
+              animation-fill-mode: forwards;
+              animation-iteration-count: infinite;
+              animation-name: placeHolderShimmer;
+              animation-timing-function: linear;
+              background: #f6f7f8;
+              margin: 20px;
+              background: linear-gradient(
+                to right,
+                #eeeeee 8%,
+                #dddddd 18%,
+                #eeeeee 33%
+              );
+              background-size: 1000px 104px;
+              height: 280px;
+              position: relative;
+            }
+            .animated-background-desc {
+              animation-duration: 1s;
+              animation-fill-mode: forwards;
+              animation-iteration-count: infinite;
+              animation-name: placeHolderShimmer;
+              animation-timing-function: linear;
+              background: #f6f7f8;
+              margin: 20px;
+              background: linear-gradient(
+                to right,
+                #eeeeee 8%,
+                #dddddd 18%,
+                #eeeeee 33%
+              );
+              background-size: 1000px 104px;
+              height: 80px;
+              position: relative;
+            }
+            .card-gif-1 {
+              background: #FFF;
+              width: 20px;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              left: 50%;
+            }
+            .card-gif-2 {
+              background: #FFF;
+              width: 20px;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              left: 75%;
+            }
+            `}
+          </style>
+        </>
+      )
     }
     return <h1>Loading</h1>
   }
