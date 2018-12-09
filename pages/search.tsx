@@ -25,6 +25,11 @@ export const searchQuery = `
       url
     }
     brand {
+      _id
+      name
+    }
+    colors {
+      _id
       name
     }
     sellers {

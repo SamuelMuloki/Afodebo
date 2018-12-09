@@ -118,7 +118,7 @@ class PrimaryAppBar extends React.Component<
   PrimaryAppBarState
 > {
   readonly state: PrimaryAppBarState = {
-    drawerOpen: true,
+    drawerOpen: false,
     anchorEl: null,
     mobileMoreAnchorEl: null,
   }

@@ -9,8 +9,6 @@ import {
   FormGroup,
   Grid,
   List,
-  ListItem,
-  ListItemText,
   Typography,
   WithStyles,
   withStyles,
@@ -39,6 +37,7 @@ interface ProductCardProps extends WithStyles<typeof styles> {
 }
 
 export interface ProductCardState {
+  [name: string]: any
   filteredImages: {
     products: ProductDetails[]
   }
@@ -49,7 +48,7 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
   readonly state: ProductCardState = {
     filteredImages: this.props.images,
   }
-  handleChange = event => {
+  handleChange = category => event => {
     const index = this.filteredItems.indexOf(event.target.value)
     if (index > -1) {
       this.filteredItems.splice(index, 1)
@@ -58,16 +57,22 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
     }
     if (this.props.images) {
       if (this.filteredItems && this.filteredItems.length) {
-        const img = this.filteredItems.map(filter => {
-          return this.props.images.products.filter(
-            pdt => filter === pdt.brand.name
+        const img = this.filteredItems
+          .map(filter => {
+            return this.props.images.products.filter(
+              pdt => pdt[category].name === filter
+            )
+          })
+          .reduce(
+            (previousValue, currentValue) => previousValue.concat(currentValue),
+            []
           )
+        this.setState({
+          filteredImages: {
+            products: [...img],
+            [name]: event.target.checked,
+          },
         })
-        const filtered = img.reduce(
-          (previousValue, currentValue) => previousValue.concat(currentValue),
-          []
-        )
-        this.setState({ filteredImages: { products: [...filtered] } })
       } else {
         this.setState({ filteredImages: this.props.images })
       }
@@ -80,9 +85,15 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
       <Grid container spacing={8}>
         <Grid item lg={3} md={3} sm={4} xs={12}>
           <List>
-            <ListItem>
-              <ListItemText primary="Narrow Choices" />
-            </ListItem>
+            <Typography variant="h4" gutterBottom>
+              {images.name}
+            </Typography>
+            <Typography variant="body1" gutterBottom>{`${
+              images.products.length
+            } items found`}</Typography>
+            <Typography variant="h6" gutterBottom>
+              Narrow Choices
+            </Typography>
             <ExpansionPanel defaultExpanded className={classes.expansionCard}>
               <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography variant="body1">Gender</Typography>
@@ -105,7 +116,7 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
                           control={
                             <Checkbox
                               value={img.brand.name}
-                              onChange={this.handleChange}
+                              onChange={this.handleChange("brand")}
                             />
                           }
                           label={img.brand.name}
@@ -121,7 +132,29 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
                 <Typography variant="body1">Color</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                <Typography>Black</Typography>
+                <FormControl>
+                  <FormGroup>
+                    {images.products
+                      .map(img => img.colors.name)
+                      .filter(
+                        (val, index, array) => array.indexOf(val) === index
+                      )
+                      .map((col, index) => {
+                        return (
+                          <FormControlLabel
+                            key={index}
+                            control={
+                              <Checkbox
+                                value={col}
+                                onChange={this.handleChange("colors")}
+                              />
+                            }
+                            label={col}
+                          />
+                        )
+                      })}
+                  </FormGroup>
+                </FormControl>
               </ExpansionPanelDetails>
             </ExpansionPanel>
           </List>
