@@ -1,6 +1,5 @@
-import { Button, Card } from "@material-ui/core"
+import { Card } from "@material-ui/core"
 import CardActionArea from "@material-ui/core/CardActionArea"
-import CardActions from "@material-ui/core/CardActions"
 import CardContent from "@material-ui/core/CardContent"
 import CardMedia from "@material-ui/core/CardMedia"
 import {
@@ -60,11 +59,6 @@ const SingleCard = ({ classes, images }: ProductCardProps) => {
           </CardContent>
         </CardActionArea>
       </Link>
-      <CardActions>
-        <Button fullWidth size="large" variant="text" color="primary">
-          Add To Cart
-        </Button>
-      </CardActions>
     </Card>
   )
 }
