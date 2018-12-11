@@ -1,5 +1,4 @@
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles"
-import Head from "next/head"
 // import Link from "next/link"
 import * as React from "react"
 import { compose } from "recompose"
@@ -38,9 +37,6 @@ class LayoutComponent extends React.Component<IProps> {
     const { classes, children, isAuthenticated } = this.props
     return (
       <div className={classes.root}>
-        <Head>
-          <title>{"Afodebo"}</title>
-        </Head>
         <AppBar
           isAuthenticated={isAuthenticated}
           loggedUser={this.props.loggedUser}
