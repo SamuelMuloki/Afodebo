@@ -1,6 +1,8 @@
 import {
+  Button,
   Checkbox,
   createStyles,
+  Drawer,
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
@@ -8,23 +10,40 @@ import {
   FormControlLabel,
   FormGroup,
   Grid,
+  Hidden,
   List,
+  Theme,
   Typography,
   WithStyles,
   withStyles,
 } from "@material-ui/core"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
+import Head from "next/head"
 import React from "react"
 import { Container } from "../Utils/namespace"
 import SingleCard from "./SingleCard"
 
 type ProductDetails = Container.ProductDetails
 
-const styles = () =>
+const styles = (theme: Theme) =>
   createStyles({
     expansionCard: {
-      marginTop: "10px",
       boxShadow: "none",
+    },
+    productGrid: {
+      [theme.breakpoints.up("md")]: {
+        marginLeft: theme.spacing.unit * 20,
+      },
+    },
+    drawerPaper: {
+      top: "60px",
+      width: "240px",
+    },
+    description: {
+      marginLeft: "20px",
+    },
+    category: {
+      padding: "0px",
     },
   })
 
@@ -41,12 +60,14 @@ export interface ProductCardState {
   filteredImages: {
     products: ProductDetails[]
   }
+  filterDrawerOpen: boolean
 }
 
 class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
   private filteredItems: string[] = []
   readonly state: ProductCardState = {
     filteredImages: this.props.images,
+    filterDrawerOpen: false,
   }
   handleChange = category => event => {
     const index = this.filteredItems.indexOf(event.target.value)
@@ -55,87 +76,47 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
     } else {
       this.filteredItems.push(event.target.value)
     }
-    if (this.props.images) {
-      if (this.filteredItems && this.filteredItems.length) {
-        const img = this.filteredItems
-          .map(filter => {
-            return this.props.images.products.filter(
-              pdt => pdt[category].name === filter
-            )
-          })
-          .reduce(
-            (previousValue, currentValue) => previousValue.concat(currentValue),
-            []
-          )
-        this.setState({
-          filteredImages: {
-            products: [...img],
-            [name]: event.target.checked,
-          },
-        })
-      } else {
-        this.setState({ filteredImages: this.props.images })
-      }
-    }
+    console.log(category)
   }
   render() {
     const { classes, images } = this.props
-    const { filteredImages } = this.state
-    return (
-      <Grid container spacing={8}>
-        <Grid item lg={3} md={3} sm={4} xs={12}>
-          <List>
-            <Typography variant="h4" gutterBottom>
-              {images.name}
-            </Typography>
-            <Typography variant="body1" gutterBottom>{`${
-              images.products.length
-            } items found`}</Typography>
-            <Typography variant="h6" gutterBottom>
-              Narrow Choices
-            </Typography>
-            <ExpansionPanel defaultExpanded className={classes.expansionCard}>
+    const { filteredImages, filterDrawerOpen } = this.state
+    const filterList = (
+      <List>
+        <Typography variant="h4" className={classes.description} gutterBottom>
+          {images.name}
+        </Typography>
+        <Typography
+          variant="body1"
+          className={classes.description}
+          gutterBottom
+        >{`${images.products.length} items found`}</Typography>
+        <Typography variant="h6" className={classes.description} gutterBottom>
+          Narrow Choices
+        </Typography>
+        <ExpansionPanel defaultExpanded className={classes.expansionCard}>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="body1">Gender</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <Typography>Men</Typography>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+        {["brand", "colors"].map((value, index) => {
+          return (
+            <ExpansionPanel
+              key={index}
+              defaultExpanded
+              className={classes.expansionCard}
+            >
               <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography variant="body1">Gender</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <Typography>Men</Typography>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel defaultExpanded className={classes.expansionCard}>
-              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography variant="body1">Brands</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <FormControl>
-                  <FormGroup>
-                    {images.products.map(img => {
-                      return (
-                        <FormControlLabel
-                          key={img._id}
-                          control={
-                            <Checkbox
-                              value={img.brand.name}
-                              onChange={this.handleChange("brand")}
-                            />
-                          }
-                          label={img.brand.name}
-                        />
-                      )
-                    })}
-                  </FormGroup>
-                </FormControl>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel defaultExpanded className={classes.expansionCard}>
-              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography variant="body1">Color</Typography>
+                <Typography variant="body1">{value}</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <FormControl>
                   <FormGroup>
                     {images.products
-                      .map(img => img.colors.name)
+                      .map(img => img[value].name)
                       .filter(
                         (val, index, array) => array.indexOf(val) === index
                       )
@@ -146,7 +127,7 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
                             control={
                               <Checkbox
                                 value={col}
-                                onChange={this.handleChange("colors")}
+                                onChange={this.handleChange(value)}
                               />
                             }
                             label={col}
@@ -157,26 +138,63 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
                 </FormControl>
               </ExpansionPanelDetails>
             </ExpansionPanel>
-          </List>
+          )
+        })}
+      </List>
+    )
+    return (
+      <>
+        <Head>
+          <title>{`${images.name} + FREE SHIPPING | afodebo.com`}</title>
+        </Head>
+        <Hidden smDown implementation="css">
+          <Drawer
+            variant="permanent"
+            classes={{ paper: classes.drawerPaper }}
+            open
+          >
+            {filterList}
+          </Drawer>
+        </Hidden>
+        <Grid container spacing={8}>
+          <Hidden mdUp>
+            <Button onClick={() => this.setState({ filterDrawerOpen: true })}>
+              {"Filter"}
+            </Button>
+            <Drawer
+              variant="temporary"
+              open={filterDrawerOpen}
+              onClose={() => this.setState({ filterDrawerOpen: false })}
+            >
+              {filterList}
+            </Drawer>
+          </Hidden>
+          <Grid
+            container
+            item
+            lg={9}
+            md={9}
+            sm={12}
+            className={classes.productGrid}
+          >
+            {filteredImages.products.map(imgs => {
+              return (
+                <Grid
+                  key={imgs._id}
+                  item
+                  xs={6}
+                  sm={4}
+                  md={4}
+                  lg={3}
+                  zeroMinWidth
+                >
+                  <SingleCard images={imgs} />
+                </Grid>
+              )
+            })}
+          </Grid>
         </Grid>
-        <Grid container item lg={9} md={9}>
-          {filteredImages.products.map(imgs => {
-            return (
-              <Grid
-                key={imgs._id}
-                item
-                xs={6}
-                sm={4}
-                md={4}
-                lg={3}
-                zeroMinWidth
-              >
-                <SingleCard images={imgs} />
-              </Grid>
-            )
-          })}
-        </Grid>
-      </Grid>
+      </>
     )
   }
 }

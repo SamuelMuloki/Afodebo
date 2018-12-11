@@ -75,11 +75,11 @@ class Search extends React.Component<SearchProps> {
   render() {
     const {
       router: {
-        query: { id, name },
+        query: { id },
       },
     } = this.props
     return (
-      <Query query={GET_SEARCH_QUERY} variables={{ id, name }}>
+      <Query query={GET_SEARCH_QUERY} variables={{ id }}>
         {({ loading, error, data }: QueryProps<ProductDetails>) => {
           if (error) return "Error loading searched Products"
 

@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import gql from "graphql-tag"
+import Head from "next/head"
 import { withRouter } from "next/router"
 import React from "react"
 import { graphql } from "react-apollo"
@@ -72,6 +73,9 @@ class Products extends React.Component<ProductsProps> {
       })
       return (
         <React.Fragment>
+          <Head>
+            <title>{` ${product.name} + FREE SHIPPING | afodebo.com`}</title>
+          </Head>
           <Grid container spacing={24}>
             <Grid item xs={12} sm={6} lg={5}>
               <Typography variant="h5" className={classes.cartProduct} noWrap>
