@@ -1,5 +1,7 @@
 import { createStyles } from "@material-ui/core/styles"
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles"
+import Head from "next/head"
+import { withRouter } from "next/router"
 import { Component, Fragment } from "react"
 import "react-image-gallery/styles/css/image-gallery.css"
 import { connect } from "react-redux"
@@ -27,6 +29,11 @@ class Index extends Component<IProps> {
   render() {
     return (
       <Fragment>
+        <Head>
+          <title>
+            {"Shoes, Sneakers, Boots + FREE SHIPPING | afodebo.com"}
+          </title>
+        </Head>
         <ImageSlider />
         <Card />
         <Brand />
@@ -49,6 +56,7 @@ const enhancer = compose(
     undefined,
     mapDispatchToProps
   ),
+  withRouter,
   defaultPage,
   withStyles(styles)
 )
