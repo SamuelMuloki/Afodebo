@@ -31,7 +31,7 @@ class Index extends Component<IProps> {
       <Fragment>
         <Head>
           <title>
-            {"Shoes, Sneakers, Boots + FREE SHIPPING | afodebo.com"}
+            {"Shoes, Sneakers, Boots + FREE DELIVERY | afodebo.com"}
           </title>
         </Head>
         <ImageSlider />

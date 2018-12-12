@@ -145,7 +145,7 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
     return (
       <>
         <Head>
-          <title>{`${images.name} + FREE SHIPPING | afodebo.com`}</title>
+          <title>{`${images.name} + FREE DELIVERY | afodebo.com`}</title>
         </Head>
         <Hidden smDown implementation="css">
           <Drawer

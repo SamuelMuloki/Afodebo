@@ -138,11 +138,6 @@ const query = gql`
     }
   }
 `
-ImageSlider.getInitialProps = async ({ req }) => {
-  const res = await fetch("https://api.github.com/repos/zeit/next.js")
-  const json = await res.json()
-  return { stars: json.stargazers_count, req }
-}
 
 export default compose(
   graphql(query, {

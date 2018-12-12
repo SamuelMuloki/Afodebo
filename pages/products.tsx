@@ -74,7 +74,7 @@ class Products extends React.Component<ProductsProps> {
       return (
         <React.Fragment>
           <Head>
-            <title>{` ${product.name} + FREE SHIPPING | afodebo.com`}</title>
+            <title>{` ${product.name} + FREE DELIVERY | afodebo.com`}</title>
           </Head>
           <Grid container spacing={24}>
             <Grid item xs={12} sm={6} lg={5}>
@@ -241,11 +241,10 @@ const enhancer = compose(
   withStyles(styles),
   defaultPage,
   graphql(GET_IMAGE_GALLERY, {
-    options: (props: { router: { query: { id: string; name: string } } }) => {
+    options: (props: { router: { query: { id: string } } }) => {
       return {
         variables: {
           id: props.router.query.id,
-          name: props.router.query.name,
         },
       }
     },
