@@ -18,6 +18,7 @@ import {
   withStyles,
 } from "@material-ui/core"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
+import FilterIcon from "@material-ui/icons/FilterListSharp"
 import Head from "next/head"
 import React from "react"
 import { Container } from "../Utils/namespace"
@@ -27,8 +28,10 @@ type ProductDetails = Container.ProductDetails
 
 const styles = (theme: Theme) =>
   createStyles({
+    toolbar: theme.mixins.toolbar,
     expansionCard: {
-      boxShadow: "none",
+      boxShadow: theme.shadows[1],
+      margin: theme.spacing.unit,
     },
     productGrid: {
       [theme.breakpoints.up("md")]: {
@@ -39,12 +42,17 @@ const styles = (theme: Theme) =>
       width: "240px",
       flexShrink: 0,
     },
-    toolbar: theme.mixins.toolbar,
     description: {
       marginLeft: "20px",
     },
     category: {
-      padding: "0px",
+      padding: theme.spacing.unit,
+    },
+    checkbox: {
+      padding: "0 12px",
+    },
+    extendedIcon: {
+      marginRight: theme.spacing.unit,
     },
   })
 
@@ -53,7 +61,6 @@ interface ProductCardProps extends WithStyles<typeof styles> {
 }
 
 export interface ProductCardState {
-  [name: string]: any
   filteredImages: Partial<ProductDetails>
   filterDrawerOpen: boolean
 }
@@ -110,6 +117,7 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
                       key={index}
                       control={
                         <Checkbox
+                          className={classes.checkbox}
                           value={col.name}
                           onChange={this.handleChange(col.name)}
                         />
@@ -144,10 +152,12 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
         <Grid container spacing={8}>
           <Hidden mdUp>
             <Button onClick={() => this.setState({ filterDrawerOpen: true })}>
+              <FilterIcon className={classes.extendedIcon} />
               {"Filter"}
             </Button>
             <Drawer
               variant="temporary"
+              classes={{ paper: classes.drawerPaper }}
               open={filterDrawerOpen}
               onClose={() => this.setState({ filterDrawerOpen: false })}
             >
