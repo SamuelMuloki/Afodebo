@@ -29,7 +29,7 @@ const styles = (theme: Theme) =>
   })
 
 interface ProductCardProps extends WithStyles<typeof styles> {
-  images: ProductDetails
+  images: Partial<ProductDetails>
   displayGrid?: boolean
 }
 

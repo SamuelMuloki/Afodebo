@@ -20,8 +20,8 @@ export const drawerWidth = 240
 
 const styles = (theme: Theme) =>
   createStyles({
+    toolbar: theme.mixins.toolbar,
     drawerPaper: {
-      paddingTop: "65px",
       position: "fixed",
       whiteSpace: "nowrap",
       width: drawerWidth,
@@ -78,6 +78,7 @@ class NavigationDrawer extends React.Component<DrawerProps> {
           }}
           open
         >
+          <div className={classes.toolbar} />
           <Menu />
         </Drawer>
       )

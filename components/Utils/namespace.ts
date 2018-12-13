@@ -1,5 +1,22 @@
 export namespace Container {
-  export interface ProductDetails {
+  export interface ProductDetails
+    extends ColorDetails,
+      CategoryDetails,
+      CommonProps {
+    brand: { _id: string; name: string }
+    sellers: { name: string }
+    images: Array<{ _id: string; image: [{ url: string }] }>
+  }
+
+  export interface ColorDetails {
+    colors: Array<{ _id: string; name: string }>
+  }
+
+  export interface CategoryDetails {
+    category: { _id: string; name: string; products: Array<CommonProps> }
+  }
+
+  export interface CommonProps {
     _id: string
     name: string
     description: string
@@ -8,12 +25,7 @@ export namespace Container {
     originalprice: number
     slug: string
     image: [{ url: string }] & { url: string }
-    brand: { _id: string; name: string }
-    colors: { _id: string; name: string }
-    category: { name: string }
-    sellers: { name: string }
     sale: boolean
     active: boolean
-    images: Array<{ _id: string; image: [{ url: string }] }>
   }
 }

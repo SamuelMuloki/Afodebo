@@ -36,9 +36,10 @@ const styles = (theme: Theme) =>
       },
     },
     drawerPaper: {
-      top: "60px",
       width: "240px",
+      flexShrink: 0,
     },
+    toolbar: theme.mixins.toolbar,
     description: {
       marginLeft: "20px",
     },
@@ -48,25 +49,19 @@ const styles = (theme: Theme) =>
   })
 
 interface ProductCardProps extends WithStyles<typeof styles> {
-  images: {
-    _id: string
-    name: string
-    products: ProductDetails[]
-  }
+  searchData: Partial<ProductDetails>
 }
 
 export interface ProductCardState {
   [name: string]: any
-  filteredImages: {
-    products: ProductDetails[]
-  }
+  filteredImages: Partial<ProductDetails>
   filterDrawerOpen: boolean
 }
 
 class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
   private filteredItems: string[] = []
   readonly state: ProductCardState = {
-    filteredImages: this.props.images,
+    filteredImages: this.props.searchData,
     filterDrawerOpen: false,
   }
   handleChange = category => event => {
@@ -75,22 +70,22 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
       this.filteredItems.splice(index, 1)
     } else {
       this.filteredItems.push(event.target.value)
+      console.log(category, event.target.value)
     }
-    console.log(category)
   }
   render() {
-    const { classes, images } = this.props
+    const { classes, searchData } = this.props
     const { filteredImages, filterDrawerOpen } = this.state
     const filterList = (
       <List>
         <Typography variant="h4" className={classes.description} gutterBottom>
-          {images.name}
+          {searchData.category.name}
         </Typography>
         <Typography
           variant="body1"
           className={classes.description}
           gutterBottom
-        >{`${images.products.length} items found`}</Typography>
+        >{`${searchData.category.products.length} items found`}</Typography>
         <Typography variant="h6" className={classes.description} gutterBottom>
           Narrow Choices
         </Typography>
@@ -102,50 +97,39 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
             <Typography>Men</Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>
-        {["brand", "colors"].map((value, index) => {
-          return (
-            <ExpansionPanel
-              key={index}
-              defaultExpanded
-              className={classes.expansionCard}
-            >
-              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography variant="body1">{value}</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <FormControl>
-                  <FormGroup>
-                    {images.products
-                      .map(img => img[value].name)
-                      .filter(
-                        (val, index, array) => array.indexOf(val) === index
-                      )
-                      .map((col, index) => {
-                        return (
-                          <FormControlLabel
-                            key={index}
-                            control={
-                              <Checkbox
-                                value={col}
-                                onChange={this.handleChange(value)}
-                              />
-                            }
-                            label={col}
-                          />
-                        )
-                      })}
-                  </FormGroup>
-                </FormControl>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-          )
-        })}
+        <ExpansionPanel defaultExpanded className={classes.expansionCard}>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="body1">Colors</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <FormControl>
+              <FormGroup>
+                {searchData.colors.map((col, index) => {
+                  return (
+                    <FormControlLabel
+                      key={index}
+                      control={
+                        <Checkbox
+                          value={col.name}
+                          onChange={this.handleChange(col.name)}
+                        />
+                      }
+                      label={col.name}
+                    />
+                  )
+                })}
+              </FormGroup>
+            </FormControl>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
       </List>
     )
     return (
       <>
         <Head>
-          <title>{`${images.name} + FREE DELIVERY | afodebo.com`}</title>
+          <title>{`${
+            searchData.category.name
+          } + FREE DELIVERY | afodebo.com`}</title>
         </Head>
         <Hidden smDown implementation="css">
           <Drawer
@@ -153,6 +137,7 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
             classes={{ paper: classes.drawerPaper }}
             open
           >
+            <div className={classes.toolbar} />
             {filterList}
           </Drawer>
         </Hidden>
@@ -177,7 +162,7 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
             sm={12}
             className={classes.productGrid}
           >
-            {filteredImages.products.map(imgs => {
+            {filteredImages.category.products.map(imgs => {
               return (
                 <Grid
                   key={imgs._id}
