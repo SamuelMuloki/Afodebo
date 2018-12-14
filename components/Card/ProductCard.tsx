@@ -19,32 +19,13 @@ import {
 } from "@material-ui/core"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import FilterIcon from "@material-ui/icons/FilterListSharp"
-import gql from "graphql-tag"
 import Head from "next/head"
-import Router from "next/router"
 import React from "react"
-import { Query } from "react-apollo"
+import { getOccurrence } from "../Utils/data"
 import { Container } from "../Utils/namespace"
 import SingleCard from "./SingleCard"
 
 type ProductDetails = Container.ProductDetails
-
-const GET_PRODUCT_ATTRIBUTES = gql`
-  {
-    categories {
-      _id
-      name
-    }
-    brands {
-      _id
-      name
-    }
-    colors {
-      _id
-      name
-    }
-  }
-`
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -86,47 +67,32 @@ interface ProductCardProps extends WithStyles<typeof styles> {
 }
 
 export interface ProductCardState {
-  filteredImages: {
+  [name: string]: any
+  filteredData: {
     products: ProductDetails[]
-  }
-  checked: {
-    [name: string]: boolean
   }
   filterDrawerOpen: boolean
 }
 
 class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
   private filteredItems: string[] = []
+  private unfilteredData: string[] = []
   readonly state: ProductCardState = {
-    filteredImages: this.props.searchData,
+    filteredData: this.props.searchData,
     filterDrawerOpen: false,
-    checked: {
-      [this.props.searchData.name]: true,
-    },
   }
-  handleChange = value => event => {
+  handleChange = category => event => {
     const index = this.filteredItems.indexOf(event.target.value)
-    let refinement = ""
     if (index > -1) {
       this.filteredItems.splice(index, 1)
     } else {
       this.filteredItems.push(event.target.value)
     }
-    this.filteredItems.forEach(f => {
-      refinement = refinement + `${f}`
-    })
-    this.setState({
-      checked: {
-        [event.target.value]: event.target.checked,
-      },
-    })
-    const href = `/search/?id=${value}`
-    let as = `/search/${refinement}/${value}/`
-    Router.push(href, `${as}`, { shallow: true })
+    console.log(category)
   }
   render() {
     const { classes, searchData } = this.props
-    const { filterDrawerOpen, filteredImages, checked } = this.state
+    const { filteredData, filterDrawerOpen } = this.state
     const filterList = (
       <List>
         <Typography variant="h4" className={classes.description} gutterBottom>
@@ -148,49 +114,54 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
             <Typography>Men</Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>
-        <Query query={GET_PRODUCT_ATTRIBUTES}>
-          {({ loading, error, data }) => {
-            if (loading) return null
-            if (error) return `Error!: ${error}`
-            return Object.keys(data).map((value, index) => {
-              return (
-                <ExpansionPanel
-                  key={index}
-                  defaultExpanded
-                  className={classes.expansionCard}
-                >
-                  <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="body1">{value}</Typography>
-                  </ExpansionPanelSummary>
-                  <ExpansionPanelDetails>
-                    <FormControl>
-                      <FormGroup>
-                        {data[value].map(col => {
-                          return (
-                            <FormControlLabel
-                              key={col._id}
-                              control={
-                                <Checkbox
-                                  checked={
-                                    checked ? checked[col.name] : undefined
-                                  }
-                                  className={classes.checkbox}
-                                  value={col.name}
-                                  onChange={this.handleChange(`${col._id}`)}
-                                />
-                              }
-                              label={col.name}
-                            />
-                          )
-                        })}
-                      </FormGroup>
-                    </FormControl>
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
-              )
-            })
-          }}
-        </Query>
+        {["brand", "colors"].map((value, index) => {
+          this.unfilteredData = searchData.products.map(img => {
+            if (Array.isArray(img[value])) {
+              return img[value].map(val => val.name).reduce(val => val)
+            } else {
+              return img[value].name
+            }
+          })
+          return (
+            <ExpansionPanel
+              key={index}
+              defaultExpanded
+              className={classes.expansionCard}
+            >
+              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography variant="body1">{value}</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <FormControl>
+                  <FormGroup>
+                    {this.unfilteredData
+                      .filter(
+                        (val, index, array) => array.indexOf(val) === index
+                      )
+                      .map((col, index) => {
+                        return (
+                          <FormControlLabel
+                            key={index}
+                            control={
+                              <Checkbox
+                                value={col}
+                                onChange={this.handleChange(value)}
+                                className={classes.checkbox}
+                              />
+                            }
+                            label={`${col} (${getOccurrence(
+                              this.unfilteredData,
+                              col
+                            )})`}
+                          />
+                        )
+                      })}
+                  </FormGroup>
+                </FormControl>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          )
+        })}
       </List>
     )
     return (
@@ -231,7 +202,7 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
             sm={12}
             className={classes.productGrid}
           >
-            {filteredImages.products.map(imgs => {
+            {filteredData.products.map(imgs => {
               return (
                 <Grid
                   key={imgs._id}
