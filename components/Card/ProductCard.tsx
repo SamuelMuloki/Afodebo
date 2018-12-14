@@ -21,6 +21,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import FilterIcon from "@material-ui/icons/FilterListSharp"
 import gql from "graphql-tag"
 import Head from "next/head"
+import Router from "next/router"
 import React from "react"
 import { Query } from "react-apollo"
 import { Container } from "../Utils/namespace"
@@ -30,6 +31,10 @@ type ProductDetails = Container.ProductDetails
 
 const GET_PRODUCT_ATTRIBUTES = gql`
   {
+    categories {
+      _id
+      name
+    }
     brands {
       _id
       name
@@ -81,7 +86,12 @@ interface ProductCardProps extends WithStyles<typeof styles> {
 }
 
 export interface ProductCardState {
-  filteredImages: Partial<ProductDetails>
+  filteredImages: {
+    products: ProductDetails[]
+  }
+  checked: {
+    [name: string]: boolean
+  }
   filterDrawerOpen: boolean
 }
 
@@ -90,19 +100,33 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
   readonly state: ProductCardState = {
     filteredImages: this.props.searchData,
     filterDrawerOpen: false,
+    checked: {
+      [this.props.searchData.name]: true,
+    },
   }
-  handleChange = category => event => {
+  handleChange = value => event => {
     const index = this.filteredItems.indexOf(event.target.value)
+    let refinement = ""
     if (index > -1) {
       this.filteredItems.splice(index, 1)
     } else {
       this.filteredItems.push(event.target.value)
-      console.log(category, event.target.value)
     }
+    this.filteredItems.forEach(f => {
+      refinement = refinement + `${f}`
+    })
+    this.setState({
+      checked: {
+        [event.target.value]: event.target.checked,
+      },
+    })
+    const href = `/search/?id=${value}`
+    let as = `/search/${refinement}/${value}/`
+    Router.push(href, `${as}`, { shallow: true })
   }
   render() {
     const { classes, searchData } = this.props
-    const { filterDrawerOpen } = this.state
+    const { filterDrawerOpen, filteredImages, checked } = this.state
     const filterList = (
       <List>
         <Typography variant="h4" className={classes.description} gutterBottom>
@@ -147,9 +171,12 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
                               key={col._id}
                               control={
                                 <Checkbox
+                                  checked={
+                                    checked ? checked[col.name] : undefined
+                                  }
                                   className={classes.checkbox}
                                   value={col.name}
-                                  onChange={this.handleChange(col.name)}
+                                  onChange={this.handleChange(`${col._id}`)}
                                 />
                               }
                               label={col.name}
@@ -204,7 +231,7 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
             sm={12}
             className={classes.productGrid}
           >
-            {searchData.products.map(imgs => {
+            {filteredImages.products.map(imgs => {
               return (
                 <Grid
                   key={imgs._id}
