@@ -12,7 +12,6 @@ import defaultPage from "../components/hocs/defaultPage"
 import { Container } from "../components/Utils/namespace"
 import { MobileDrawer } from "../store/actions"
 type ProductDetails = Container.ProductDetails
-type ColorDetails = Container.ColorDetails
 
 export const searchQuery = `
   _id
@@ -54,17 +53,13 @@ const GET_SEARCH_QUERY = gql`
     category(id: $id) {
       ${searchQuery}
     }
-    colors {
-      _id
-      name
-    }
   }
 `
 
 const styles = () => createStyles({})
 
 export interface QueryProps<T> {
-  data: { brand: T; category: T; colors: ColorDetails }
+  data: { brand: T; category: T }
   loading: boolean
   error?: ApolloError
 }
@@ -89,13 +84,19 @@ class Search extends React.Component<SearchProps> {
           if (error) return "Error loading searched Products"
 
           if (data) {
-            const searchdata = Object.keys(data).reduce<any>(_searchObj => {
-              _searchObj = { ...data }
-              return _searchObj
-            }, {})
-            if (searchdata.category) {
-              return <ProductCard searchData={searchdata} />
-            }
+            return Object.keys(data)
+              .reduce<any[]>((_searchArray, value) => {
+                if (data[value]) {
+                  const searchData = data[value]
+                  _searchArray.push(searchData)
+                }
+                return _searchArray
+              }, [])
+              .map(value => {
+                if (value) {
+                  return <ProductCard key={value._id} searchData={value} />
+                }
+              })
           } else if (loading) {
             return <div />
           }

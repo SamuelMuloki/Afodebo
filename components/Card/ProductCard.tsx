@@ -19,19 +19,35 @@ import {
 } from "@material-ui/core"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import FilterIcon from "@material-ui/icons/FilterListSharp"
+import gql from "graphql-tag"
 import Head from "next/head"
 import React from "react"
+import { Query } from "react-apollo"
 import { Container } from "../Utils/namespace"
 import SingleCard from "./SingleCard"
 
 type ProductDetails = Container.ProductDetails
 
+const GET_PRODUCT_ATTRIBUTES = gql`
+  {
+    brands {
+      _id
+      name
+    }
+    colors {
+      _id
+      name
+    }
+  }
+`
+
 const styles = (theme: Theme) =>
   createStyles({
     toolbar: theme.mixins.toolbar,
     expansionCard: {
-      boxShadow: theme.shadows[1],
-      margin: theme.spacing.unit,
+      boxShadow: theme.shadows[0],
+      borderBottom: `1px solid ${theme.palette.divider}`,
+      margin: "0px",
     },
     productGrid: {
       [theme.breakpoints.up("md")]: {
@@ -57,7 +73,11 @@ const styles = (theme: Theme) =>
   })
 
 interface ProductCardProps extends WithStyles<typeof styles> {
-  searchData: Partial<ProductDetails>
+  searchData: {
+    _id: string
+    name: string
+    products: ProductDetails[]
+  }
 }
 
 export interface ProductCardState {
@@ -82,17 +102,17 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
   }
   render() {
     const { classes, searchData } = this.props
-    const { filteredImages, filterDrawerOpen } = this.state
+    const { filterDrawerOpen } = this.state
     const filterList = (
       <List>
         <Typography variant="h4" className={classes.description} gutterBottom>
-          {searchData.category.name}
+          {searchData.name}
         </Typography>
         <Typography
           variant="body1"
           className={classes.description}
           gutterBottom
-        >{`${searchData.category.products.length} items found`}</Typography>
+        >{`${searchData.products.length} items found`}</Typography>
         <Typography variant="h6" className={classes.description} gutterBottom>
           Narrow Choices
         </Typography>
@@ -104,40 +124,52 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
             <Typography>Men</Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>
-        <ExpansionPanel defaultExpanded className={classes.expansionCard}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="body1">Colors</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <FormControl>
-              <FormGroup>
-                {searchData.colors.map((col, index) => {
-                  return (
-                    <FormControlLabel
-                      key={index}
-                      control={
-                        <Checkbox
-                          className={classes.checkbox}
-                          value={col.name}
-                          onChange={this.handleChange(col.name)}
-                        />
-                      }
-                      label={col.name}
-                    />
-                  )
-                })}
-              </FormGroup>
-            </FormControl>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+        <Query query={GET_PRODUCT_ATTRIBUTES}>
+          {({ loading, error, data }) => {
+            if (loading) return null
+            if (error) return `Error!: ${error}`
+            return Object.keys(data).map((value, index) => {
+              return (
+                <ExpansionPanel
+                  key={index}
+                  defaultExpanded
+                  className={classes.expansionCard}
+                >
+                  <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography variant="body1">{value}</Typography>
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails>
+                    <FormControl>
+                      <FormGroup>
+                        {data[value].map(col => {
+                          return (
+                            <FormControlLabel
+                              key={col._id}
+                              control={
+                                <Checkbox
+                                  className={classes.checkbox}
+                                  value={col.name}
+                                  onChange={this.handleChange(col.name)}
+                                />
+                              }
+                              label={col.name}
+                            />
+                          )
+                        })}
+                      </FormGroup>
+                    </FormControl>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+              )
+            })
+          }}
+        </Query>
       </List>
     )
     return (
       <>
         <Head>
-          <title>{`${
-            searchData.category.name
-          } + FREE DELIVERY | afodebo.com`}</title>
+          <title>{`${searchData.name} + FREE DELIVERY | afodebo.com`}</title>
         </Head>
         <Hidden smDown implementation="css">
           <Drawer
@@ -172,7 +204,7 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
             sm={12}
             className={classes.productGrid}
           >
-            {filteredImages.category.products.map(imgs => {
+            {searchData.products.map(imgs => {
               return (
                 <Grid
                   key={imgs._id}
