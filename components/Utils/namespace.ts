@@ -9,7 +9,7 @@ export namespace Container {
   }
 
   export interface ColorDetails {
-    colors: Array<{ _id: string; name: string }>
+    colors: Array<{ _id: string; name: string; products: Array<CommonProps> }>
   }
 
   export interface CategoryDetails {

@@ -67,7 +67,7 @@ interface ProductCardProps extends WithStyles<typeof styles> {
 }
 
 export interface ProductCardState {
-  [name: string]: any
+  checkedItems: Map<string, boolean>
   filteredData: {
     products: ProductDetails[]
   }
@@ -75,21 +75,23 @@ export interface ProductCardState {
 }
 
 class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
-  private filteredItems: string[] = []
   private unfilteredData: string[] = []
   readonly state: ProductCardState = {
     filteredData: this.props.searchData,
     filterDrawerOpen: false,
+    checkedItems: new Map([[this.props.searchData.name, true]]),
   }
-  handleChange = category => event => {
-    const index = this.filteredItems.indexOf(event.target.value)
-    if (index > -1) {
-      this.filteredItems.splice(index, 1)
-    } else {
-      this.filteredItems.push(event.target.value)
-    }
-    console.log(category)
+  handleChange = event => {
+    const checkedValue = event.target.value
+    const isChecked = event.target.checked
+    this.setState(
+      prevState => ({
+        checkedItems: prevState.checkedItems.set(checkedValue, isChecked),
+      }),
+      () => this.renderFilteredData()
+    )
   }
+
   render() {
     const { classes, searchData } = this.props
     const { filteredData, filterDrawerOpen } = this.state
@@ -114,7 +116,7 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
             <Typography>Men</Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>
-        {["brand", "colors"].map((value, index) => {
+        {["brand", "colors", "sellers"].map((value, index) => {
           this.unfilteredData = searchData.products.map(img => {
             if (Array.isArray(img[value])) {
               return img[value].map(val => val.name).reduce(val => val)
@@ -132,7 +134,7 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
                 <Typography variant="body1">{value}</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                <FormControl>
+                <FormControl component="fieldset">
                   <FormGroup>
                     {this.unfilteredData
                       .filter(
@@ -144,8 +146,9 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
                             key={index}
                             control={
                               <Checkbox
+                                checked={this.state.checkedItems.get(col)}
                                 value={col}
-                                onChange={this.handleChange(value)}
+                                onChange={this.handleChange}
                                 className={classes.checkbox}
                               />
                             }
@@ -221,6 +224,38 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
         </Grid>
       </>
     )
+  }
+
+  private renderFilteredData = () => {
+    let reducedData = []
+    this.state.checkedItems.forEach((value, key) => {
+      if (value === true) {
+        const filters = ["brand", "colors", "sellers"]
+          .map(cat => {
+            return this.props.searchData.products.filter(pdt => {
+              if (Array.isArray(pdt[cat])) {
+                return pdt[cat][0].name === key
+              } else {
+                return pdt[cat].name === key
+              }
+            })
+          })
+          .reduce<ProductDetails[][]>((prev, curr) => {
+            return prev.concat(curr)
+          }, [])
+        reducedData.push(filters)
+      }
+    })
+    const stateData = reducedData
+      .reduce<ProductDetails[]>((acc, curr) => {
+        return acc.concat(curr)
+      }, [])
+      .filter((val, index, array) => array.indexOf(val) === index)
+    this.setState({
+      filteredData: {
+        products: stateData.length ? stateData : this.props.searchData.products,
+      },
+    })
   }
 }
 
