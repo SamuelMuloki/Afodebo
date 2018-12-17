@@ -18,7 +18,7 @@ const styles = (theme: Theme) =>
     content: {
       flexGrow: 1,
       backgroundColor: theme.palette.background.paper,
-      padding: theme.spacing.unit * 3,
+      padding: theme.spacing.unit,
     },
     ShiftContent: {
       [theme.breakpoints.up("md")]: {

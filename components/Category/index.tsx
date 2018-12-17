@@ -3,6 +3,7 @@ import {
   CardActionArea,
   CardMedia,
   createStyles,
+  Theme,
   Typography,
   WithStyles,
   withStyles,
@@ -18,10 +19,20 @@ import { Container } from "../Utils/namespace"
 
 type ProductDetails = Container.ProductDetails
 
-const styles = () =>
+const styles = (theme: Theme) =>
   createStyles({
     card: {
       boxShadow: "none",
+    },
+    categorySlider: {
+      [theme.breakpoints.up("md")]: {
+        marginLeft: theme.spacing.unit * 2,
+        marginRight: theme.spacing.unit * 2,
+      },
+    },
+    categoryDesc: {
+      marginTop: theme.spacing.unit * 4,
+      marginBottom: theme.spacing.unit * 4,
     },
   })
 
@@ -54,16 +65,18 @@ const Category = ({ classes }: CategoryProps) => (
       if (data.categories && data.categories.length) {
         return (
           <React.Fragment>
-            <div className="category-description">
+            <div className={classes.categoryDesc}>
               <Typography variant="h6" gutterBottom>
                 {"Shop By Category"}
               </Typography>
             </div>
-            <div className="category-slider">
+            <div className={classes.categorySlider}>
               <Slider
                 {...settings}
                 slidesToShow={4}
                 slidesToScroll={4}
+                infinite={false}
+                autoplay={false}
                 responsive={cardResponsive}
               >
                 {data.categories.map((category, index) => (
@@ -97,11 +110,6 @@ const Category = ({ classes }: CategoryProps) => (
                 .category-card-slide {
                   margin: 10px;
                   width: auto !important;
-                }
-                .category-slider {
-                  margin-bottom: 20px;
-                  margin-left: 20px;
-                  margin-right: 20px;
                 }
               `}
             </style>

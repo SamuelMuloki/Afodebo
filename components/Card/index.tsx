@@ -17,6 +17,16 @@ const styles = (theme: Theme) =>
     button: {
       margin: theme.spacing.unit,
     },
+    cardSlider: {
+      [theme.breakpoints.up("md")]: {
+        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing.unit * 3,
+      },
+    },
+    cardDesc: {
+      marginTop: theme.spacing.unit * 4,
+      marginBottom: theme.spacing.unit * 4,
+    },
   })
 
 export interface CardProps extends WithStyles<typeof styles> {
@@ -27,21 +37,22 @@ export interface CardProps extends WithStyles<typeof styles> {
   }
 }
 
-const MediaCard = ({ data }: CardProps) => {
+const MediaCard = ({ data, classes }: CardProps) => {
   if (data.error) return "Error loading products"
   if (data.products && data.products.length) {
     return (
       <React.Fragment>
-        <div className="card-description">
+        <div className={classes.cardDesc}>
           <Typography variant="h6" gutterBottom>
             {"On Sale"}
           </Typography>
         </div>
-        <div className="card-slider">
+        <div className={classes.cardSlider}>
           <Slider
             {...settings}
             slidesToShow={4}
             slidesToScroll={4}
+            autoplay={false}
             responsive={cardResponsive}
           >
             {data.products.map(images => {
@@ -56,11 +67,6 @@ const MediaCard = ({ data }: CardProps) => {
             .card-description {
               margin-top: 40px;
               margin-bottom: 40px;
-            }
-            .card-slider {
-              margin-bottom: 20px;
-              margin-left: 20px;
-              margin-right: 20px;
             }
           `}
         </style>

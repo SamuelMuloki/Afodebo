@@ -3,6 +3,7 @@ import {
   CardActionArea,
   CardMedia,
   createStyles,
+  Theme,
   Typography,
   WithStyles,
   withStyles,
@@ -19,10 +20,20 @@ import { Container } from "../Utils/namespace"
 
 type ProductDetails = Container.ProductDetails
 
-const styles = () =>
+const styles = (theme: Theme) =>
   createStyles({
     card: {
       boxShadow: "none",
+    },
+    brandSlider: {
+      [theme.breakpoints.up("md")]: {
+        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing.unit * 3,
+      },
+    },
+    brandDesc: {
+      marginTop: theme.spacing.unit * 4,
+      marginBottom: theme.spacing.unit * 4,
     },
   })
 
@@ -60,14 +71,15 @@ const Brand = ({ classes }: BrandProps) => (
       if (data.brands && data.brands.length) {
         return (
           <React.Fragment>
-            <div className="brand-description">
+            <div className={classes.brandDesc}>
               <Typography variant="h6" gutterBottom>
                 {"Trending Brands"}
               </Typography>
             </div>
-            <div className="brand-slider">
+            <div className={classes.brandSlider}>
               <Slider
                 {...settings}
+                autoplay={false}
                 slidesToShow={4}
                 slidesToScroll={4}
                 responsive={cardResponsive}
@@ -90,19 +102,6 @@ const Brand = ({ classes }: BrandProps) => (
                 ))}
               </Slider>
             </div>
-            <style jsx>
-              {`
-                .brand-description {
-                  margin-top: 40px;
-                  margin-bottom: 40px;
-                }
-                .brand-slider {
-                  margin-bottom: 20px;
-                  margin-left: 20px;
-                  margin-right: 20px;
-                }
-              `}
-            </style>
           </React.Fragment>
         )
       } else if (loading) {

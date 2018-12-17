@@ -11,6 +11,7 @@ import {
   withStyles,
   WithStyles,
 } from "@material-ui/core"
+import AddToCart from "@material-ui/icons/AddShoppingCart"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import gql from "graphql-tag"
 import Head from "next/head"
@@ -41,6 +42,9 @@ const styles = (theme: Theme) =>
     Cartheading: {
       fontSize: theme.typography.pxToRem(15),
       fontWeight: theme.typography.fontWeightRegular,
+    },
+    extendedIcon: {
+      marginRight: theme.spacing.unit,
     },
   })
 
@@ -99,6 +103,7 @@ class Products extends React.Component<ProductsProps> {
                 color="primary"
                 className={classes.cartButtons}
               >
+                <AddToCart className={classes.extendedIcon} />
                 ADD TO CART
               </Button>
               <Button

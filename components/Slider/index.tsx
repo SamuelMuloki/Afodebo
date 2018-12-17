@@ -1,3 +1,4 @@
+import { createStyles, Theme, withStyles, WithStyles } from "@material-ui/core"
 import gql from "graphql-tag"
 import * as React from "react"
 import { graphql } from "react-apollo"
@@ -8,7 +9,20 @@ import { Container } from "../Utils/namespace"
 
 type ProductDetails = Container.ProductDetails
 
-export interface ImageSliderProps {
+const styles = (theme: Theme) =>
+  createStyles({
+    button: {
+      margin: theme.spacing.unit,
+    },
+    promoSlider: {
+      [theme.breakpoints.up("md")]: {
+        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing.unit * 3,
+      },
+    },
+  })
+
+export interface ImageSliderProps extends WithStyles<typeof styles> {
   data: {
     loading: any
     error: string
@@ -16,11 +30,11 @@ export interface ImageSliderProps {
   }
 }
 
-const ImageSlider = ({ data }: ImageSliderProps) => {
+const ImageSlider = ({ data, classes }: ImageSliderProps) => {
   if (data.promotions && data.promotions.length) {
     return (
       <React.Fragment>
-        <div className="promo-slider">
+        <div className={classes.promoSlider}>
           <Slider {...settings}>
             {data.promotions
               .reduce<any[]>((imageArray, promo, currentIndex) => {
@@ -43,15 +57,6 @@ const ImageSlider = ({ data }: ImageSliderProps) => {
               .map(img => img)}
           </Slider>
         </div>
-        <style jsx>
-          {`
-            .promo-slider {
-              margin-bottom: 20px;
-              margin-left: 20px;
-              margin-right: 20px;
-            }
-          `}
-        </style>
       </React.Fragment>
     )
   } else if (data.loading) {
@@ -140,6 +145,7 @@ const query = gql`
 `
 
 export default compose(
+  withStyles(styles),
   graphql(query, {
     props: ({ data }) => ({
       data,
