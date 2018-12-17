@@ -1,10 +1,12 @@
 import { createStyles, Theme, withStyles, WithStyles } from "@material-ui/core"
 import gql from "graphql-tag"
+import Link from "next/link"
 import * as React from "react"
 import { graphql } from "react-apollo"
 import { default as Slider } from "react-slick"
 import { compose } from "recompose"
 import { settings } from "../Utils"
+import { removeSpaces } from "../Utils/data"
 import { Container } from "../Utils/namespace"
 
 type ProductDetails = Container.ProductDetails
@@ -19,6 +21,9 @@ const styles = (theme: Theme) =>
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
       },
+    },
+    promoImage: {
+      cursor: "pointer",
     },
   })
 
@@ -41,13 +46,21 @@ const ImageSlider = ({ data, classes }: ImageSliderProps) => {
                 if (promo.active) {
                   const promoImages = promo.image.map((promo, index) => {
                     return (
-                      <img
-                        height={300}
-                        width={1500}
-                        key={index}
-                        alt={data.promotions[currentIndex].name}
-                        src={`http://localhost:1337${promo.url}`}
-                      />
+                      <Link
+                        as={`/search/${removeSpaces(
+                          data.promotions[currentIndex].name
+                        )}/${data.promotions[currentIndex]._id}`}
+                        href={`/search?id=${data.promotions[currentIndex]._id}`}
+                      >
+                        <img
+                          className={classes.promoImage}
+                          height={300}
+                          width={1500}
+                          key={index}
+                          alt={data.promotions[currentIndex].name}
+                          src={`http://localhost:1337${promo.url}`}
+                        />
+                      </Link>
                     )
                   })
                   imageArray.push(promoImages)

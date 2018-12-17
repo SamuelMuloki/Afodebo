@@ -122,7 +122,7 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
             .header {
               width: 100%;
               height: 120px;
-              background-color: #2196f3;
+              background-color: #3f51b5;
               margin-bottom: 30px;
               border-radius-top: 6px;
             }

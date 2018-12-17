@@ -53,13 +53,16 @@ const GET_SEARCH_QUERY = gql`
     category(id: $id) {
       ${searchQuery}
     }
+    promotion(id: $id) {
+      ${searchQuery}
+    }
   }
 `
 
 const styles = () => createStyles({})
 
 export interface QueryProps<T> {
-  data: { brand: T; category: T }
+  data: { brand: T; category: T; promotion: T }
   loading: boolean
   error?: ApolloError
 }
