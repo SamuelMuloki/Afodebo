@@ -1,14 +1,17 @@
+import { Hidden } from "@material-ui/core"
 import ArrowBack from "@material-ui/icons/ArrowBackIos"
 import ArrowForward from "@material-ui/icons/ArrowForwardIos"
 import { Settings } from "react-slick"
 
 export const settings: Settings = {
   dots: true,
-  infinite: false,
+  infinite: true,
   speed: 500,
   slidesToShow: 1,
   slidesToScroll: 1,
   initialSlide: 0,
+  autoplay: true,
+  autoplaySpeed: 4000,
   nextArrow: <SampleNextArrow />,
   prevArrow: <SamplePrevArrow />,
   responsive: [
@@ -69,25 +72,29 @@ export const cardResponsive = [
 function SampleNextArrow(props) {
   const { className, onClick } = props
   return (
-    <ArrowForward
-      className={className}
-      style={{
-        fill: "black",
-      }}
-      onClick={onClick}
-    />
+    <Hidden smDown implementation="css">
+      <ArrowForward
+        className={className}
+        style={{
+          fill: "black",
+        }}
+        onClick={onClick}
+      />
+    </Hidden>
   )
 }
 
 function SamplePrevArrow(props) {
   const { className, onClick } = props
   return (
-    <ArrowBack
-      className={className}
-      style={{
-        fill: "black",
-      }}
-      onClick={onClick}
-    />
+    <Hidden smDown implementation="css">
+      <ArrowBack
+        className={className}
+        style={{
+          fill: "black",
+        }}
+        onClick={onClick}
+      />
+    </Hidden>
   )
 }
