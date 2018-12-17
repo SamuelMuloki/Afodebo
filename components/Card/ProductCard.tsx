@@ -20,7 +20,9 @@ import {
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import FilterIcon from "@material-ui/icons/FilterListSharp"
 import Head from "next/head"
+import Router, { withRouter } from "next/router"
 import React from "react"
+import { compose } from "recompose"
 import { getOccurrence } from "../Utils/data"
 import { Container } from "../Utils/namespace"
 import SingleCard from "./SingleCard"
@@ -64,6 +66,7 @@ interface ProductCardProps extends WithStyles<typeof styles> {
     name: string
     products: ProductDetails[]
   }
+  router: any
 }
 
 export interface ProductCardState {
@@ -76,6 +79,7 @@ export interface ProductCardState {
 
 class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
   private unfilteredData: string[] = []
+  private dataFilters = ""
   readonly state: ProductCardState = {
     filteredData: this.props.searchData,
     filterDrawerOpen: false,
@@ -84,6 +88,17 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
   handleChange = event => {
     const checkedValue = event.target.value
     const isChecked = event.target.checked
+    if (isChecked) {
+      this.dataFilters = this.dataFilters.concat(`f=${checkedValue}`)
+    } else if (this.dataFilters.indexOf(checkedValue) > -1) {
+      this.dataFilters = this.dataFilters.replace(`f=${checkedValue}`, "")
+    }
+    const href = `/search?id=${this.props.searchData._id}`
+    const as = `${this.props.router.pathname}/${this.props.searchData.name}/${
+      this.props.searchData._id
+    }?${this.dataFilters}`
+    Router.push(href, as, { shallow: true })
+
     this.setState(
       prevState => ({
         checkedItems: prevState.checkedItems.set(checkedValue, isChecked),
@@ -251,12 +266,27 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
         return acc.concat(curr)
       }, [])
       .filter((val, index, array) => array.indexOf(val) === index)
+
     this.setState({
       filteredData: {
         products: stateData.length ? stateData : this.props.searchData.products,
       },
     })
   }
+
+  componentDidMount() {
+    console.log(this.props.router.asPath)
+  }
+
+  componentDidUpdate(prevProps: ProductCardProps) {
+    const { pathname, query } = this.props.router
+    if (query.id !== prevProps.router.query.id) {
+      console.log(pathname)
+    }
+  }
 }
 
-export default withStyles(styles)(ProductCard)
+export default compose<{}, any>(
+  withRouter,
+  withStyles(styles)
+)(ProductCard)

@@ -62,14 +62,6 @@ const MediaCard = ({ data, classes }: CardProps) => {
             })}
           </Slider>
         </div>
-        <style jsx>
-          {`
-            .card-description {
-              margin-top: 40px;
-              margin-bottom: 40px;
-            }
-          `}
-        </style>
       </React.Fragment>
     )
   } else if (data.loading) {
