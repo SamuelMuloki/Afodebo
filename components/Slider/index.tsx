@@ -1,6 +1,6 @@
 import { createStyles, Theme, withStyles, WithStyles } from "@material-ui/core"
 import gql from "graphql-tag"
-import Link from "next/link"
+import Router from "next/router"
 import * as React from "react"
 import { graphql } from "react-apollo"
 import { default as Slider } from "react-slick"
@@ -46,21 +46,22 @@ const ImageSlider = ({ data, classes }: ImageSliderProps) => {
                 if (promo.active) {
                   const promoImages = promo.image.map((promo, index) => {
                     return (
-                      <Link
-                        as={`/search/${removeSpaces(
-                          data.promotions[currentIndex].name
-                        )}/${data.promotions[currentIndex]._id}`}
-                        href={`/search?id=${data.promotions[currentIndex]._id}`}
-                      >
-                        <img
-                          className={classes.promoImage}
-                          height={300}
-                          width={1500}
-                          key={index}
-                          alt={data.promotions[currentIndex].name}
-                          src={`http://localhost:1337${promo.url}`}
-                        />
-                      </Link>
+                      <img
+                        className={classes.promoImage}
+                        height={300}
+                        width={1500}
+                        key={index}
+                        onClick={() =>
+                          Router.push(
+                            `/search?id=${data.promotions[currentIndex]._id}`,
+                            `/search/${removeSpaces(
+                              data.promotions[currentIndex].name
+                            )}/${data.promotions[currentIndex]._id}`
+                          )
+                        }
+                        alt={data.promotions[currentIndex].name}
+                        src={`http://localhost:1337${promo.url}`}
+                      />
                     )
                   })
                   imageArray.push(promoImages)
