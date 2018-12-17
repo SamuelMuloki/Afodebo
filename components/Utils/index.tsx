@@ -1,3 +1,5 @@
+import ArrowBack from "@material-ui/icons/ArrowBackIos"
+import ArrowForward from "@material-ui/icons/ArrowForwardIos"
 import { Settings } from "react-slick"
 
 export const settings: Settings = {
@@ -65,15 +67,12 @@ export const cardResponsive = [
 ]
 
 function SampleNextArrow(props) {
-  const { className, style, onClick } = props
+  const { className, onClick } = props
   return (
-    <div
+    <ArrowForward
       className={className}
       style={{
-        ...style,
-        display: "block",
-        backgroundColor: "darkgrey",
-        borderRadius: "50%",
+        fill: "black",
       }}
       onClick={onClick}
     />
@@ -81,15 +80,12 @@ function SampleNextArrow(props) {
 }
 
 function SamplePrevArrow(props) {
-  const { className, style, onClick } = props
+  const { className, onClick } = props
   return (
-    <div
+    <ArrowBack
       className={className}
       style={{
-        ...style,
-        display: "block",
-        backgroundColor: "darkgrey",
-        borderRadius: "50%",
+        fill: "black",
       }}
       onClick={onClick}
     />
