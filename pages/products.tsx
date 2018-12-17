@@ -5,7 +5,7 @@ import {
   ExpansionPanelDetails,
   ExpansionPanelSummary,
   Grid,
-  Paper,
+  Hidden,
   Theme,
   Typography,
   withStyles,
@@ -23,6 +23,7 @@ import { connect } from "react-redux"
 import { compose } from "recompose"
 import { Dispatch } from "redux"
 import defaultPage from "../components/hocs/defaultPage"
+import { discount } from "../components/Utils/data"
 import { Container } from "../components/Utils/namespace"
 import { MobileDrawer } from "../store/actions"
 
@@ -45,6 +46,9 @@ const styles = (theme: Theme) =>
     },
     extendedIcon: {
       marginRight: theme.spacing.unit,
+    },
+    originalPrice: {
+      textDecoration: "line-through",
     },
   })
 
@@ -81,39 +85,52 @@ class Products extends React.Component<ProductsProps> {
             <title>{` ${product.name} + FREE DELIVERY | afodebo.com`}</title>
           </Head>
           <Grid container spacing={24}>
-            <Grid item xs={12} sm={6} lg={5}>
+            <Grid item xs={12} sm={6} md={6} lg={4}>
               <Typography variant="h5" className={classes.cartProduct} noWrap>
                 {product.name}
               </Typography>
-              <ImageGallery items={images} />
+              <ImageGallery
+                items={images}
+                showFullscreenButton={false}
+                showPlayButton={false}
+              />
             </Grid>
-            <Grid item xs={12} sm={6} lg={4} zeroMinWidth>
-              <Paper>
+            <Hidden smDown>
+              <Grid item lg={4} md={6} zeroMinWidth>
                 <div className={classes.cartItems}>
-                  <Typography variant="h6" gutterBottom noWrap>
-                    {`UGX ${product.saleprice}`}
+                  <Typography variant="h6">About this Product</Typography>
+                  <Typography variant="body2" gutterBottom>
+                    {product.description}
                   </Typography>
                 </div>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} lg={2} zeroMinWidth>
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.cartButtons}
+              </Grid>
+            </Hidden>
+            <Grid item xs={12} sm={6} md={6} lg={4} zeroMinWidth>
+              <Typography variant="h5" noWrap gutterBottom>
+                {`UGX ${product.saleprice}`}
+              </Typography>
+              <Typography
+                variant="body1"
+                className={classes.originalPrice}
+                gutterBottom
               >
-                <AddToCart className={classes.extendedIcon} />
-                ADD TO CART
-              </Button>
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.cartButtons}
-              >
-                BUY NOW
-              </Button>
+                {product.originalprice ? `UGX ${product.originalprice}` : ""}
+              </Typography>
+              <Typography variant="body1" color="primary" gutterBottom>
+                {product.originalprice
+                  ? `You save: UGX ${product.originalprice -
+                      product.saleprice} (${discount(
+                      product.saleprice,
+                      product.originalprice
+                    )}%)`
+                  : ""}
+              </Typography>
+              <div className={classes.cartButtons}>
+                <Button fullWidth variant="contained" color="primary">
+                  <AddToCart className={classes.extendedIcon} />
+                  ADD TO CART
+                </Button>
+              </div>
             </Grid>
           </Grid>
           <div className={classes.cartItems}>
@@ -221,7 +238,9 @@ const GET_IMAGE_GALLERY = gql`
       _id
       name
       saleprice
+      originalprice
       description
+      sku
       images {
         _id
         name
