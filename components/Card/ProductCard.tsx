@@ -249,7 +249,7 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
           .map(cat => {
             return this.props.searchData.products.filter(pdt => {
               if (Array.isArray(pdt[cat])) {
-                return pdt[cat][0].name === key
+                return pdt[cat].map(v => v.name).reduce(x => x) === key
               } else {
                 return pdt[cat].name === key
               }
