@@ -35,10 +35,13 @@ const styles = (theme: Theme) =>
       margin: theme.spacing.unit * 2,
     },
     cartButtons: {
-      margin: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
     },
     cartProduct: {
       marginBottom: theme.spacing.unit * 2,
+    },
+    cartPrice: {
+      display: "flex",
     },
     Cartheading: {
       fontSize: theme.typography.pxToRem(15),
@@ -49,6 +52,7 @@ const styles = (theme: Theme) =>
     },
     originalPrice: {
       textDecoration: "line-through",
+      marginLeft: theme.spacing.unit,
     },
   })
 
@@ -106,17 +110,23 @@ class Products extends React.Component<ProductsProps> {
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={6} md={6} lg={4} zeroMinWidth>
-              <Typography variant="h5" noWrap gutterBottom>
-                {`UGX ${product.saleprice}`}
-              </Typography>
-              <Typography
-                variant="body1"
-                className={classes.originalPrice}
-                gutterBottom
-              >
-                {product.originalprice ? `UGX ${product.originalprice}` : ""}
-              </Typography>
-              <Typography variant="body1" color="primary" gutterBottom>
+              <Typography variant="body1" noWrap gutterBottom>{`Sold by ${
+                product.sellers.name
+              }`}</Typography>
+              <div className={classes.cartPrice}>
+                <Typography variant="h5" noWrap gutterBottom>
+                  {`UGX ${product.saleprice}`}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  color="textSecondary"
+                  className={classes.originalPrice}
+                  gutterBottom
+                >
+                  {product.originalprice ? `UGX ${product.originalprice}` : ""}
+                </Typography>
+              </div>
+              <Typography variant="body1" color="secondary" gutterBottom>
                 {product.originalprice
                   ? `You save: UGX ${product.originalprice -
                       product.saleprice} (${discount(
@@ -126,7 +136,7 @@ class Products extends React.Component<ProductsProps> {
                   : ""}
               </Typography>
               <div className={classes.cartButtons}>
-                <Button fullWidth variant="contained" color="primary">
+                <Button fullWidth variant="contained" color="default">
                   <AddToCart className={classes.extendedIcon} />
                   ADD TO CART
                 </Button>
@@ -241,6 +251,9 @@ const GET_IMAGE_GALLERY = gql`
       originalprice
       description
       sku
+      sellers {
+        name
+      }
       images {
         _id
         name
