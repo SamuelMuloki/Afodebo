@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core"
 import { ApolloError } from "apollo-client"
 import gql from "graphql-tag"
-import Link from "next/link"
+import Router from "next/router"
 import React from "react"
 import { Query } from "react-apollo"
 import { default as Slider } from "react-slick"
@@ -85,19 +85,23 @@ const Brand = ({ classes }: BrandProps) => (
                 responsive={cardResponsive}
               >
                 {data.brands.map((brand, index) => (
-                  <Card className={classes.card} key={index}>
-                    <Link
-                      as={`/search/${removeSpaces(brand.name)}/${brand._id}`}
-                      href={`/search?id=${brand._id}`}
-                    >
-                      <CardActionArea>
-                        <CardMedia
-                          component="img"
-                          image={`http://localhost:1337${brand.image.url}`}
-                          title={brand.name}
-                        />
-                      </CardActionArea>
-                    </Link>
+                  <Card
+                    className={classes.card}
+                    key={index}
+                    onClick={() =>
+                      Router.push(
+                        `/search?id=${brand._id}`,
+                        `/search/${removeSpaces(brand.name)}/${brand._id}`
+                      )
+                    }
+                  >
+                    <CardActionArea>
+                      <CardMedia
+                        component="img"
+                        image={`http://localhost:1337${brand.image.url}`}
+                        title={brand.name}
+                      />
+                    </CardActionArea>
                   </Card>
                 ))}
               </Slider>
