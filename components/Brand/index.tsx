@@ -35,6 +35,9 @@ const styles = (theme: Theme) =>
       marginTop: theme.spacing.unit * 4,
       marginBottom: theme.spacing.unit * 4,
     },
+    brandMedia: {
+      height: "auto",
+    },
   })
 
 const GET_BRANDS = gql`
@@ -97,6 +100,7 @@ const Brand = ({ classes }: BrandProps) => (
                   >
                     <CardActionArea>
                       <CardMedia
+                        className={classes.brandMedia}
                         component="img"
                         image={`http://localhost:1337${brand.image.url}`}
                         title={brand.name}

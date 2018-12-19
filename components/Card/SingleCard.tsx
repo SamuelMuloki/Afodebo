@@ -27,6 +27,9 @@ const styles = (theme: Theme) =>
     originalPrice: {
       textDecoration: "line-through",
     },
+    cardMedia: {
+      height: "auto",
+    },
   })
 
 interface ProductCardProps extends WithStyles<typeof styles> {
@@ -47,6 +50,7 @@ const SingleCard = ({ classes, images }: ProductCardProps) => {
     >
       <CardActionArea>
         <CardMedia
+          className={classes.cardMedia}
           component="img"
           image={`http://localhost:1337${images.image.url}`}
           title={images.name}
@@ -58,7 +62,7 @@ const SingleCard = ({ classes, images }: ProductCardProps) => {
           <Typography variant="subtitle2" color="textSecondary" noWrap>
             {images.slug}
           </Typography>
-          <Typography variant="subtitle2" color="textSecondary">
+          <Typography variant="subtitle2" color="textSecondary" noWrap>
             {`Sold by ${images.sellers.name}`}
           </Typography>
         </CardContent>

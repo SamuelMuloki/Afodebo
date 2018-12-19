@@ -34,6 +34,9 @@ const styles = (theme: Theme) =>
       marginTop: theme.spacing.unit * 4,
       marginBottom: theme.spacing.unit * 4,
     },
+    categoryMedia: {
+      height: "auto",
+    },
   })
 
 const GET_BRANDS = gql`
@@ -88,6 +91,7 @@ const Category = ({ classes }: CategoryProps) => (
                       >
                         <CardActionArea>
                           <CardMedia
+                            className={classes.categoryMedia}
                             component="img"
                             image={`http://localhost:1337${
                               category.image[0].url

@@ -24,6 +24,7 @@ const styles = (theme: Theme) =>
     },
     promoImage: {
       cursor: "pointer",
+      height: "auto",
     },
   })
 
@@ -48,8 +49,6 @@ const ImageSlider = ({ data, classes }: ImageSliderProps) => {
                     return (
                       <img
                         className={classes.promoImage}
-                        height={300}
-                        width={1500}
                         key={index}
                         onClick={() =>
                           Router.push(
