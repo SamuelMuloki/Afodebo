@@ -1,7 +1,4 @@
 import {
-  Card,
-  CardActionArea,
-  CardMedia,
   createStyles,
   Theme,
   Typography,
@@ -10,13 +7,12 @@ import {
 } from "@material-ui/core"
 import { ApolloError } from "apollo-client"
 import gql from "graphql-tag"
-import Router from "next/router"
 import React from "react"
 import { Query } from "react-apollo"
 import { default as Slider } from "react-slick"
 import { cardResponsive, settings } from "../Utils"
-import { removeSpaces } from "../Utils/data"
 import { Container } from "../Utils/namespace"
+import BrandCard from "./BrandCard"
 
 type ProductDetails = Container.ProductDetails
 
@@ -88,25 +84,7 @@ const Brand = ({ classes }: BrandProps) => (
                 responsive={cardResponsive}
               >
                 {data.brands.map((brand, index) => (
-                  <Card
-                    className={classes.card}
-                    key={index}
-                    onClick={() =>
-                      Router.push(
-                        `/search?id=${brand._id}`,
-                        `/search/${removeSpaces(brand.name)}/${brand._id}`
-                      )
-                    }
-                  >
-                    <CardActionArea>
-                      <CardMedia
-                        className={classes.brandMedia}
-                        component="img"
-                        image={`http://localhost:1337${brand.image.url}`}
-                        title={brand.name}
-                      />
-                    </CardActionArea>
-                  </Card>
+                  <BrandCard key={index} brand={brand} />
                 ))}
               </Slider>
             </div>
