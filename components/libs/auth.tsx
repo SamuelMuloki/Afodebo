@@ -50,7 +50,7 @@ export const unsetToken = () => {
   }
   Cookies.remove("jwt")
   Cookies.remove("username")
-  // Cookies.remove("cart")
+  Cookies.remove("cart")
 
   window.localStorage.setItem("logout", Date.now().toString())
   Router.push("/")
