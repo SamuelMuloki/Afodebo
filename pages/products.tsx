@@ -23,7 +23,6 @@ import { connect } from "react-redux"
 import { compose } from "recompose"
 import { Dispatch } from "redux"
 import defaultPage from "../components/hocs/defaultPage"
-import { discount } from "../components/Utils/data"
 import { Container } from "../components/Utils/namespace"
 import { MobileDrawer } from "../store/actions"
 
@@ -31,17 +30,8 @@ type ProductDetails = Container.ProductDetails
 
 const styles = (theme: Theme) =>
   createStyles({
-    cartItems: {
-      margin: theme.spacing.unit * 2,
-    },
-    cartButtons: {
-      marginRight: theme.spacing.unit,
-    },
     cartProduct: {
-      marginBottom: theme.spacing.unit * 2,
-    },
-    cartPrice: {
-      display: "flex",
+      margin: theme.spacing.unit,
     },
     Cartheading: {
       fontSize: theme.typography.pxToRem(15),
@@ -49,10 +39,6 @@ const styles = (theme: Theme) =>
     },
     extendedIcon: {
       marginRight: theme.spacing.unit,
-    },
-    originalPrice: {
-      textDecoration: "line-through",
-      marginLeft: theme.spacing.unit,
     },
   })
 
@@ -62,10 +48,17 @@ export interface ProductsProps extends WithStyles<typeof styles> {
     error: string
     product: ProductDetails
   }
+  context: any
   renderCategoryDrawer: (page?: string) => void
 }
 
 class Products extends React.Component<ProductsProps> {
+  addItem = (item: any) => {
+    if (item) {
+      this.props.context.addItem(item)
+    }
+  }
+
   render() {
     const {
       data: { loading, error, product },
@@ -101,61 +94,38 @@ class Products extends React.Component<ProductsProps> {
             </Grid>
             <Hidden smDown>
               <Grid item lg={4} md={6} zeroMinWidth>
-                <div className={classes.cartItems}>
-                  <Typography variant="h6">About this Product</Typography>
-                  <Typography variant="body2" gutterBottom>
-                    {product.description}
-                  </Typography>
-                </div>
+                <Typography variant="h6">About this Product</Typography>
+                <Typography variant="body2" gutterBottom>
+                  {product.description}
+                </Typography>
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={6} md={6} lg={4} zeroMinWidth>
-              <Typography variant="body1" noWrap gutterBottom>{`Sold by ${
-                product.sellers.name
-              }`}</Typography>
-              <div className={classes.cartPrice}>
-                <Typography variant="h5" noWrap gutterBottom>
-                  {`UGX ${product.saleprice}`}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  color="textSecondary"
-                  className={classes.originalPrice}
-                  gutterBottom
-                >
-                  {product.originalprice ? `UGX ${product.originalprice}` : ""}
-                </Typography>
-              </div>
-              <Typography variant="body1" color="secondary" gutterBottom>
-                {product.originalprice
-                  ? `You save: UGX ${product.originalprice -
-                      product.saleprice} (${discount(
-                      product.saleprice,
-                      product.originalprice
-                    )}%)`
-                  : ""}
+              <Typography variant="h5" noWrap gutterBottom>
+                {`UGX ${product.saleprice}`}
               </Typography>
-              <div className={classes.cartButtons}>
-                <Button fullWidth variant="contained" color="default">
-                  <AddToCart className={classes.extendedIcon} />
-                  ADD TO CART
-                </Button>
-              </div>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={() => this.addItem(product)}
+              >
+                <AddToCart className={classes.extendedIcon} />
+                ADD TO CART
+              </Button>
             </Grid>
           </Grid>
-          <div className={classes.cartItems}>
-            <Grid container spacing={24}>
-              <ExpansionPanel>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography className={classes.Cartheading}>
-                    About this Product
-                  </Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                  {product.description}
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-            </Grid>
+          <div className={classes.cartProduct}>
+            <ExpansionPanel>
+              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.Cartheading}>
+                  About this Product
+                </Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                {product.description}
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
           </div>
         </React.Fragment>
       )
@@ -274,6 +244,7 @@ const enhancer = compose(
     undefined,
     mapDispatchToProps
   ),
+  // withContext,
   withRouter,
   withStyles(styles),
   defaultPage,
