@@ -44,16 +44,22 @@ const styles = (theme: Theme) =>
 interface WrapperProps extends WithStyles<typeof styles> {
   drawerOpen: boolean
   children: React.ReactNode
+  renderMobileDrawer: boolean
 }
 
-const Index: SFC<WrapperProps> = ({ classes, drawerOpen, children }) => {
+const Index: SFC<WrapperProps> = ({
+  classes,
+  drawerOpen,
+  children,
+  renderMobileDrawer,
+}) => {
   return (
     <>
       <Hidden smDown implementation="css">
         <main
           className={classNames(
             classes.content,
-            drawerOpen && classes.ShiftContent,
+            drawerOpen && !renderMobileDrawer && classes.ShiftContent,
             !drawerOpen && classes.drawerPaperClosed
           )}
         >

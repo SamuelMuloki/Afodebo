@@ -19,6 +19,9 @@ import ShoppingCart from "@material-ui/icons/ShoppingCart"
 import { Container } from "next/app"
 import Router from "next/router"
 import * as React from "react"
+import { connect } from "react-redux"
+import { compose } from "recompose"
+import { IInitialState } from "../../store/states"
 import NavigationDrawer from "../Drawer"
 import { unsetToken } from "../libs/auth"
 import Wrapper from "../Wrapper"
@@ -104,7 +107,9 @@ const styles = (theme: Theme) =>
 export interface PrimaryAppBarProps extends WithStyles<typeof styles> {
   isAuthenticated: boolean
   loggedUser: string
+  context: any
   children: React.ReactNode
+  renderMobileDrawer: boolean
 }
 
 export interface PrimaryAppBarState {
@@ -144,7 +149,13 @@ class PrimaryAppBar extends React.Component<
   handleDrawerClose = () => this.setState({ drawerOpen: false })
 
   render() {
-    const { classes, isAuthenticated, loggedUser, children } = this.props
+    const {
+      classes,
+      isAuthenticated,
+      loggedUser,
+      children,
+      renderMobileDrawer,
+    } = this.props
     const { anchorEl, mobileMoreAnchorEl } = this.state
     const isMenuOpen = Boolean(anchorEl)
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -263,14 +274,31 @@ class PrimaryAppBar extends React.Component<
           <NavigationDrawer
             drawerOpen={this.state.drawerOpen}
             onClose={this.handleDrawerClose}
+            renderMobileDrawer={renderMobileDrawer}
           />
         </header>
         <Container>
-          <Wrapper drawerOpen={this.state.drawerOpen} children={children} />
+          <Wrapper
+            drawerOpen={this.state.drawerOpen}
+            children={children}
+            renderMobileDrawer={renderMobileDrawer}
+          />
         </Container>
       </React.Fragment>
     )
   }
 }
 
-export default withStyles(styles)(PrimaryAppBar)
+const mapStateToProps = (state: IInitialState) => ({
+  renderMobileDrawer: state.AppBar.renderMobileDrawer,
+})
+
+const enhancer: any = compose(
+  connect(
+    mapStateToProps,
+    undefined
+  ),
+  withStyles(styles)
+)
+
+export default enhancer(PrimaryAppBar)

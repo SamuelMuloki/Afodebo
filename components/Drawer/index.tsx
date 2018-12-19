@@ -11,9 +11,7 @@ import withWidth, { isWidthUp, WithWidth } from "@material-ui/core/withWidth"
 import MenuIcon from "@material-ui/icons/Menu"
 import classNames from "classnames"
 import * as React from "react"
-import { connect } from "react-redux"
 import { compose } from "recompose"
-import { IInitialState } from "../../store/states"
 import Menu from "../Menu"
 
 export const drawerWidth = 240
@@ -113,15 +111,7 @@ class NavigationDrawer extends React.Component<DrawerProps> {
   }
 }
 
-const mapStateToProps = (state: IInitialState) => ({
-  renderMobileDrawer: state.AppBar.renderMobileDrawer,
-})
-
 const enhancer: any = compose(
-  connect(
-    mapStateToProps,
-    undefined
-  ),
   withWidth(),
   withStyles(styles)
 )
