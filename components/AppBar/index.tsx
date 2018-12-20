@@ -22,6 +22,7 @@ import * as React from "react"
 import { connect } from "react-redux"
 import { compose } from "recompose"
 import { IInitialState } from "../../store/states"
+import { withContext } from "../Context/AppProvider"
 import NavigationDrawer from "../Drawer"
 import { unsetToken } from "../libs/auth"
 import Wrapper from "../Wrapper"
@@ -116,6 +117,8 @@ export interface PrimaryAppBarState {
   drawerOpen: boolean
   anchorEl: any
   mobileMoreAnchorEl: any
+  items: []
+  cartQuantity: number
 }
 
 class PrimaryAppBar extends React.Component<
@@ -126,6 +129,8 @@ class PrimaryAppBar extends React.Component<
     drawerOpen: false,
     anchorEl: null,
     mobileMoreAnchorEl: null,
+    items: [],
+    cartQuantity: 0,
   }
 
   handleProfileMenuOpen = event => {
@@ -156,9 +161,17 @@ class PrimaryAppBar extends React.Component<
       children,
       renderMobileDrawer,
     } = this.props
-    const { anchorEl, mobileMoreAnchorEl } = this.state
+    const { anchorEl, mobileMoreAnchorEl, cartQuantity } = this.state
     const isMenuOpen = Boolean(anchorEl)
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
+    const badge =
+      cartQuantity !== 0 ? (
+        <Badge badgeContent={cartQuantity} color="secondary">
+          <ShoppingCart />
+        </Badge>
+      ) : (
+        <ShoppingCart />
+      )
     const renderMenu =
       isAuthenticated && loggedUser ? (
         <Menu
@@ -193,11 +206,7 @@ class PrimaryAppBar extends React.Component<
         onClose={this.handleMobileMenuClose}
       >
         <MenuItem>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <ShoppingCart />
-            </Badge>
-          </IconButton>
+          <IconButton color="inherit">{badge}</IconButton>
           <p>Cart</p>
         </MenuItem>
         <MenuItem onClick={this.handleProfileMenuOpen}>
@@ -244,11 +253,7 @@ class PrimaryAppBar extends React.Component<
               </div>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
-                <IconButton color="inherit">
-                  <Badge badgeContent={4} color="secondary">
-                    <ShoppingCart />
-                  </Badge>
-                </IconButton>
+                <IconButton color="inherit">{badge}</IconButton>
                 <IconButton
                   aria-owns={isMenuOpen ? "material-appbar" : undefined}
                   aria-haspopup="true"
@@ -287,6 +292,17 @@ class PrimaryAppBar extends React.Component<
       </React.Fragment>
     )
   }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps && newProps.context && newProps.context.items) {
+      let quantity = 0
+      newProps.context.items.map(value => {
+        quantity += value.quantity
+        return quantity
+      })
+      this.setState({ items: newProps.context.items, cartQuantity: quantity })
+    }
+  }
 }
 
 const mapStateToProps = (state: IInitialState) => ({
@@ -298,7 +314,8 @@ const enhancer: any = compose(
     mapStateToProps,
     undefined
   ),
-  withStyles(styles)
+  withStyles(styles),
+  withContext
 )
 
 export default enhancer(PrimaryAppBar)

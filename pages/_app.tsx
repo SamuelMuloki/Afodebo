@@ -5,6 +5,7 @@ import App from "next/app"
 import React from "react"
 import JssProvider from "react-jss/lib/JssProvider"
 import { Provider } from "react-redux"
+import AppProvider from "../components/Context/AppProvider"
 import getPageContext from "../components/getPageContext"
 import apolloData from "../components/libs/apollo"
 import Layout from "../components/templates/Layout"
@@ -65,9 +66,11 @@ class MyApp extends App<IProps> {
             <CssBaseline />
             {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-            <Layout {...pageProps}>
-              <Component pageContext={this.pageContext} {...pageProps} />
-            </Layout>
+            <AppProvider>
+              <Layout {...pageProps}>
+                <Component pageContext={this.pageContext} {...pageProps} />
+              </Layout>
+            </AppProvider>
           </MuiThemeProvider>
         </JssProvider>
       </Provider>

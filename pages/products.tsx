@@ -22,6 +22,7 @@ import ImageGallery, { ReactImageGalleryItem } from "react-image-gallery"
 import { connect } from "react-redux"
 import { compose } from "recompose"
 import { Dispatch } from "redux"
+import { withContext } from "../components/Context/AppProvider"
 import defaultPage from "../components/hocs/defaultPage"
 import { Container } from "../components/Utils/namespace"
 import { MobileDrawer } from "../store/actions"
@@ -244,10 +245,10 @@ const enhancer = compose(
     undefined,
     mapDispatchToProps
   ),
-  // withContext,
   withRouter,
   withStyles(styles),
   defaultPage,
+  withContext,
   graphql(GET_IMAGE_GALLERY, {
     options: (props: { router: { query: { id: string } } }) => {
       return {

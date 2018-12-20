@@ -111,7 +111,9 @@ class AppProvider extends React.Component<{}, AppProviderState> {
           removeItem: this.removeItem,
           total: this.state.total,
         }}
-      />
+      >
+        {this.props.children}
+      </AppContext.Provider>
     )
   }
 }
