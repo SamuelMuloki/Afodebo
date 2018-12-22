@@ -76,7 +76,11 @@ function SampleNextArrow(props) {
       <ArrowForward
         className={className}
         style={{
-          fill: "black",
+          fill: "rgba(0, 0, 0, 0.54)",
+          height: "100%",
+          opacity: 0.95,
+          backgroundColor: "#fff",
+          borderLeft: "1px solid #eee",
         }}
         onClick={onClick}
       />
@@ -91,7 +95,11 @@ function SamplePrevArrow(props) {
       <ArrowBack
         className={className}
         style={{
-          fill: "black",
+          fill: "rgba(0, 0, 0, 0.54)",
+          height: "100%",
+          opacity: 0.95,
+          backgroundColor: "#fff",
+          borderRight: "1px solid #eee",
         }}
         onClick={onClick}
       />

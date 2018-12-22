@@ -28,8 +28,7 @@ const styles = (theme: Theme) =>
       },
     },
     brandDesc: {
-      marginTop: theme.spacing.unit * 4,
-      marginBottom: theme.spacing.unit * 4,
+      padding: theme.spacing.unit * 2,
     },
     brandMedia: {
       height: "auto",
@@ -71,7 +70,7 @@ const Brand = ({ classes }: BrandProps) => (
         return (
           <React.Fragment>
             <div className={classes.brandDesc}>
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h5" gutterBottom>
                 {"Trending Brands"}
               </Typography>
             </div>

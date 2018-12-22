@@ -35,9 +35,9 @@ class Index extends Component<IProps> {
           </title>
         </Head>
         <ImageSlider />
+        <Category />
         <Card />
         <Brand />
-        <Category />
       </Fragment>
     )
   }

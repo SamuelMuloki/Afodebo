@@ -68,7 +68,7 @@ class MyDocument extends Document<IProps> {
             crossOrigin="anonymous"
           />
           <link
-            href="https://fonts.googleapis.com/css?family=Rubik"
+            href="https://fonts.googleapis.com/css?family=Open+Sans"
             rel="stylesheet"
           />
           <link

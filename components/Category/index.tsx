@@ -31,8 +31,7 @@ const styles = (theme: Theme) =>
       },
     },
     categoryDesc: {
-      marginTop: theme.spacing.unit * 4,
-      marginBottom: theme.spacing.unit * 4,
+      padding: theme.spacing.unit * 2,
     },
     categoryMedia: {
       height: "auto",
@@ -69,7 +68,7 @@ const Category = ({ classes }: CategoryProps) => (
         return (
           <React.Fragment>
             <div className={classes.categoryDesc}>
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h5" gutterBottom>
                 {"Shop By Category"}
               </Typography>
             </div>

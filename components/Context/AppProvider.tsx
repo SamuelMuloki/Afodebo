@@ -20,22 +20,24 @@ class AppProvider extends React.Component<{}, AppProviderState> {
     super(props)
     this.state = {
       items: [],
-      total: null,
+      total: 0,
     }
   }
   componentDidMount() {
     const cart = Cookies.getJSON("cart")
 
-    console.log(cart)
-    let total
+    let total = 0
     if (cart) {
       cart.forEach(item => {
-        total = item.saleprice * item.quantity
-        this.setState({
+        total += item.saleprice * item.quantity
+      })
+      this.setState(
+        {
           items: cart,
           total: total,
-        })
-      })
+        },
+        () => console.log(this.state)
+      )
     }
   }
 

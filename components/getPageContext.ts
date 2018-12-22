@@ -7,7 +7,7 @@ import { SheetsRegistry } from "jss"
 const theme = createMuiTheme({
   typography: {
     useNextVariants: true,
-    fontFamily: '"Rubik", sans-serif',
+    fontFamily: '"Open Sans", sans-serif',
   },
 })
 

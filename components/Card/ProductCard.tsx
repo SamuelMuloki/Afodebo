@@ -28,6 +28,7 @@ import { Container } from "../Utils/namespace"
 import SingleCard from "./SingleCard"
 
 type ProductDetails = Container.ProductDetails
+const drawerWidth = 240
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -39,18 +40,15 @@ const styles = (theme: Theme) =>
     },
     productGrid: {
       [theme.breakpoints.up("md")]: {
-        marginLeft: theme.spacing.unit * 20,
+        marginLeft: drawerWidth,
       },
     },
     drawerPaper: {
-      width: "240px",
-      flexShrink: 0,
+      position: "fixed",
+      width: drawerWidth,
     },
     description: {
       marginLeft: "20px",
-    },
-    category: {
-      padding: theme.spacing.unit,
     },
     checkbox: {
       padding: "0 12px",

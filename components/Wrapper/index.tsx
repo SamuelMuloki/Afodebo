@@ -60,7 +60,7 @@ const Index: SFC<WrapperProps> = ({
           className={classNames(
             classes.content,
             drawerOpen && !renderMobileDrawer && classes.ShiftContent,
-            !drawerOpen && classes.drawerPaperClosed
+            !drawerOpen && !renderMobileDrawer && classes.drawerPaperClosed
           )}
         >
           <div className={classes.toolbar} />
