@@ -9,3 +9,9 @@ export function removeSpaces(name: string) {
 export function getOccurrence(array: Array<any>, value: any) {
   return array.filter(v => v === value).length
 }
+
+export function numberWithCommas(x: number) {
+  const parts = x.toString().split(".")
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+  return parts.join(".")
+}
