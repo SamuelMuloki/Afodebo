@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   createStyles,
   ExpansionPanel,
@@ -11,6 +12,7 @@ import {
   withStyles,
   WithStyles,
 } from "@material-ui/core"
+import { deepPurple } from "@material-ui/core/colors"
 import AddToCart from "@material-ui/icons/AddShoppingCart"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import gql from "graphql-tag"
@@ -24,6 +26,7 @@ import { compose } from "recompose"
 import { Dispatch } from "redux"
 import { withContext } from "../components/Context/AppProvider"
 import defaultPage from "../components/hocs/defaultPage"
+import { discount, numberWithCommas } from "../components/Utils/data"
 import { Container } from "../components/Utils/namespace"
 import { MobileDrawer } from "../store/actions"
 
@@ -40,6 +43,19 @@ const styles = (theme: Theme) =>
     },
     extendedIcon: {
       marginRight: theme.spacing.unit,
+    },
+    purpleAvatar: {
+      color: "#fff",
+      backgroundColor: deepPurple[500],
+    },
+    cartSellerWrapper: {
+      display: "flex",
+    },
+    cartSeller: {
+      padding: theme.spacing.unit * 2,
+    },
+    cartOriginalPrice: {
+      textDecoration: "line-through",
     },
   })
 
@@ -82,7 +98,7 @@ class Products extends React.Component<ProductsProps> {
           <Head>
             <title>{` ${product.name} + FREE DELIVERY | afodebo.com`}</title>
           </Head>
-          <Grid container spacing={24}>
+          <Grid container spacing={8}>
             <Grid item xs={12} sm={6} md={6} lg={4}>
               <Typography variant="h5" className={classes.cartProduct} noWrap>
                 {product.name}
@@ -101,9 +117,39 @@ class Products extends React.Component<ProductsProps> {
                 </Typography>
               </Grid>
             </Hidden>
-            <Grid item xs={12} sm={6} md={6} lg={4} zeroMinWidth>
-              <Typography variant="h5" noWrap gutterBottom>
-                {`UGX ${product.saleprice}`}
+            <Grid item xs={12} sm={6} md={6} lg={3} zeroMinWidth>
+              <div className={classes.cartSellerWrapper}>
+                <Avatar className={classes.purpleAvatar}>
+                  {product.sellers.name.substring(0, 2).toUpperCase()}
+                </Avatar>
+                <Typography
+                  variant="body2"
+                  className={classes.cartSeller}
+                  noWrap
+                >
+                  {`Sold by ${product.sellers.name}`}
+                </Typography>
+              </div>
+              <div className={classes.cartSellerWrapper}>
+                <Typography variant="h5" noWrap gutterBottom>
+                  {`UGX ${numberWithCommas(product.saleprice)}`}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  color="secondary"
+                  className={classes.cartOriginalPrice}
+                >
+                  {product.originalprice
+                    ? `UGX ${numberWithCommas(product.originalprice)}`
+                    : ""}
+                </Typography>
+              </div>
+              <Typography variant="body1" color="textSecondary" gutterBottom>
+                {product.originalprice
+                  ? `You save: UGX ${numberWithCommas(
+                      product.originalprice - product.saleprice
+                    )} (${discount(product.saleprice, product.originalprice)}%)`
+                  : ""}
               </Typography>
               <Button
                 fullWidth

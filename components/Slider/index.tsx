@@ -101,7 +101,7 @@ const ImageSlider = ({ data, classes }: ImageSliderProps) => {
                 #eeeeee 33%
               );
               background-size: 1000px 104px;
-              height: 180px;
+              height: 260px;
               position: relative;
             }
             .card-gif-1 {
