@@ -1,7 +1,8 @@
-import { Button, Card, CardActions } from "@material-ui/core"
+import { Avatar, Button, Card, CardActions } from "@material-ui/core"
 import CardActionArea from "@material-ui/core/CardActionArea"
 import CardContent from "@material-ui/core/CardContent"
 import CardMedia from "@material-ui/core/CardMedia"
+import { blueGrey } from "@material-ui/core/colors"
 import {
   createStyles,
   Theme,
@@ -32,6 +33,17 @@ const styles = (theme: Theme) =>
     cardMedia: {
       height: "auto",
     },
+    purpleAvatar: {
+      color: "#fff",
+      backgroundColor: blueGrey[500],
+      fontSize: "1em",
+    },
+    productWrapper: {
+      display: "flex",
+    },
+    productSeller: {
+      padding: theme.spacing.unit,
+    },
   })
 
 interface ProductCardProps extends WithStyles<typeof styles> {
@@ -58,15 +70,28 @@ const SingleCard = ({ classes, images, context }: ProductCardProps) => {
           title={images.name}
         />
         <CardContent>
-          <Typography variant="caption" noWrap>
+          <Typography variant="body1" noWrap>
             {`UGX ${numberWithCommas(images.saleprice)}`}
+          </Typography>
+          <Typography variant="caption" noWrap>
+            {images.brand.name}
           </Typography>
           <Typography variant="subtitle2" color="textSecondary" noWrap>
             {images.slug}
           </Typography>
-          <Typography variant="subtitle2" color="textSecondary" noWrap>
-            {`Sold by ${images.sellers.name}`}
-          </Typography>
+          <div className={classes.productWrapper}>
+            <Avatar className={classes.purpleAvatar}>
+              {images.sellers.name.substring(0, 2).toUpperCase()}
+            </Avatar>
+            <Typography
+              variant="subtitle2"
+              color="textSecondary"
+              className={classes.productSeller}
+              noWrap
+            >
+              {`Sold by ${images.sellers.name}`}
+            </Typography>
+          </div>
         </CardContent>
       </CardActionArea>
       <CardActions>
@@ -83,7 +108,7 @@ const SingleCard = ({ classes, images, context }: ProductCardProps) => {
   )
 }
 
-export default compose(
+export default compose<{}, any>(
   withStyles(styles),
   withContext
 )(SingleCard as any)

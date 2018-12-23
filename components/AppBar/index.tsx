@@ -52,9 +52,9 @@ const styles = (theme: Theme) =>
     search: {
       position: "relative",
       borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
+      backgroundColor: fade(theme.palette.common.black, 0.15),
       "&:hover": {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
+        backgroundColor: fade(theme.palette.common.black, 0.25),
       },
       marginRight: theme.spacing.unit * 2,
       marginLeft: 0,
@@ -220,7 +220,7 @@ class PrimaryAppBar extends React.Component<
     return (
       <React.Fragment>
         <header>
-          <AppBar position="fixed" className={classes.appBar}>
+          <AppBar position="fixed" color="default" className={classes.appBar}>
             <Toolbar>
               <IconButton
                 className={classes.menuButton}

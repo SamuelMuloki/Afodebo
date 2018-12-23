@@ -25,6 +25,7 @@ const styles = (theme: Theme) =>
     },
     cardDesc: {
       padding: theme.spacing.unit * 2,
+      paddingTop: theme.spacing.unit * 4,
     },
   })
 

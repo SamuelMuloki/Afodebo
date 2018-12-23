@@ -12,7 +12,7 @@ import {
   withStyles,
   WithStyles,
 } from "@material-ui/core"
-import { deepPurple } from "@material-ui/core/colors"
+import { blueGrey } from "@material-ui/core/colors"
 import AddToCart from "@material-ui/icons/AddShoppingCart"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import gql from "graphql-tag"
@@ -35,7 +35,7 @@ type ProductDetails = Container.ProductDetails
 const styles = (theme: Theme) =>
   createStyles({
     cartProduct: {
-      margin: theme.spacing.unit,
+      marginTop: theme.spacing.unit,
     },
     Cartheading: {
       fontSize: theme.typography.pxToRem(15),
@@ -46,16 +46,18 @@ const styles = (theme: Theme) =>
     },
     purpleAvatar: {
       color: "#fff",
-      backgroundColor: deepPurple[500],
+      backgroundColor: blueGrey[500],
+      fontSize: "1em",
     },
     cartSellerWrapper: {
       display: "flex",
     },
     cartSeller: {
-      padding: theme.spacing.unit * 2,
+      padding: theme.spacing.unit,
     },
     cartOriginalPrice: {
       textDecoration: "line-through",
+      padding: theme.spacing.unit,
     },
   })
 
@@ -98,8 +100,8 @@ class Products extends React.Component<ProductsProps> {
           <Head>
             <title>{` ${product.name} + FREE DELIVERY | afodebo.com`}</title>
           </Head>
-          <Grid container spacing={8}>
-            <Grid item xs={12} sm={6} md={6} lg={4}>
+          <Grid container spacing={16}>
+            <Grid item xs={12} sm={6} md={6} lg={5}>
               <Typography variant="h5" className={classes.cartProduct} noWrap>
                 {product.name}
               </Typography>
@@ -117,7 +119,7 @@ class Products extends React.Component<ProductsProps> {
                 </Typography>
               </Grid>
             </Hidden>
-            <Grid item xs={12} sm={6} md={6} lg={3} zeroMinWidth>
+            <Grid item xs={12} md={6} lg={3} zeroMinWidth>
               <div className={classes.cartSellerWrapper}>
                 <Avatar className={classes.purpleAvatar}>
                   {product.sellers.name.substring(0, 2).toUpperCase()}
@@ -144,7 +146,7 @@ class Products extends React.Component<ProductsProps> {
                     : ""}
                 </Typography>
               </div>
-              <Typography variant="body1" color="textSecondary" gutterBottom>
+              <Typography variant="body1" color="default" gutterBottom>
                 {product.originalprice
                   ? `You save: UGX ${numberWithCommas(
                       product.originalprice - product.saleprice

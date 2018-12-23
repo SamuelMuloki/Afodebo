@@ -29,6 +29,7 @@ const styles = (theme: Theme) =>
     },
     brandDesc: {
       padding: theme.spacing.unit * 2,
+      paddingTop: theme.spacing.unit * 4,
     },
     brandMedia: {
       height: "auto",

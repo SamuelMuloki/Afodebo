@@ -32,6 +32,7 @@ const styles = (theme: Theme) =>
     },
     categoryDesc: {
       padding: theme.spacing.unit * 2,
+      paddingTop: theme.spacing.unit * 4,
     },
     categoryMedia: {
       height: "auto",

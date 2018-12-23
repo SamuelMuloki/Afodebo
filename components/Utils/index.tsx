@@ -79,8 +79,8 @@ function SampleNextArrow(props) {
           fill: "rgba(0, 0, 0, 0.54)",
           height: "100%",
           opacity: 0.95,
-          backgroundColor: "#fff",
-          borderLeft: "1px solid #eee",
+          backgroundColor: "inherit",
+          borderLeft: "inherit",
         }}
         onClick={onClick}
       />
@@ -98,8 +98,8 @@ function SamplePrevArrow(props) {
           fill: "rgba(0, 0, 0, 0.54)",
           height: "100%",
           opacity: 0.95,
-          backgroundColor: "#fff",
-          borderRight: "1px solid #eee",
+          backgroundColor: "inherit",
+          borderRight: "inherit",
         }}
         onClick={onClick}
       />
