@@ -2,7 +2,6 @@ import { Avatar, Button, Card, CardActions } from "@material-ui/core"
 import CardActionArea from "@material-ui/core/CardActionArea"
 import CardContent from "@material-ui/core/CardContent"
 import CardMedia from "@material-ui/core/CardMedia"
-import { blueGrey } from "@material-ui/core/colors"
 import {
   createStyles,
   Theme,
@@ -35,7 +34,6 @@ const styles = (theme: Theme) =>
     },
     purpleAvatar: {
       color: "#fff",
-      backgroundColor: blueGrey[500],
       fontSize: "1em",
     },
     productWrapper: {

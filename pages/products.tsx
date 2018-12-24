@@ -12,7 +12,6 @@ import {
   withStyles,
   WithStyles,
 } from "@material-ui/core"
-import { blueGrey } from "@material-ui/core/colors"
 import AddToCart from "@material-ui/icons/AddShoppingCart"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import gql from "graphql-tag"
@@ -46,7 +45,6 @@ const styles = (theme: Theme) =>
     },
     purpleAvatar: {
       color: "#fff",
-      backgroundColor: blueGrey[500],
       fontSize: "1em",
     },
     cartSellerWrapper: {
@@ -138,7 +136,7 @@ class Products extends React.Component<ProductsProps> {
                 </Typography>
                 <Typography
                   variant="body1"
-                  color="secondary"
+                  color="default"
                   className={classes.cartOriginalPrice}
                 >
                   {product.originalprice
@@ -172,7 +170,7 @@ class Products extends React.Component<ProductsProps> {
                 </Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                {product.description}
+                <Typography>{product.description}</Typography>
               </ExpansionPanelDetails>
             </ExpansionPanel>
           </div>

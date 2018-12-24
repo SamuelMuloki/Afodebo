@@ -220,7 +220,7 @@ class PrimaryAppBar extends React.Component<
     return (
       <React.Fragment>
         <header>
-          <AppBar position="fixed" color="default" className={classes.appBar}>
+          <AppBar position="fixed" color="primary" className={classes.appBar}>
             <Toolbar>
               <IconButton
                 className={classes.menuButton}

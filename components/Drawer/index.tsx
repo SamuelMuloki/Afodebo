@@ -23,6 +23,7 @@ const styles = (theme: Theme) =>
       position: "fixed",
       whiteSpace: "nowrap",
       width: drawerWidth,
+      backgroundColor: theme.palette.background.default,
       transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
@@ -32,6 +33,7 @@ const styles = (theme: Theme) =>
       position: "relative",
       whiteSpace: "nowrap",
       width: drawerWidth,
+      backgroundColor: theme.palette.background.default,
       transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
@@ -43,7 +45,7 @@ const styles = (theme: Theme) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      width: theme.spacing.unit * 7,
+      width: theme.spacing.unit * 6,
       [theme.breakpoints.up("sm")]: {
         width: theme.spacing.unit * 9,
       },
@@ -95,10 +97,10 @@ class NavigationDrawer extends React.Component<DrawerProps> {
         >
           <React.Fragment>
             <Toolbar>
-              <IconButton color="default" onClick={onClose}>
+              <IconButton onClick={onClose}>
                 <MenuIcon />
               </IconButton>
-              <Typography variant="h6" color="inherit" noWrap>
+              <Typography variant="h6" noWrap>
                 afodebo
               </Typography>
             </Toolbar>
