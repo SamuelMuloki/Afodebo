@@ -1,13 +1,4 @@
-import {
-  Button,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Theme,
-} from "@material-ui/core"
+import { Button, Grid, Theme } from "@material-ui/core"
 import { createStyles } from "@material-ui/core/styles"
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles"
 import { ApolloError } from "apollo-client"
@@ -21,6 +12,7 @@ import { compose } from "recompose"
 import { Dispatch } from "redux"
 import { withContext } from "../components/Context/AppProvider"
 import defaultPage from "../components/hocs/defaultPage"
+import TablePagination from "../components/Table"
 import { ProductDetails } from "../components/Utils/data"
 import { MobileDrawer } from "../store/actions"
 
@@ -86,58 +78,13 @@ class Cart extends Component<CartProps> {
             if (data && data.products) {
               return (
                 <>
-                  <Table className={classes.table}>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Description</TableCell>
-                        <TableCell>Quantity</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {data.products.map(pdt => {
-                        return context.items.map(itm => {
-                          if (itm._id === pdt._id) {
-                            return (
-                              <TableRow key={pdt._id}>
-                                <TableCell component="th" scope="row">
-                                  {
-                                    <img
-                                      className={classes.media}
-                                      src={`http://localhost:1337${
-                                        pdt.image.url
-                                      }`}
-                                    />
-                                  }
-                                </TableCell>
-                                <TableCell>{pdt.name}</TableCell>
-                                <TableCell>{itm.quantity}</TableCell>
-                                <TableCell>
-                                  <Button
-                                    className={classes.button}
-                                    variant="contained"
-                                    color="secondary"
-                                    onClick={() =>
-                                      context.removeItem({
-                                        _id: pdt._id,
-                                      })
-                                    }
-                                  >
-                                    Remove
-                                  </Button>
-                                </TableCell>
-                              </TableRow>
-                            )
-                          }
-                        })
-                      })}
-                    </TableBody>
-                  </Table>
+                  <TablePagination products={data.products} />
                   <Grid container direction="row" justify="flex-end">
                     <Button
                       className={classes.button}
                       variant="contained"
                       color="primary"
+                      disabled={context.items.length ? false : true}
                       onClick={() => Router.push("/checkout", "/checkout")}
                     >
                       Checkout
