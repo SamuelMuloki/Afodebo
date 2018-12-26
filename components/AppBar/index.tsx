@@ -205,7 +205,7 @@ class PrimaryAppBar extends React.Component<
         open={isMobileMenuOpen}
         onClose={this.handleMobileMenuClose}
       >
-        <MenuItem>
+        <MenuItem onClick={() => Router.push("/cart", "/cart")}>
           <IconButton color="inherit">{badge}</IconButton>
           <p>Cart</p>
         </MenuItem>
@@ -253,7 +253,12 @@ class PrimaryAppBar extends React.Component<
               </div>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
-                <IconButton color="inherit">{badge}</IconButton>
+                <IconButton
+                  color="inherit"
+                  onClick={() => Router.push("/cart", "/cart")}
+                >
+                  {badge}
+                </IconButton>
                 <IconButton
                   aria-owns={isMenuOpen ? "material-appbar" : undefined}
                   aria-haspopup="true"
