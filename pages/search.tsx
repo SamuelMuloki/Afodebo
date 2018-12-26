@@ -21,6 +21,7 @@ export const searchQuery = `
     name
     saleprice
     slug
+    inventory
     image {
       url
     }

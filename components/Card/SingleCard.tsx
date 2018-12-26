@@ -13,7 +13,7 @@ import Router from "next/router"
 import React from "react"
 import { compose } from "recompose"
 import { withContext } from "../Context/AppProvider"
-import { numberWithCommas, removeSpaces } from "../Utils/data"
+import { addToCart, numberWithCommas, removeSpaces } from "../Utils/data"
 import { Container } from "../Utils/namespace"
 type ProductDetails = Container.ProductDetails
 
@@ -98,7 +98,9 @@ const SingleCard = ({ classes, images, context }: ProductCardProps) => {
           fullWidth
           variant="text"
           color="primary"
-          onClick={() => context.addItem({ _id: images._id })}
+          onClick={() =>
+            addToCart({ _id: images._id, inventory: images.inventory }, context)
+          }
         >
           Add To Cart
         </Button>

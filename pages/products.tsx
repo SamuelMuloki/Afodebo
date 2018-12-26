@@ -25,7 +25,7 @@ import { compose } from "recompose"
 import { Dispatch } from "redux"
 import { withContext } from "../components/Context/AppProvider"
 import defaultPage from "../components/hocs/defaultPage"
-import { discount, numberWithCommas } from "../components/Utils/data"
+import { addToCart, discount, numberWithCommas } from "../components/Utils/data"
 import { Container } from "../components/Utils/namespace"
 import { MobileDrawer } from "../store/actions"
 
@@ -151,7 +151,12 @@ class Products extends React.Component<ProductsProps> {
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={() => context.addItem({ _id: product._id })}
+                onClick={() =>
+                  addToCart(
+                    { _id: product._id, inventory: product.inventory },
+                    context
+                  )
+                }
               >
                 <AddToCart className={classes.extendedIcon} />
                 ADD TO CART
@@ -264,6 +269,7 @@ const GET_IMAGE_GALLERY = gql`
       originalprice
       description
       sku
+      inventory
       sellers {
         name
       }

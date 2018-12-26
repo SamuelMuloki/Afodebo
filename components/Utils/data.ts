@@ -19,8 +19,8 @@ export function numberWithCommas(x: number) {
   return parts.join(".")
 }
 
-export function addToCart(item: ProductDetails) {
+export function addToCart(item: Partial<ProductDetails>, context: any) {
   if (item && item.inventory !== 0) {
-    this.props.context.addItem(item)
+    context.addItem(item)
   }
 }
