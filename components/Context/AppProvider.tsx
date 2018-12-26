@@ -3,14 +3,12 @@ import React from "react"
 
 export interface AppProviderState {
   items: any
-  total: any
 }
 
 export interface AppContextInterface {
   items: any
   addItem: any
   removeItem: any
-  total: any
 }
 
 const AppContext = React.createContext<AppContextInterface | null>(null)
@@ -20,24 +18,13 @@ class AppProvider extends React.Component<{}, AppProviderState> {
     super(props)
     this.state = {
       items: [],
-      total: 0,
     }
   }
   componentDidMount() {
     const cart = Cookies.getJSON("cart")
 
-    let total = 0
     if (cart) {
-      cart.forEach(item => {
-        total += item.saleprice * item.quantity
-      })
-      this.setState(
-        {
-          items: cart,
-          total: total,
-        },
-        () => console.log(this.state)
-      )
+      this.setState({ items: cart }, () => console.log(this.state))
     }
   }
 
@@ -50,7 +37,6 @@ class AppProvider extends React.Component<{}, AppProviderState> {
       this.setState(
         {
           items: this.state.items.concat(item),
-          total: this.state.total + item.saleprice,
         },
         () => Cookies.set("cart", this.state.items)
       )
@@ -65,7 +51,6 @@ class AppProvider extends React.Component<{}, AppProviderState> {
                   })
                 : item
           ),
-          total: this.state.total + item.saleprice,
         },
         () => Cookies.set("cart", this.state.items)
       )
@@ -86,7 +71,6 @@ class AppProvider extends React.Component<{}, AppProviderState> {
                   })
                 : item
           ),
-          total: this.state.total - item.saleprice,
         },
         () => Cookies.set("cart", this.state.items)
       )
@@ -95,12 +79,8 @@ class AppProvider extends React.Component<{}, AppProviderState> {
       const index = items.findIndex(i => i._id === newItem._id)
 
       items.splice(index, 1)
-      this.setState(
-        {
-          items: items,
-          total: this.state.total - item.saleprice,
-        },
-        () => Cookies.set("cart", this.state.items)
+      this.setState({ items: items }, () =>
+        Cookies.set("cart", this.state.items)
       )
     }
   }
@@ -111,7 +91,6 @@ class AppProvider extends React.Component<{}, AppProviderState> {
           items: this.state.items,
           addItem: this.addItem,
           removeItem: this.removeItem,
-          total: this.state.total,
         }}
       >
         {this.props.children}

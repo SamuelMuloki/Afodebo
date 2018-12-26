@@ -72,7 +72,7 @@ const SingleCard = ({ classes, images, context }: ProductCardProps) => {
           <Typography variant="body1" noWrap>
             {`UGX ${numberWithCommas(images.saleprice)}`}
           </Typography>
-          <Typography variant="caption" noWrap>
+          <Typography variant="body2" noWrap>
             {images.brand.name}
           </Typography>
           <Typography variant="subtitle2" color="textSecondary" noWrap>
@@ -98,7 +98,7 @@ const SingleCard = ({ classes, images, context }: ProductCardProps) => {
           fullWidth
           variant="text"
           color="primary"
-          onClick={() => context.addItem(images)}
+          onClick={() => context.addItem({ _id: images._id })}
         >
           Add To Cart
         </Button>

@@ -23,6 +23,7 @@ export namespace Container {
     sku: string
     saleprice: number
     originalprice: number
+    inventory: number
     slug: string
     image: [{ url: string }] & { url: string }
     sale: boolean

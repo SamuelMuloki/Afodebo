@@ -299,13 +299,13 @@ class PrimaryAppBar extends React.Component<
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps && newProps.context && newProps.context.items) {
+    if (newProps && newProps.context.items) {
       let quantity = 0
       newProps.context.items.map(value => {
         quantity += value.quantity
         return quantity
       })
-      this.setState({ items: newProps.context.items, cartQuantity: quantity })
+      this.setState({ cartQuantity: quantity })
     }
   }
 }

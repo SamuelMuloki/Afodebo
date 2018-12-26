@@ -71,15 +71,10 @@ export interface ProductsProps extends WithStyles<typeof styles> {
 }
 
 class Products extends React.Component<ProductsProps> {
-  addItem = (item: any) => {
-    if (item) {
-      this.props.context.addItem(item)
-    }
-  }
-
   render() {
     const {
       data: { loading, error, product },
+      context,
       // router,
       // isAuthenticated,
       classes,
@@ -156,7 +151,7 @@ class Products extends React.Component<ProductsProps> {
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={() => this.addItem(product)}
+                onClick={() => context.addItem({ _id: product._id })}
               >
                 <AddToCart className={classes.extendedIcon} />
                 ADD TO CART
