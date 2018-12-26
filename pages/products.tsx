@@ -46,6 +46,7 @@ const styles = (theme: Theme) =>
     purpleAvatar: {
       color: "#fff",
       fontSize: "1em",
+      background: "slateblue",
     },
     cartSellerWrapper: {
       display: "flex",
@@ -109,7 +110,7 @@ class Products extends React.Component<ProductsProps> {
                 showPlayButton={false}
               />
             </Grid>
-            <Hidden smDown>
+            <Hidden mdDown>
               <Grid item lg={4} md={6} zeroMinWidth>
                 <Typography variant="h6">About this Product</Typography>
                 <Typography variant="body2" gutterBottom>
@@ -136,7 +137,7 @@ class Products extends React.Component<ProductsProps> {
                 </Typography>
                 <Typography
                   variant="body1"
-                  color="default"
+                  color="error"
                   className={classes.cartOriginalPrice}
                 >
                   {product.originalprice

@@ -35,6 +35,7 @@ const styles = (theme: Theme) =>
     purpleAvatar: {
       color: "#fff",
       fontSize: "1em",
+      background: "slateblue",
     },
     productWrapper: {
       display: "flex",
