@@ -50,8 +50,8 @@ const MediaCard = ({ data, classes }: CardProps) => {
         <div className={classes.cardSlider}>
           <Slider
             {...settings}
-            slidesToShow={4}
-            slidesToScroll={4}
+            slidesToShow={5}
+            slidesToScroll={5}
             autoplay={false}
             responsive={cardResponsive}
           >

@@ -79,8 +79,8 @@ const Brand = ({ classes }: BrandProps) => (
               <Slider
                 {...settings}
                 autoplay={false}
-                slidesToShow={4}
-                slidesToScroll={4}
+                slidesToShow={5}
+                slidesToScroll={5}
                 responsive={cardResponsive}
               >
                 {data.brands.map((brand, index) => (

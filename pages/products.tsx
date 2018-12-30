@@ -12,7 +12,6 @@ import {
   withStyles,
   WithStyles,
 } from "@material-ui/core"
-import AddToCart from "@material-ui/icons/AddShoppingCart"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import gql from "graphql-tag"
 import Head from "next/head"
@@ -40,13 +39,10 @@ const styles = (theme: Theme) =>
       fontSize: theme.typography.pxToRem(15),
       fontWeight: theme.typography.fontWeightRegular,
     },
-    extendedIcon: {
-      marginRight: theme.spacing.unit,
-    },
     purpleAvatar: {
       color: "#fff",
       fontSize: "1em",
-      background: "slateblue",
+      background: "#232f3e",
     },
     cartSellerWrapper: {
       display: "flex",
@@ -132,7 +128,7 @@ class Products extends React.Component<ProductsProps> {
                 </Typography>
                 <Typography
                   variant="body1"
-                  color="error"
+                  color="textSecondary"
                   className={classes.cartOriginalPrice}
                 >
                   {product.originalprice
@@ -148,9 +144,8 @@ class Products extends React.Component<ProductsProps> {
                   : ""}
               </Typography>
               <Button
-                fullWidth
                 variant="contained"
-                color="primary"
+                color="secondary"
                 onClick={() =>
                   addToCart(
                     { _id: product._id, inventory: product.inventory },
@@ -158,8 +153,7 @@ class Products extends React.Component<ProductsProps> {
                   )
                 }
               >
-                <AddToCart className={classes.extendedIcon} />
-                ADD TO CART
+                Add To Cart
               </Button>
             </Grid>
           </Grid>
