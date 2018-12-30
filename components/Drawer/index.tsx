@@ -23,7 +23,7 @@ const styles = (theme: Theme) =>
       position: "fixed",
       whiteSpace: "nowrap",
       width: drawerWidth,
-      backgroundColor: theme.palette.background.default,
+      backgroundColor: theme.palette.background.paper,
       transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
@@ -33,14 +33,14 @@ const styles = (theme: Theme) =>
       position: "relative",
       whiteSpace: "nowrap",
       width: drawerWidth,
-      backgroundColor: theme.palette.background.default,
+      backgroundColor: theme.palette.background.paper,
       transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
       }),
     },
     drawerPaperClose: {
-      overflowX: "hidden",
+      visibility: "hidden",
       transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,

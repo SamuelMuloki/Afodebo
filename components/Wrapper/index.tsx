@@ -17,7 +17,7 @@ const styles = (theme: Theme) =>
     },
     content: {
       flexGrow: 1,
-      backgroundColor: theme.palette.background.default,
+      backgroundColor: theme.palette.background.paper,
       padding: theme.spacing.unit,
     },
     ShiftContent: {
@@ -31,9 +31,6 @@ const styles = (theme: Theme) =>
       }),
     },
     drawerPaperClosed: {
-      [theme.breakpoints.up("md")]: {
-        marginLeft: theme.spacing.unit * 9,
-      },
       transition: theme.transitions.create("margin", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
