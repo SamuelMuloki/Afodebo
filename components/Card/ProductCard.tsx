@@ -147,7 +147,7 @@ class ProductCard extends React.Component<ProductCardProps, ProductCardState> {
                 <Typography variant="body1">{value}</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                <FormControl component="fieldset">
+                <FormControl>
                   <FormGroup>
                     {this.unfilteredData
                       .filter(

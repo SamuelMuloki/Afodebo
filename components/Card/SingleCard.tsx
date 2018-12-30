@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, CardActions } from "@material-ui/core"
+import { Avatar, Card } from "@material-ui/core"
 import CardActionArea from "@material-ui/core/CardActionArea"
 import CardContent from "@material-ui/core/CardContent"
 import CardMedia from "@material-ui/core/CardMedia"
@@ -12,8 +12,7 @@ import Typography from "@material-ui/core/Typography"
 import Router from "next/router"
 import React from "react"
 import { compose } from "recompose"
-import { withContext } from "../Context/AppProvider"
-import { addToCart, numberWithCommas, removeSpaces } from "../Utils/data"
+import { numberWithCommas, removeSpaces } from "../Utils/data"
 import { Container } from "../Utils/namespace"
 type ProductDetails = Container.ProductDetails
 
@@ -22,6 +21,7 @@ const styles = (theme: Theme) =>
     card: {
       boxShadow: "none",
       margin: theme.spacing.unit,
+      background: theme.palette.background.paper,
     },
     button: {
       margin: theme.spacing.unit,
@@ -35,7 +35,7 @@ const styles = (theme: Theme) =>
     purpleAvatar: {
       color: "#fff",
       fontSize: "1em",
-      background: "slateblue",
+      background: "#232f3e",
     },
     productWrapper: {
       display: "flex",
@@ -51,7 +51,7 @@ interface ProductCardProps extends WithStyles<typeof styles> {
   context: any
 }
 
-const SingleCard = ({ classes, images, context }: ProductCardProps) => {
+const SingleCard = ({ classes, images }: ProductCardProps) => {
   return (
     <Card className={classes.card}>
       <CardActionArea
@@ -93,23 +93,8 @@ const SingleCard = ({ classes, images, context }: ProductCardProps) => {
           </div>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Button
-          fullWidth
-          variant="text"
-          color="primary"
-          onClick={() =>
-            addToCart({ _id: images._id, inventory: images.inventory }, context)
-          }
-        >
-          Add To Cart
-        </Button>
-      </CardActions>
     </Card>
   )
 }
 
-export default compose<{}, any>(
-  withStyles(styles),
-  withContext
-)(SingleCard as any)
+export default compose<{}, any>(withStyles(styles))(SingleCard as any)
