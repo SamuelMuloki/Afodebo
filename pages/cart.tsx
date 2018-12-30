@@ -1,4 +1,4 @@
-import { Button, Grid, Theme } from "@material-ui/core"
+import { Button, Grid, Theme, Typography } from "@material-ui/core"
 import { createStyles } from "@material-ui/core/styles"
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles"
 import { ApolloError } from "apollo-client"
@@ -76,7 +76,7 @@ class Cart extends Component<CartProps> {
             if (error) return "Error loading products"
 
             if (data && data.products) {
-              return (
+              return context.items.length ? (
                 <>
                   <TablePagination products={data.products} />
                   <Grid container direction="row" justify="flex-end">
@@ -84,10 +84,28 @@ class Cart extends Component<CartProps> {
                       className={classes.button}
                       variant="contained"
                       color="primary"
-                      disabled={context.items.length ? false : true}
                       onClick={() => Router.push("/checkout", "/checkout")}
                     >
                       Checkout
+                    </Button>
+                  </Grid>
+                </>
+              ) : (
+                <>
+                  <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="center"
+                  >
+                    <Typography>There are no Items in the cart </Typography>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      className={classes.button}
+                      onClick={() => Router.push("/")}
+                    >
+                      Continue Shopping
                     </Button>
                   </Grid>
                 </>

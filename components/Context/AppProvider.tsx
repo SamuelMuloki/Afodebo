@@ -38,21 +38,20 @@ class AppProvider extends React.Component<{}, AppProviderState> {
         {
           items: this.state.items.concat(item),
         },
-        () => Cookies.set("cart", this.state.items)
+        () => Cookies.set("cart", this.state.items, { expires: 365 })
       )
     } else {
       this.setState(
         {
-          items: this.state.items.map(
-            item =>
-              item._id === newItem._id
-                ? Object.assign({}, item, {
-                    quantity: item.quantity + 1,
-                  })
-                : item
+          items: this.state.items.map(item =>
+            item._id === newItem._id
+              ? Object.assign({}, item, {
+                  quantity: item.quantity + 1,
+                })
+              : item
           ),
         },
-        () => Cookies.set("cart", this.state.items)
+        () => Cookies.set("cart", this.state.items, { expires: 365 })
       )
     }
   }
@@ -63,16 +62,15 @@ class AppProvider extends React.Component<{}, AppProviderState> {
     if (newItem.quantity > 1) {
       this.setState(
         {
-          items: this.state.items.map(
-            item =>
-              item._id === newItem._id
-                ? Object.assign({}, item, {
-                    quantity: item.quantity - 1,
-                  })
-                : item
+          items: this.state.items.map(item =>
+            item._id === newItem._id
+              ? Object.assign({}, item, {
+                  quantity: item.quantity - 1,
+                })
+              : item
           ),
         },
-        () => Cookies.set("cart", this.state.items)
+        () => Cookies.set("cart", this.state.items, { expires: 365 })
       )
     } else {
       const items = [...this.state.items]
@@ -80,7 +78,7 @@ class AppProvider extends React.Component<{}, AppProviderState> {
 
       items.splice(index, 1)
       this.setState({ items: items }, () =>
-        Cookies.set("cart", this.state.items)
+        Cookies.set("cart", this.state.items, { expires: 365 })
       )
     }
   }

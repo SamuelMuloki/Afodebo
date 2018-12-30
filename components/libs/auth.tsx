@@ -36,8 +36,8 @@ export const setToken = token => {
   if (!process.browser) {
     return
   }
-  Cookies.set("username", token.user.username)
-  Cookies.set("jwt", token.jwt)
+  Cookies.set("username", token.user.username, { expires: 365 })
+  Cookies.set("jwt", token.jwt, { expires: 365 })
 
   if (Cookies.get("username")) {
     Router.push("/")

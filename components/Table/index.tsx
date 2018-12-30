@@ -12,7 +12,6 @@ import TableCell from "@material-ui/core/TableCell"
 import TableFooter from "@material-ui/core/TableFooter"
 import TablePagination from "@material-ui/core/TablePagination"
 import TableRow from "@material-ui/core/TableRow"
-import Router from "next/router"
 import React from "react"
 import { compose } from "recompose"
 import { withContext } from "../Context/AppProvider"
@@ -55,8 +54,8 @@ class PaginationTable extends React.Component<
   PaginationTableState
 > {
   state = {
-    rows: this.props.products.sort(
-      (a, b) => (a.saleprice < b.saleprice ? -1 : 1)
+    rows: this.props.products.sort((a, b) =>
+      a.saleprice < b.saleprice ? -1 : 1
     ),
     page: 0,
     rowsPerPage: 5,
@@ -116,8 +115,10 @@ class PaginationTable extends React.Component<
                             <Typography>{itm.quantity}</Typography>
                           </TableCell>
                           <TableCell>
-                            <Typography>
-                              {numberWithCommas(pdt.saleprice * itm.quantity)}
+                            <Typography noWrap>
+                              {`UGX ${numberWithCommas(
+                                pdt.saleprice * itm.quantity
+                              )}`}
                             </Typography>
                           </TableCell>
                           <TableCell>
@@ -154,33 +155,19 @@ class PaginationTable extends React.Component<
                   <TableCell colSpan={6} />
                 </TableRow>
               )}
-              {cartTotal > 0 ? (
+              {
                 <TableRow>
                   <TableCell rowSpan={3} />
                   <TableCell colSpan={2}>
                     <Typography>Total</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>{numberWithCommas(cartTotal)}</Typography>
+                    <Typography noWrap>{`UGX ${numberWithCommas(
+                      cartTotal
+                    )}`}</Typography>
                   </TableCell>
                 </TableRow>
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={3}>
-                    <Typography>There are no Items in the cart </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      className={classes.button}
-                      onClick={() => Router.push("/")}
-                    >
-                      Continue Shopping
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              )}
+              }
             </TableBody>
             <TableFooter>
               <TableRow>

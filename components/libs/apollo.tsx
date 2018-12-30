@@ -6,6 +6,4 @@ const config = {
     uri: "http://localhost:1337/graphql",
   }),
 }
-const apolloData = withData(config)
-
-export default apolloData
+export const apolloData = withData(config)
