@@ -1,3 +1,4 @@
+import { indigo } from "@material-ui/core/colors"
 import {
   createGenerateClassName,
   createMuiTheme,
@@ -8,6 +9,12 @@ const theme = createMuiTheme({
   typography: {
     useNextVariants: true,
     fontFamily: '"Open Sans", sans-serif',
+  },
+  palette: {
+    primary: {
+      main: "#232f3e",
+    },
+    secondary: indigo,
   },
 })
 
