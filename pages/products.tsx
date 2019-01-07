@@ -2,18 +2,15 @@ import {
   Avatar,
   Button,
   createStyles,
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
+  Divider,
   Grid,
-  Hidden,
   Theme,
   Typography,
   withStyles,
   WithStyles,
 } from "@material-ui/core"
+import withWidth, { isWidthUp, WithWidth } from "@material-ui/core/withWidth"
 import ShoppingBasket from "@material-ui/icons/AddShoppingCartOutlined"
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import gql from "graphql-tag"
 import Head from "next/head"
 import { withRouter } from "next/router"
@@ -25,6 +22,7 @@ import { compose } from "recompose"
 import { Dispatch } from "redux"
 import { withContext } from "../components/Context/AppProvider"
 import defaultPage from "../components/hocs/defaultPage"
+import Tab from "../components/Tab"
 import { addToCart, discount, numberWithCommas } from "../components/Utils/data"
 import { Container } from "../components/Utils/namespace"
 import { MobileDrawer } from "../store/actions"
@@ -34,7 +32,7 @@ type ProductDetails = Container.ProductDetails
 const styles = (theme: Theme) =>
   createStyles({
     cartProduct: {
-      marginTop: theme.spacing.unit,
+      marginTop: theme.spacing.unit * 4,
     },
     Cartheading: {
       fontSize: theme.typography.pxToRem(15),
@@ -51,14 +49,19 @@ const styles = (theme: Theme) =>
     cartSeller: {
       padding: theme.spacing.unit,
     },
+    cartPrice: {
+      fontSize: "large",
+      fontWeight: 700,
+    },
     cartOriginalPrice: {
       textDecoration: "line-through",
       padding: theme.spacing.unit,
+      fontSize: "small",
     },
     cartContent: {
       [theme.breakpoints.up("lg")]: {
-        marginLeft: theme.spacing.unit * 4,
-        marginRight: theme.spacing.unit * 4,
+        marginLeft: theme.spacing.unit * 12,
+        marginRight: theme.spacing.unit * 12,
       },
     },
     cartButton: {
@@ -69,7 +72,7 @@ const styles = (theme: Theme) =>
     },
   })
 
-export interface ProductsProps extends WithStyles<typeof styles> {
+export interface ProductsProps extends WithStyles<typeof styles>, WithWidth {
   data: {
     loading: any
     error: string
@@ -87,6 +90,7 @@ class Products extends React.Component<ProductsProps> {
       // router,
       // isAuthenticated,
       classes,
+      width,
     } = this.props
     if (error) return "Error loading Products"
 
@@ -105,26 +109,37 @@ class Products extends React.Component<ProductsProps> {
           </Head>
           <div className={classes.cartContent}>
             <Grid container spacing={16}>
-              <Grid item xs={12} sm={8} md={8} lg={5}>
-                <Typography variant="h5">{product.name}</Typography>
+              <Grid item xs={12} sm={8} md={8} lg={6}>
                 <ImageGallery
                   items={images}
                   showFullscreenButton={false}
                   showPlayButton={false}
                   showNav={false}
+                  slideOnThumbnailHover={true}
+                  showThumbnails={isWidthUp("lg", width) ? true : false}
                 />
               </Grid>
-              <Hidden mdDown>
-                <Grid item lg={4} md={6} zeroMinWidth>
-                  <Typography variant="h6">About this Product</Typography>
-                  <Typography variant="body2" className={classes.cartButton}>
-                    {product.description}
-                  </Typography>
-                </Grid>
-              </Hidden>
-              <Grid item xs={12} md={4} sm={4} lg={3} zeroMinWidth>
+              <Grid item xs={12} md={4} sm={4} lg={6} zeroMinWidth>
+                <Typography variant="h6">{product.name}</Typography>
                 <div className={classes.cartSellerWrapper}>
-                  <Typography variant="h5" noWrap gutterBottom>
+                  <Avatar className={classes.purpleAvatar}>
+                    {product.sellers.name.substring(0, 2).toUpperCase()}
+                  </Avatar>
+                  <Typography
+                    variant="body2"
+                    className={classes.cartSeller}
+                    noWrap
+                  >
+                    {`Sold by ${product.sellers.name}`}
+                  </Typography>
+                </div>
+                <div className={classes.cartSellerWrapper}>
+                  <Typography
+                    variant="h5"
+                    className={classes.cartPrice}
+                    noWrap
+                    gutterBottom
+                  >
                     {`UGX ${numberWithCommas(product.saleprice)}`}
                   </Typography>
                   <Typography
@@ -147,23 +162,11 @@ class Products extends React.Component<ProductsProps> {
                       )}%)`
                     : ""}
                 </Typography>
-                <div className={classes.cartSellerWrapper}>
-                  <Avatar className={classes.purpleAvatar}>
-                    {product.sellers.name.substring(0, 2).toUpperCase()}
-                  </Avatar>
-                  <Typography
-                    variant="body2"
-                    className={classes.cartSeller}
-                    noWrap
-                  >
-                    {`Sold by ${product.sellers.name}`}
-                  </Typography>
-                </div>
+                <Divider />
                 <Button
                   variant="contained"
                   color="secondary"
                   className={classes.cartButton}
-                  fullWidth
                   onClick={() =>
                     addToCart(
                       { _id: product._id, inventory: product.inventory },
@@ -177,16 +180,7 @@ class Products extends React.Component<ProductsProps> {
               </Grid>
             </Grid>
             <div className={classes.cartProduct}>
-              <ExpansionPanel>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography className={classes.Cartheading}>
-                    About this Product
-                  </Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                  <Typography>{product.description}</Typography>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
+              <Tab description={product.description} specs="specs" />
             </div>
           </div>
         </React.Fragment>
@@ -270,7 +264,7 @@ class Products extends React.Component<ProductsProps> {
   }
 
   componentDidMount() {
-    this.props.renderCategoryDrawer()
+    this.props.renderCategoryDrawer("products")
   }
 }
 
@@ -310,6 +304,7 @@ const enhancer = compose(
   withRouter,
   withStyles(styles),
   defaultPage,
+  withWidth(),
   withContext,
   graphql(GET_IMAGE_GALLERY, {
     options: (props: { router: { query: { id: string } } }) => {
