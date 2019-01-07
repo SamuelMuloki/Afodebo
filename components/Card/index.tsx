@@ -27,6 +27,9 @@ const styles = (theme: Theme) =>
       padding: theme.spacing.unit * 2,
       paddingTop: theme.spacing.unit * 4,
     },
+    cardHeading: {
+      fontWeight: 700,
+    },
   })
 
 export interface CardProps extends WithStyles<typeof styles> {
@@ -43,7 +46,7 @@ const MediaCard = ({ data, classes }: CardProps) => {
     return (
       <React.Fragment>
         <div className={classes.cardDesc}>
-          <Typography variant="h5" gutterBottom>
+          <Typography className={classes.cardHeading} variant="h5" gutterBottom>
             {"On Sale"}
           </Typography>
         </div>

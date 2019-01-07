@@ -1,4 +1,3 @@
-import { indigo } from "@material-ui/core/colors"
 import {
   createGenerateClassName,
   createMuiTheme,
@@ -14,7 +13,9 @@ const theme = createMuiTheme({
     primary: {
       main: "#232f3e",
     },
-    secondary: indigo,
+    secondary: {
+      main: "#4285f4",
+    },
   },
 })
 

@@ -34,6 +34,9 @@ const styles = (theme: Theme) =>
     brandMedia: {
       height: "auto",
     },
+    cardHeading: {
+      fontWeight: 700,
+    },
   })
 
 const GET_BRANDS = gql`
@@ -71,7 +74,11 @@ const Brand = ({ classes }: BrandProps) => (
         return (
           <React.Fragment>
             <div className={classes.brandDesc}>
-              <Typography variant="h5" gutterBottom>
+              <Typography
+                className={classes.cardHeading}
+                variant="h5"
+                gutterBottom
+              >
                 {"Trending Brands"}
               </Typography>
             </div>

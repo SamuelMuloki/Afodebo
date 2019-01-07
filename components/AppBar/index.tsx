@@ -52,9 +52,9 @@ const styles = (theme: Theme) =>
     search: {
       position: "relative",
       borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.black, 0.15),
+      backgroundColor: fade(theme.palette.common.white, 0.15),
       "&:hover": {
-        backgroundColor: fade(theme.palette.common.black, 0.25),
+        backgroundColor: fade(theme.palette.common.white, 0.25),
       },
       marginRight: theme.spacing.unit * 2,
       marginLeft: 0,
@@ -166,7 +166,7 @@ class PrimaryAppBar extends React.Component<
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
     const badge =
       cartQuantity !== 0 ? (
-        <Badge badgeContent={cartQuantity} color="secondary">
+        <Badge badgeContent={cartQuantity} color="error">
           <ShoppingCart />
         </Badge>
       ) : (

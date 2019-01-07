@@ -37,6 +37,9 @@ const styles = (theme: Theme) =>
     categoryMedia: {
       height: "auto",
     },
+    cardHeading: {
+      fontWeight: 700,
+    },
   })
 
 const GET_BRANDS = gql`
@@ -69,7 +72,11 @@ const Category = ({ classes }: CategoryProps) => (
         return (
           <React.Fragment>
             <div className={classes.categoryDesc}>
-              <Typography variant="h5" gutterBottom>
+              <Typography
+                variant="h5"
+                className={classes.cardHeading}
+                gutterBottom
+              >
                 {"Shop By Category"}
               </Typography>
             </div>

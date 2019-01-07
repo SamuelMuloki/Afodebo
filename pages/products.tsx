@@ -12,6 +12,7 @@ import {
   withStyles,
   WithStyles,
 } from "@material-ui/core"
+import ShoppingBasket from "@material-ui/icons/AddShoppingCartOutlined"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import gql from "graphql-tag"
 import Head from "next/head"
@@ -54,6 +55,18 @@ const styles = (theme: Theme) =>
       textDecoration: "line-through",
       padding: theme.spacing.unit,
     },
+    cartContent: {
+      [theme.breakpoints.up("lg")]: {
+        marginLeft: theme.spacing.unit * 4,
+        marginRight: theme.spacing.unit * 4,
+      },
+    },
+    cartButton: {
+      margin: theme.spacing.unit,
+    },
+    extendedIcon: {
+      marginRight: theme.spacing.unit,
+    },
   })
 
 export interface ProductsProps extends WithStyles<typeof styles> {
@@ -90,84 +103,91 @@ class Products extends React.Component<ProductsProps> {
           <Head>
             <title>{` ${product.name} + FREE DELIVERY | afodebo.com`}</title>
           </Head>
-          <Grid container spacing={16}>
-            <Grid item xs={12} sm={6} md={6} lg={5}>
-              <Typography variant="h5" className={classes.cartProduct} noWrap>
-                {product.name}
-              </Typography>
-              <ImageGallery
-                items={images}
-                showFullscreenButton={false}
-                showPlayButton={false}
-              />
-            </Grid>
-            <Hidden mdDown>
-              <Grid item lg={4} md={6} zeroMinWidth>
-                <Typography variant="h6">About this Product</Typography>
-                <Typography variant="body2" gutterBottom>
-                  {product.description}
-                </Typography>
+          <div className={classes.cartContent}>
+            <Grid container spacing={16}>
+              <Grid item xs={12} sm={8} md={8} lg={5}>
+                <Typography variant="h5">{product.name}</Typography>
+                <ImageGallery
+                  items={images}
+                  showFullscreenButton={false}
+                  showPlayButton={false}
+                  showNav={false}
+                />
               </Grid>
-            </Hidden>
-            <Grid item xs={12} md={6} lg={3} zeroMinWidth>
-              <div className={classes.cartSellerWrapper}>
-                <Avatar className={classes.purpleAvatar}>
-                  {product.sellers.name.substring(0, 2).toUpperCase()}
-                </Avatar>
-                <Typography
-                  variant="body2"
-                  className={classes.cartSeller}
-                  noWrap
-                >
-                  {`Sold by ${product.sellers.name}`}
-                </Typography>
-              </div>
-              <div className={classes.cartSellerWrapper}>
-                <Typography variant="h5" noWrap gutterBottom>
-                  {`UGX ${numberWithCommas(product.saleprice)}`}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  color="textSecondary"
-                  className={classes.cartOriginalPrice}
-                >
+              <Hidden mdDown>
+                <Grid item lg={4} md={6} zeroMinWidth>
+                  <Typography variant="h6">About this Product</Typography>
+                  <Typography variant="body2" className={classes.cartButton}>
+                    {product.description}
+                  </Typography>
+                </Grid>
+              </Hidden>
+              <Grid item xs={12} md={4} sm={4} lg={3} zeroMinWidth>
+                <div className={classes.cartSellerWrapper}>
+                  <Typography variant="h5" noWrap gutterBottom>
+                    {`UGX ${numberWithCommas(product.saleprice)}`}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    color="textSecondary"
+                    className={classes.cartOriginalPrice}
+                  >
+                    {product.originalprice
+                      ? `UGX ${numberWithCommas(product.originalprice)}`
+                      : ""}
+                  </Typography>
+                </div>
+                <Typography variant="body1" color="default" gutterBottom>
                   {product.originalprice
-                    ? `UGX ${numberWithCommas(product.originalprice)}`
+                    ? `You save: UGX ${numberWithCommas(
+                        product.originalprice - product.saleprice
+                      )} (${discount(
+                        product.saleprice,
+                        product.originalprice
+                      )}%)`
                     : ""}
                 </Typography>
-              </div>
-              <Typography variant="body1" color="default" gutterBottom>
-                {product.originalprice
-                  ? `You save: UGX ${numberWithCommas(
-                      product.originalprice - product.saleprice
-                    )} (${discount(product.saleprice, product.originalprice)}%)`
-                  : ""}
-              </Typography>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() =>
-                  addToCart(
-                    { _id: product._id, inventory: product.inventory },
-                    context
-                  )
-                }
-              >
-                Add To Cart
-              </Button>
+                <div className={classes.cartSellerWrapper}>
+                  <Avatar className={classes.purpleAvatar}>
+                    {product.sellers.name.substring(0, 2).toUpperCase()}
+                  </Avatar>
+                  <Typography
+                    variant="body2"
+                    className={classes.cartSeller}
+                    noWrap
+                  >
+                    {`Sold by ${product.sellers.name}`}
+                  </Typography>
+                </div>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  className={classes.cartButton}
+                  fullWidth
+                  onClick={() =>
+                    addToCart(
+                      { _id: product._id, inventory: product.inventory },
+                      context
+                    )
+                  }
+                >
+                  <ShoppingBasket className={classes.extendedIcon} />
+                  Add To Cart
+                </Button>
+              </Grid>
             </Grid>
-          </Grid>
-          <div className={classes.cartProduct}>
-            <ExpansionPanel>
-              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography className={classes.Cartheading}>
-                  About this Product
-                </Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <Typography>{product.description}</Typography>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
+            <div className={classes.cartProduct}>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.Cartheading}>
+                    About this Product
+                  </Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Typography>{product.description}</Typography>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            </div>
           </div>
         </React.Fragment>
       )
