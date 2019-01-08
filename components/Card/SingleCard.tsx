@@ -88,7 +88,7 @@ const SingleCard = ({ classes, images }: ProductCardProps) => {
               className={classes.productSeller}
               noWrap
             >
-              {`Sold by ${images.sellers.name}`}
+              {images.sellers.name}
             </Typography>
           </div>
         </CardContent>

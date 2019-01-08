@@ -17,7 +17,7 @@ const styles = (theme: Theme) =>
     },
     content: {
       flexGrow: 1,
-      backgroundColor: theme.palette.background.default,
+      backgroundColor: theme.palette.background.paper,
       padding: theme.spacing.unit,
     },
     ShiftContent: {

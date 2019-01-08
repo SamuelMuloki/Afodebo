@@ -23,7 +23,7 @@ import { Dispatch } from "redux"
 import { withContext } from "../components/Context/AppProvider"
 import defaultPage from "../components/hocs/defaultPage"
 import Tab from "../components/Tab"
-import { addToCart, discount, numberWithCommas } from "../components/Utils/data"
+import { addToCart, numberWithCommas } from "../components/Utils/data"
 import { Container } from "../components/Utils/namespace"
 import { MobileDrawer } from "../store/actions"
 
@@ -49,14 +49,9 @@ const styles = (theme: Theme) =>
     cartSeller: {
       padding: theme.spacing.unit,
     },
-    cartPrice: {
-      fontSize: "large",
-      fontWeight: 700,
-    },
     cartOriginalPrice: {
       textDecoration: "line-through",
       padding: theme.spacing.unit,
-      fontSize: "small",
     },
     cartContent: {
       [theme.breakpoints.up("lg")]: {
@@ -114,7 +109,6 @@ class Products extends React.Component<ProductsProps> {
                   items={images}
                   showFullscreenButton={false}
                   showPlayButton={false}
-                  showNav={false}
                   slideOnThumbnailHover={true}
                   showThumbnails={isWidthUp("lg", width) ? true : false}
                 />
@@ -122,24 +116,7 @@ class Products extends React.Component<ProductsProps> {
               <Grid item xs={12} md={4} sm={4} lg={6} zeroMinWidth>
                 <Typography variant="h6">{product.name}</Typography>
                 <div className={classes.cartSellerWrapper}>
-                  <Avatar className={classes.purpleAvatar}>
-                    {product.sellers.name.substring(0, 2).toUpperCase()}
-                  </Avatar>
-                  <Typography
-                    variant="body2"
-                    className={classes.cartSeller}
-                    noWrap
-                  >
-                    {`Sold by ${product.sellers.name}`}
-                  </Typography>
-                </div>
-                <div className={classes.cartSellerWrapper}>
-                  <Typography
-                    variant="h5"
-                    className={classes.cartPrice}
-                    noWrap
-                    gutterBottom
-                  >
+                  <Typography variant="h5" gutterBottom>
                     {`UGX ${numberWithCommas(product.saleprice)}`}
                   </Typography>
                   <Typography
@@ -152,20 +129,30 @@ class Products extends React.Component<ProductsProps> {
                       : ""}
                   </Typography>
                 </div>
-                <Typography variant="body1" color="default" gutterBottom>
+                <Typography variant="body1" color="textSecondary">
                   {product.originalprice
-                    ? `You save: UGX ${numberWithCommas(
+                    ? `Save UGX ${numberWithCommas(
                         product.originalprice - product.saleprice
-                      )} (${discount(
-                        product.saleprice,
-                        product.originalprice
-                      )}%)`
+                      )}`
                     : ""}
                 </Typography>
-                <Divider />
+                <Divider className={classes.cartButton} />
+                <div className={classes.cartSellerWrapper}>
+                  <Avatar className={classes.purpleAvatar}>
+                    {product.sellers.name.substring(0, 2).toUpperCase()}
+                  </Avatar>
+                  <Typography
+                    variant="body2"
+                    className={classes.cartSeller}
+                    noWrap
+                  >
+                    {`Sold by ${product.sellers.name}`}
+                  </Typography>
+                </div>
+                <Divider className={classes.cartButton} />
                 <Button
                   variant="contained"
-                  color="secondary"
+                  color="primary"
                   className={classes.cartButton}
                   onClick={() =>
                     addToCart(
