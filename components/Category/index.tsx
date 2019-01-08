@@ -100,9 +100,7 @@ const Category = ({ classes }: CategoryProps) => (
                           <CardMedia
                             className={classes.categoryMedia}
                             component="img"
-                            image={`http://localhost:1337${
-                              category.image[0].url
-                            }`}
+                            image={category.image[0].url}
                             title={category.name}
                           />
                         </CardActionArea>

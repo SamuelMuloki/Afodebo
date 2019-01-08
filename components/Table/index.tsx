@@ -104,7 +104,7 @@ class PaginationTable extends React.Component<
                             {
                               <img
                                 className={classes.media}
-                                src={`http://localhost:1337${pdt.image.url}`}
+                                src={pdt.image.url}
                               />
                             }
                           </TableCell>

@@ -65,7 +65,7 @@ const SingleCard = ({ classes, images }: ProductCardProps) => {
         <CardMedia
           className={classes.cardMedia}
           component="img"
-          image={`http://localhost:1337${images.image.url}`}
+          image={images.image.url}
           title={images.name}
         />
         <CardContent>

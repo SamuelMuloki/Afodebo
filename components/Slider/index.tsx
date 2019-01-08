@@ -59,7 +59,7 @@ const ImageSlider = ({ data, classes }: ImageSliderProps) => {
                           )
                         }
                         alt={data.promotions[currentIndex].name}
-                        src={`http://localhost:1337${promo.url}`}
+                        src={promo.url}
                       />
                     )
                   })

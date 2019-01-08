@@ -52,7 +52,7 @@ const BrandCard = ({ classes, brand }: ProductCardProps) => {
         <CardMedia
           className={classes.brandMedia}
           component="img"
-          image={`http://localhost:1337${brand.image.url}`}
+          image={brand.image.url}
           title={brand.name}
         />
       </CardActionArea>

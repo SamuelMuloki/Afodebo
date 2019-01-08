@@ -98,8 +98,8 @@ class Products extends React.Component<ProductsProps> {
       const items = product.images.map(pdt => pdt.image).reduce(img => img)
       const images: Array<ReactImageGalleryItem> = items.map(itm => {
         return {
-          original: `http://localhost:1337${itm.url}`,
-          thumbnail: `http://localhost:1337${itm.url}`,
+          original: itm.url,
+          thumbnail: itm.url,
         }
       })
       return (
