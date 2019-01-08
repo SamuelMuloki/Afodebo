@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "start": "NODE_ENV=production node server.js -p $PORT",
     "lint": "tslint -c ./tslint.json --exclude **/*.d.ts --exclude ./node_modules --project . --fix **/*.tsx --fix **/*.ts",
     "tslint-check": "tslint-config-prettier-check ./tslint.json"
   },

@@ -7,17 +7,13 @@ const app = next({
   dev
 })
 const handle = app.getRequestHandler()
-const port = dev ? 3000 : 8080
+// const port = dev ? 3000 : 8080
 
 app
   .prepare()
   .then(() => {
     const server = express()
     server.use(compression())
-
-    server.get("/artwork/:artworkId", (req, res) => {
-      return app.render(req, res, "/artwork", req.params)
-    })
 
     server.get('/:name/:id/', (req, res) => {
       const actualPage = '/products';
@@ -41,9 +37,9 @@ app
       return handle(req, res)
     })
 
-    server.listen(port, err => {
+    server.listen(process.env.PORT || 3000, err => {
       if (err) throw err
-      console.log(`> Ready on http://localhost:${port}`)
+      console.log(`> Ready on http://localhost:3000`)
     })
   })
   .catch(ex => {
